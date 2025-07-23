@@ -1,0 +1,52 @@
+{
+        "red": {
+            "color": "bg-red-500",
+            "hover": "hover:bg-red-400",
+            "active": "active:bg-red-600"
+        },
+        "orange": {
+            "color": "bg-orange-500",
+            "hover": "hover:bg-orange-400",
+            "active": "active:bg-orange-600"
+        },
+        "yellow": {
+            "color": "bg-yellow-500",
+            "hover": "hover:bg-yellow-400",
+            "active": "active:bg-yellow-600"
+        },
+        "lime": {
+            "color": "bg-lime-500",
+            "hover": "hover:bg-lime-400",
+            "active": "active:bg-lime-600"
+        },
+        "green": {
+            "color": "bg-green-500",
+            "hover": "hover:bg-green-400",
+            "active": "active:bg-green-600"
+        },
+        "cyan": {
+            "color": "bg-cyan-500",
+            "hover": "hover:bg-cyan-400",
+            "active": "active:bg-cyan-600"
+        },
+        "blue": {
+            "color": "bg-blue-500",
+            "hover": "hover:bg-blue-400",
+            "active": "active:bg-blue-600"
+        },
+        "purple": {
+            "color": "bg-purple-500",
+            "hover": "hover:bg-purple-400",
+            "active": "active:bg-purple-600"
+        },
+        "pink": {
+            "color": "bg-pink-500",
+            "hover": "hover:bg-pink-400",
+            "active": "active:bg-pink-600"
+        },
+        "gray": {
+            "color": "bg-neutral-500",
+            "hover": "hover:bg-neutral-400",
+            "active": "active:bg-neutral-600"
+        }
+    }
