@@ -8,6 +8,7 @@ import SideMenu from "@/components/side-menu";
 import HeaderLogin from "./header-login";
 import {FaHammer, FaUserCog, FaTimes, FaBars} from "react-icons/fa";
 import { useRouter } from "next/navigation";
+import Button from "./button";
 
 export default function Header() {
     const router = useRouter();
@@ -22,7 +23,14 @@ export default function Header() {
         return (
             <>
                 {session?.user?.role === "admin" ? <HeaderButton text="Admin" icon={<FaUserCog />} handler={() => router.push("/admin")} /> : <div />}
-                {!session && <HeaderLogin onLoginSuccess={refreshSession} />}
+                {!session && 
+                <>
+                <div className="hidden lg:flex items-center">
+                    <HeaderLogin onLoginSuccess={refreshSession} />
+                </div>
+                <Button color="blue" content="Log in" style="block lg:hidden" onClick={() => setShowMenu(true)} />
+                </>
+                }
                 {session && <HeaderButton text="Build" icon={<FaHammer />} iconStyle={"-scale-x-[1]"} handler={() => router.push("/build")} />}
             </>
         )
@@ -33,7 +41,7 @@ export default function Header() {
             <header className="w-full fixed top-0 z-99">
                 <div className="flex bg-background justify-between items-center h-12 px-4 gap-4">
                     <Logo />
-                    <div className="w-full h-full flex justify-between gap-4">
+                    <div className="w-full h-full flex items-center justify-between gap-4">
                         <GetHeaderElements />
                     </div>
                     <button className="text-foreground text-3xl font-bold cursor-pointer" onClick={() => setShowMenu(!showMenu)}>

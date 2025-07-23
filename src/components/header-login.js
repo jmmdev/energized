@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import {FaEye, FaEyeSlash} from "react-icons/fa";
 import { doCredentialsLogin } from "@/controllers/loginController";
-
+import { FaUser, FaKey } from "react-icons/fa";
 export default function HeaderLogin({onLoginSuccess}) {
     const router = useRouter();
     
@@ -42,10 +42,11 @@ export default function HeaderLogin({onLoginSuccess}) {
     }
     
     return (
-        <form onSubmit={handleFormSubmit} className="flex gap-4 items-center">
+        <form onSubmit={handleFormSubmit} className="flex gap-4 items-center text-container">
             <div className="flex gap-2 items-center">
-                <label className="text-sm">Username</label>
-                <input className="text-sm" 
+                <FaUser />
+                <input className="text-sm"
+                    placeholder="Username or email"
                     type="text"
                     id="user"
                     name="user"
@@ -53,8 +54,9 @@ export default function HeaderLogin({onLoginSuccess}) {
                     onChange={(e) => setUser(e.target.value)}/>
             </div>
             <div className="flex gap-2 items-center">
-                <label className="text-sm">Password</label>
+                <FaKey />
                 <input className="text-sm"
+                    placeholder="Password"
                     type={showPwd ? "text" : "password"}
                     id="password"
                     name="password"

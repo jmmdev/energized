@@ -11,7 +11,7 @@ export default function SliderNavigation({quantity, currentSlide, setCurrentSlid
     }
     
     return (
-        <div className="absolute left-1/2 -translate-x-1/2 bottom-4 z-10 flex pt-4 gap-1">
+        <div className="absolute left-1/2 -translate-x-1/2 bottom-0 z-10 flex p-4 gap-1">
             <GetNavigation />
         </div>
     )

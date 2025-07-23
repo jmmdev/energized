@@ -1,26 +1,29 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import SliderNavigation from "@/components/slider-navigation";
 
 export default function Hero() {
 
-const SLIDES = [
-        {img: "test1.jpg", title: "This is the title #1", subtitle: "This is the subtitle #1", href: "https://marca.com"},
-        {img: "test1.jpg", title: "This is the title #2", subtitle: "This is the subtitle #2", href: "https://sport.es"},
-        {img: "test1.jpg", title: "This is the title #3", subtitle: "This is the subtitle #3", href: "https://twitch.tv"}
-    ]
+    const SLIDES = require("/public/assets/files/slides.json");
 
     const [currentSlide, setCurrentSlide] = useState(0);
+    const scrollerRef = useRef(null);
 
     useEffect(() => {
         getLeastUsedColor();
     }, [])
 
     useEffect(() => {
-        document.getElementById("scroll").scrollTo({left: window.innerWidth * currentSlide, behavior: "smooth"});
+        window.addEventListener("resize",() => {
+            scrollerRef.current.scrollTo({left: window.innerWidth * currentSlide});
+        });
+    }, [])
+
+    useEffect(() => {
+        scrollerRef.current.scrollTo({left: window.innerWidth * currentSlide, behavior: "smooth"});
     }, [currentSlide]);
 
     const getLeastUsedColor = () => {
@@ -83,14 +86,14 @@ const SLIDES = [
                 <FaChevronRight className="text-2xl lg:text-3xl text-my-white" />
             </div>
             }
-                <div id="scroll" className="w-screen flex snap-none overflow-y-hidden overflow-x-scroll no-scrollbar">
+                <div ref={scrollerRef} className="w-screen flex snap-none overflow-y-hidden overflow-x-scroll no-scrollbar">
                 {SLIDES.map((elem, index) => {
                     return (
                         <a key={"sl-" + index} id={"slide-" + index} className="flex flex-[0_0_100%] justify-center hover:scale-110 transition-transform" href={elem.href} target="_blank">
-                            <div className="w-[65%] flex justify-between gap-24 items-center">
+                            <div className="w-[80%] flex justify-between gap-24 items-center">
                                 <div className="text-my-white text-3xl lg:text-5xl">
-                                    <p className="font-bold">{elem.title}</p>
-                                    <p>{elem.subtitle}</p>
+                                    <p className="uppercase font-bold">{elem.title}</p>
+                                    <p className="capitalize">{elem.subtitle}</p>
                                 </div>
                                 <div className="relative w-24 lg:w-30 h-30 lg:h-48" style={{clipPath: "polygon(0% 0%, 80% 0%, 100% 100%, 20% 100%, 0% 0%)", WebkitClipPath: "polygon(0% 0%, 80% 0%, 100% 100%, 20% 100%, 0% 0%)"}}>
                                     <Image id="image" alt="Test image" src={`/assets/images/${elem.img}`} fill sizes="2000" className="object-contain scale-150" />

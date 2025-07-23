@@ -12,10 +12,14 @@
 :root {
   --my-white: #fafafa;
   --my-black: #171717;
+  --my-white-hover: #727272;
+  --my-black-hover: #393939;
+  --my-white-active: #b6b6b6;
+  --my-black-active: #282828;
 
   --background: var(--my-white);
   --foreground: var(--my-black);
-  --container: #ececec;
+  --container: #777;
 
   --highlight: #ea261f;
   --highlight-hover: #ef5c57;
@@ -40,7 +44,7 @@
   :root {
     --background: var(--my-black);
     --foreground: var(--my-white);
-    --container: #353535;
+    --container: #777;
   }
 }
 
@@ -51,9 +55,10 @@ body {
 }
 
 input {
-  background-color: #fafafa;
-  color: #171717;
+  background-color: var(--my-white);
+  color: var(--my-black);
   padding: 0 4px;
+  border: 1px solid var(--container);
 }
 
 footer a:hover {

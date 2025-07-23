@@ -1,0 +1,26 @@
+[
+    {
+        "img": "test1.jpg",
+        "title": "welcome to energizer!",
+        "subtitle": "train. build. win.",
+        "href": "/build"
+    },
+    {
+        "img": "test1.jpg",
+        "title": "[featured deck #1]",
+        "subtitle": "catchy phrase #1",
+        "href": "/"
+    },
+    {
+        "img": "test1.jpg",
+        "title": "[featured deck #2]",
+        "subtitle": "catchy phrase #2",
+        "href": "/"
+    },
+    {
+        "img": "test1.jpg",
+        "title": "new to energized?",
+        "subtitle": "check out our new user guide",
+        "href": "/"
+    }
+]

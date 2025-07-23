@@ -48,5 +48,15 @@
             "color": "bg-neutral-500",
             "hover": "hover:bg-neutral-400",
             "active": "active:bg-neutral-600"
+        },
+        "dark": {
+            "color": "bg-my-black",
+            "hover": "hover:bg-neutral-400",
+            "active": "active:bg-neutral-600"
+        },
+        "light": {
+            "color": "bg-my-white",
+            "hover": "hover:bg-neutral-400",
+            "active": "active:bg-neutral-600"
         }
     }

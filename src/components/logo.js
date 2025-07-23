@@ -15,9 +15,9 @@ export default function Logo() {
 
         });
 
-        let colorScheme = "light";
+        let colorScheme;
         if (window.matchMedia) {
-            colorScheme = window.matchMedia('(prefers-color-scheme: dark)').matches && "dark";
+            colorScheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? "dark" : "light";
         }
 
         setLogoSrc(`/assets/images/logo-${colorScheme}.png`);
