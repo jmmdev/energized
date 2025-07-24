@@ -7,7 +7,7 @@ export default function SearchSelector({color}) {
     const COLORS = require("/public/assets/files/colors.json");
 
     const colorToPick = COLORS[color] || COLORS["red"];
-    const textColor = (color === "light" ? "text-my-black" : "text-my-white");
+    const textColor = (color === "light" || color === "yellow" ? "text-my-black" : "text-my-white");
 
     const [selectedIndex, setSelectedIndex] = useState(0);
     const [showOptions, setShowOptions] = useState(false);

@@ -19,11 +19,11 @@
 
   --background: var(--my-white);
   --foreground: var(--my-black);
-  --container: #777;
+  --container: #d8d8d8;
 
-  --highlight: #ea261f;
-  --highlight-hover: #ef5c57;
-  --highlight-active: #bb1711;
+  --highlight: oklch(63.7% 0.237 25.331);
+  --highlight-hover: oklch(70.4% 0.191 22.216);
+  --highlight-active: oklch(57.7% 0.245 27.325);;
 }
 
 @theme inline {
@@ -45,6 +45,10 @@
     --background: var(--my-black);
     --foreground: var(--my-white);
     --container: #777;
+
+    --highlight: oklch(79.5% 0.184 86.047);
+    --highlight-hover: oklch(85.2% 0.199 91.936);
+    --highlight-active: oklch(68.1% 0.162 75.834);
   }
 }
 
@@ -58,7 +62,6 @@ input {
   background-color: var(--my-white);
   color: var(--my-black);
   padding: 0 4px;
-  border: 1px solid var(--container);
 }
 
 footer a:hover {

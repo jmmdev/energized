@@ -15,14 +15,14 @@ export default function SearchBar() {
     
     useEffect(() => {
         window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
-            const newColorScheme = event.matches ? "dark" : "light";
+            const newColorScheme = event.matches ? "yellow" : "red";
             setColor(newColorScheme);
 
         });
 
         let colorScheme;
         if (window.matchMedia) {
-            colorScheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? "dark" : "light";
+            colorScheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? "yellow" : "red";
         }
 
         setColor(colorScheme);
@@ -30,9 +30,9 @@ export default function SearchBar() {
 
     return (
         <div className="w-full flex justify-center color-background p-2 bg-container">
-            <div className="w-full max-w-[1200px] flex justify-center rounded-sm gap-2">
+            <div className="w-full max-w-[1200px] flex justify-center rounded-sm gap-1">
                 <SearchSelector color={color} />
-                <input name="search-text" value={searchText} onChange={handleChange} className="w-full h-8" />
+                <input name="search-text" value={searchText} onChange={handleChange} className="w-full h-8 border border-container" />
                 <Button content={<FaSearch />} color={color} />
             </div>
         </div>
