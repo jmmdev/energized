@@ -93,7 +93,7 @@ export default function Hero() {
                 <div ref={scrollerRef} className="w-screen flex snap-none overflow-y-hidden overflow-x-scroll no-scrollbar">
                 {SLIDES.map((elem, index) => {
                     return (
-                        <a key={"sl-" + index} id={"slide-" + index} className="flex flex-[0_0_100%] justify-center hover:scale-110 transition-transform" href={elem.href} target="_blank">
+                        <a key={"sl-" + index} id={"slide-" + index} className="flex flex-[0_0_100%] justify-center hover:scale-110 transition-transform" href={elem.href}>
                             <div className="w-[80%] flex justify-center sm:gap-12 lg:gap-24 items-center">
                                 <div className="flex flex-col gap-0 text-my-white">
                                     <p className="uppercase font-bold text-3xl lg:text-5xl">{elem.title}</p>

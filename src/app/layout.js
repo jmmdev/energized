@@ -1,6 +1,7 @@
 import { Outfit } from "next/font/google";
 import "./globals.css";
 import SessionWrapper from "@/components/session-wrapper";
+import { ThemeProvider } from "@/context/theme-context";
 
 const outfit = Outfit({
   variable: "--font-outfit",
@@ -19,9 +20,11 @@ export default function RootLayout({ children }) {
         <body
           className={`${outfit.variable} antialiased`}
         >
-          <SessionWrapper>
-            {children}
-          </SessionWrapper>
+          <ThemeProvider>
+            <SessionWrapper>
+              {children}
+            </SessionWrapper>
+          </ThemeProvider>
         </body>
       </html>
   );

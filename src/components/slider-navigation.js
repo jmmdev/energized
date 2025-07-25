@@ -4,8 +4,8 @@ export default function SliderNavigation({quantity, currentSlide, setCurrentSlid
         const output = [];
         for(let i=0; i<quantity; i++) {
             output.push(
-                <div key={i} className="group w-8 h-5 flex items-center cursor-pointer" onClick={() => setCurrentSlide(i)}>
-                    <div className={`w-full h-1 rounded-full bg-my-white ${currentSlide !== i && "opacity-50 group-hover:opacity-100"}`} />
+                <div key={i} className="group h-5 flex items-center cursor-pointer px-1" onClick={() => setCurrentSlide(i)}>
+                    <div className={`w-8 h-1 rounded-full bg-my-white ${currentSlide !== i && "opacity-50 group-hover:opacity-100"}`} />
                 </div>
             )
         }
@@ -13,7 +13,7 @@ export default function SliderNavigation({quantity, currentSlide, setCurrentSlid
     }
     
     return (
-        <div className="absolute left-1/2 -translate-x-1/2 bottom-0 z-10 flex py-2 px-4 gap-1.5">
+        <div className="absolute left-1/2 -translate-x-1/2 bottom-0 z-10 flex py-2 px-4">
             <GetNavigation />
         </div>
     )
