@@ -20,8 +20,13 @@ export const ThemeProvider = ({ children }) => {
     if (typeof window === "undefined") return;
 
     const stored = localStorage.getItem("theme-preference");
+
     if (stored) 
         setTheme(stored);
+    else {
+        const systemTheme = getSystemTheme();
+        setTheme(systemTheme);
+    }
   }, []);
 
   // When theme changes, update <html> and localStorage

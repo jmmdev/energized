@@ -16,26 +16,26 @@ export default function SideMenu({showMenu, setShowMenu}) {
     const {data: session, status} = useSession();
     const router = useRouter();
 
-    const GetUserSections = () => {
-        if (session?.user) {
-            return (
-                <div>
-                    {USER_SECTIONS.map((elem, index) => {
-                        return (
-                            <div key={elem} className={`w-full border-container ${index < USER_SECTIONS.length - 1 && "border-b"}`}>
-                                <SideMenuSection type="button" content={elem.toUpperCase()} />
-                            </div>
-                        )
-                    })}
-                   <SideMenuSection content={<ThemeToggle />} />
-                </div>
-            )
-        }
+    const GetSections = () => {
+        return (
+            <div>
+                {USER_SECTIONS.map((elem, index) => {
+                    return (
+                        <div key={elem} className={`w-full border-container ${index < USER_SECTIONS.length - 1 && "border-b"}`}>
+                            <SideMenuSection type="button" content={elem.toUpperCase()} />
+                        </div>
+                    )
+                })}
+                <SideMenuSection content={<ThemeToggle />} />
+            </div>
+        )
         return null;
     }
 
     const handleLogout = async () => {
         await doLogout();
+        const event = new Event("visibilitychange");
+        document.dispatchEvent(event);
         router.push("/");
     }
 
@@ -59,7 +59,7 @@ export default function SideMenu({showMenu, setShowMenu}) {
                             </div>
                         </div>
                     }
-                        <GetUserSections />
+                        <GetSections />
                     {session && session.user && <Button color={"gray"} content="LOG OUT" onClick={handleLogout} style="w-full" />}
                 </div>
             </div>
