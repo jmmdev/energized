@@ -78,14 +78,14 @@ export default function Hero() {
         <section id="hero" className="relative w-screen hidden sm:flex overflow-hidden z-5">
             {currentSlide > 0 ?
             <div className="w-[5%] max-w-16 h-full absolute left-0 flex justify-center items-center px-2 lg:px-4 cursor-pointer opacity-60 hover:opacity-100 hover:bg-[#fff2] z-10" onClick={() => setCurrentSlide(currentSlide-1)}>
-                <FaChevronLeft className="text-2xl lg:text-3xl text-my-white" />
+                <FaChevronLeft className="text-xl lg:text-2xl text-my-white" />
             </div>
             :
             <div className="w-[5%] max-w-16 h-full absolute left-0 z-10" />
             }
             {currentSlide < SLIDES.length - 1 ?
             <div className="w-[5%] max-w-16 h-full absolute right-0 flex items-center px-2 lg:px-4 cursor-pointer opacity-60 hover:opacity-100 hover:bg-[#fff2] z-10" onClick={() => setCurrentSlide(currentSlide+1)}>
-                <FaChevronRight className="text-2xl lg:text-3xl text-my-white" />
+                <FaChevronRight className="text-xl lg:text-2xl text-my-white" />
             </div>
             :
             <div className="w-[5%] max-w-16 h-full absolute right-0 z-10" />
