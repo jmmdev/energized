@@ -1,12 +1,12 @@
 "use client";
 import SearchBar from "@/components/search-bar";
 import Logo from "@/components/logo";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { getSession, useSession } from "next-auth/react";
 import HeaderButton from "@/components/header-button";
 import SideMenu from "@/components/side-menu";
 import CompactLogin from "./compact-login";
-import {FaHammer, FaUserCog, FaTimes, FaBars, FaUser} from "react-icons/fa";
+import {FaHammer, FaUserCog, FaTimes, FaBars, FaUser, FaStar} from "react-icons/fa";
 import { useRouter } from "next/navigation";
 import Button from "./button";
 
@@ -33,6 +33,7 @@ export default function Header() {
                 <div className="flex justify-center gap-4 w-full">
                     <HeaderButton text={session.user?.name} icon={<FaUser />} handler={() => {}} />
                     <HeaderButton text="Build" icon={<FaHammer />} iconStyle={"-scale-x-[1]"} handler={() => router.push("/build")} />
+                    <HeaderButton text="favorites" icon={<FaStar />} handler={() => {}} />
                 </div>
                 }
             </>
@@ -53,11 +54,9 @@ export default function Header() {
                     </button>
                 </div>
                 <div className="flex items-center h-12 bg-container">
-                    <form onSubmit={e => {
-                        e.preventDefault();
-                    }} className="color-background w-full h-full flex justify-center items-center gap-2 py-2 px-4">
+                    <div className="color-background w-full h-full flex justify-center items-center gap-2 py-2 px-4">
                         <SearchBar />
-                    </form>
+                    </div>
                 </div>
             </header>
             <SideMenu showMenu={showMenu} setShowMenu={setShowMenu} />

@@ -48,7 +48,6 @@ export default function CompactLogin({onLoginSuccess, vertical}) {
                 <input className={`${vertical && "w-full"} rounded-xs border border-container`}
                     placeholder="Username or email"
                     type="text"
-                    id="user"
                     name="user"
                     maxLength={24}
                     onChange={(e) => setUser(e.target.value)}/>
@@ -58,7 +57,6 @@ export default function CompactLogin({onLoginSuccess, vertical}) {
                 <input className={`${vertical && "w-full"} rounded-xs border border-container`}
                     placeholder="Password"
                     type={showPwd ? "text" : "password"}
-                    id="password"
                     name="password"
                     autoComplete="off"
                     maxLength={24}

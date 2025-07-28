@@ -23,7 +23,7 @@ export default function SessionWrapper({ children }) {
     <SessionProvider>
       <div className="min-h-screen flex flex-col justify-between">
         <GetHeader />
-        <div className="mt-24">
+        <div className="mt-24 z-1">
           {children}
         </div>
         <Footer />

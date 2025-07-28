@@ -66,22 +66,28 @@ export const {
             }
         },
 
-        async jwt({token, user}) {
+        async jwt({token, account, user}) {
             if (user) {
+                token.id = user._id;
                 token.name = user.name;
                 token.email = user.email;
                 token.role = user.role;
                 token.favorites = user.favorites;
+                token.accessToken = account?.access_token;
             }
-            return token;
+            return {...token, ...account, ...user};
         },
 
         async session({ session, token, user }) {
+            session.token = token.accessToken;
+            
             session.user = {
+                id: token.id,
                 name: token.name,
                 email: token.email,
                 role: token.role,
                 favorites: token.favorites,
+                token: token.accessToken,
             };
             return session;
         },
