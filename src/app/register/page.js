@@ -2,10 +2,9 @@
 import { useRef, useState, useEffect } from "react";
 import {FaEye, FaCheck, FaTimes} from "react-icons/fa";
 import { useRouter } from "next/navigation";
-import { doSocialLogin } from "@/controllers/loginController";
 import axios from "axios";
 import Button from "@/components/button";
-import { getSession, useSession } from "next-auth/react";
+import { getSession, signIn, useSession } from "next-auth/react";
 
 const USER_REGEX = /^[a-zA-Z][a-zA-Z0-9-_]{3,23}$/;
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%&]).{8,24}$/;
@@ -102,11 +101,11 @@ export default function Register() {
   return (
     <main className="flex flex-col items-center p-16">
         <section className="w-full max-w-[720px] flex flex-col gap-8">
-            <h1 className="text-2xl font-geist border-b-2">Register</h1>
+            <h1 className="text-2xl font-medium border-b-2">Register</h1>
             <form className="flex flex-col gap-8" onSubmit={handleSubmit}>
                 <div className="flex flex-col">
                     <div className="flex items-center gap-1">
-                        <label htmlFor="username">
+                        <label className="font-semibold" htmlFor="username">
                             Username
                         </label>
                         {validName && <FaCheck color="#8da" />}
@@ -123,11 +122,11 @@ export default function Register() {
                         onChange={(e) => setUsername(e.target.value)}
                         required
                     />
-                    <p className="text-xs font-medium">4 to 24 characters. Must begin with a letter. Letters, numbers, underscores, hyphens allowed.</p>
+                    <p className="text-sm">4 to 24 characters. Must begin with a letter. Letters, numbers, underscores, hyphens allowed.</p>
                 </div>
                 <div className="flex flex-col">
                     <div className="flex items-center gap-1">
-                        <label htmlFor="email">
+                        <label className="font-semibold" htmlFor="email">
                             Email
                         </label>
                         {validEmail && <FaCheck color="#8da" />}
@@ -146,7 +145,7 @@ export default function Register() {
                 </div>
                 <div className="flex flex-col">
                     <div className="flex items-center gap-1">
-                        <label htmlFor="password">
+                        <label className="font-semibold" htmlFor="password">
                             Password
                         </label>
                         {validPwd && <FaCheck color="#8da" />}
@@ -167,11 +166,11 @@ export default function Register() {
                             <FaEye className="w-full " />
                         </div>
                     </div>
-                    <p className="text-xs font-medium">8 to 24 characters. Must include uppercase and lowercase letters, a number and a special character.</p>
+                    <p className="text-sm">8 to 24 characters. Must include uppercase and lowercase letters, a number and a special character.</p>
                 </div>
                 <div className="flex flex-col">
                     <div className="flex items-center gap-1">
-                        <label htmlFor="match">
+                        <label className="font-semibold" htmlFor="match">
                             Repeat password
                         </label>
                         {match.length > 0 && validMatch && <FaCheck color="#8da" />}
@@ -197,15 +196,13 @@ export default function Register() {
                 {msg.length > 0 && <p className="text-emerald-500">{msg}</p>}
                 <Button color="blue" disabled={!validName || !validPwd || !validMatch} style="w-[fit-content_!important] self-center" content="sign up" />
             </form>
-            <form action={doSocialLogin}>
-                <Button name="action" value="google" content="Sign in with Google" />
-            </form>
-            <p>
-                Already registered?<br/>
-                <span className="underline">
-                    <a href="/login">Sign in</a>
-                </span>
-            </p>
+            
+            <Button content="Sign in with Google" style="w-fit" onClick={() => signIn("google")} />
+            
+            <div>
+                <p>Already registered?</p>
+                <a className="hover:text-highlight-hover underline" href="/login">Sign in</a>
+            </div>
         </section>
     </main>
   )

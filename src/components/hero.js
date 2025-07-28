@@ -14,9 +14,7 @@ export default function Hero() {
 
     useEffect(() => {
         getLeastUsedColor();
-    }, [])
-
-    useEffect(() => {
+        
         window.addEventListener("resize",() => {
             scrollerRef.current.scrollTo({left: window.innerWidth * currentSlide});
         });
@@ -84,7 +82,7 @@ export default function Hero() {
             <div className="w-[5%] max-w-16 h-full absolute left-0 z-10" />
             }
             {currentSlide < SLIDES.length - 1 ?
-            <div className="w-[5%] max-w-16 h-full absolute right-0 flex items-center px-2 lg:px-4 cursor-pointer opacity-60 hover:opacity-100 hover:bg-[#fff2] z-10" onClick={() => setCurrentSlide(currentSlide+1)}>
+            <div className="w-[5%] max-w-16 h-full absolute right-0 flex justify-center items-center px-2 lg:px-4 cursor-pointer opacity-60 hover:opacity-100 hover:bg-[#fff2] z-10" onClick={() => setCurrentSlide(currentSlide+1)}>
                 <FaChevronRight className="text-xl lg:text-2xl text-my-white" />
             </div>
             :

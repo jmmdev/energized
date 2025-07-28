@@ -1,12 +1,12 @@
 "use client";
 import SearchBar from "@/components/search-bar";
 import Logo from "@/components/logo";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { getSession, useSession } from "next-auth/react";
 import HeaderButton from "@/components/header-button";
 import SideMenu from "@/components/side-menu";
-import HeaderLogin from "./header-login";
-import {FaHammer, FaUserCog, FaTimes, FaBars} from "react-icons/fa";
+import CompactLogin from "./compact-login";
+import {FaHammer, FaUserCog, FaTimes, FaBars, FaUser} from "react-icons/fa";
 import { useRouter } from "next/navigation";
 import Button from "./button";
 
@@ -22,16 +22,19 @@ export default function Header() {
 
         return (
             <>
-                {session?.user?.role === "admin" ? <HeaderButton text="Admin" icon={<FaUserCog />} handler={() => router.push("/admin")} /> : <div />}
-                {!session && 
-                <>
-                <div className="hidden lg:flex items-center">
-                    <HeaderLogin onLoginSuccess={refreshSession} />
+                {!session ?
+                <div className="w-full flex justify-end">
+                    <div className="hidden lg:block">
+                        <CompactLogin onLoginSuccess={refreshSession} />
+                    </div>
+                    <Button color="blue" content="Log in" style="block lg:hidden" onClick={() => setShowMenu(true)} />
                 </div>
-                <Button color="blue" content="Log in" style="block lg:hidden" onClick={() => setShowMenu(true)} />
-                </>
+                :
+                <div className="flex justify-center gap-4 w-full">
+                    <HeaderButton text={session.user?.name} icon={<FaUser />} handler={() => {}} />
+                    <HeaderButton text="Build" icon={<FaHammer />} iconStyle={"-scale-x-[1]"} handler={() => router.push("/build")} />
+                </div>
                 }
-                {session && <HeaderButton text="Build" icon={<FaHammer />} iconStyle={"-scale-x-[1]"} handler={() => router.push("/build")} />}
             </>
         )
     }
@@ -41,6 +44,7 @@ export default function Header() {
             <header className="w-full fixed top-0 z-99">
                 <div className="flex bg-background justify-between items-center h-12 px-4 gap-4">
                     <Logo />
+                    {session?.user?.role === "admin" && <HeaderButton text="Admin" icon={<FaUserCog />} handler={() => router.push("/admin")} />}
                     <div className="w-full h-full flex items-center justify-between gap-4">
                         <GetHeaderElements />
                     </div>
@@ -56,7 +60,7 @@ export default function Header() {
                     </form>
                 </div>
             </header>
-            <SideMenu showMenu={showMenu} setShowMenu={setShowMenu} userId={session?.user?.id} userName={session?.user?.username || session?.user?.name}/>
+            <SideMenu showMenu={showMenu} setShowMenu={setShowMenu} />
         </>
     )
 }

@@ -20,13 +20,13 @@
   --highlight: oklch(63.7% 0.237 25.331);
   --highlight-hover: oklch(70.4% 0.191 22.216);
   --highlight-active: oklch(57.7% 0.245 27.325);
-  
-  --container: #777;
 }
 
 .theme-light {
   --background: var(--my-white);
   --foreground: var(--my-black);
+  
+  --container: #d5d5d5;
 }
 
 @theme inline {
@@ -46,6 +46,8 @@
 .theme-dark {
   --background: var(--my-black);
   --foreground: var(--my-white);
+  
+  --container: #777;
 }
 
 body {
