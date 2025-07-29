@@ -25,7 +25,7 @@ export default function SearchBar() {
                 router.push(`/${target}?name=${searchText}`);
             }} className="w-full max-w-[1200px] flex justify-center rounded-sm border border-my-white">
                 <SearchSelector options={OPTIONS} target={target} setTarget={setTarget} />
-                <input name="search-text" value={searchText} onChange={handleChange} className="w-full h-8" />
+                <input name="search-text" value={searchText} onChange={handleChange} className="w-full h-8 bg-my-white text-my-black" />
                 <Button style="rounded-tr-sm rounded-br-sm" content={<FaSearch className="text-lg" />} />
             </form>
         </div>

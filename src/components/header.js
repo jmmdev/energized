@@ -32,7 +32,7 @@ export default function Header() {
                 :
                 <div className="flex justify-center gap-4 w-full">
                     <HeaderButton text={session.user?.name} icon={<FaUser />} handler={() => {}} />
-                    <HeaderButton text="Build" icon={<FaHammer />} iconStyle={"-scale-x-[1]"} handler={() => router.push("/build")} />
+                    <HeaderButton text="Build" icon={<FaHammer />} iconStyle={"-scale-x-[1]"} handler={() => router.push("/build/new")} />
                     <HeaderButton text="favorites" icon={<FaStar />} handler={() => {}} />
                 </div>
                 }

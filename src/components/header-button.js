@@ -5,7 +5,7 @@ export default function HeaderButton({icon, iconStyle, text, handler}) {
             <div className={iconStyle}>
                 {icon}
             </div>
-            <p className="hidden sm:block text-base">{text.toUpperCase()}</p>
+            <p className="hidden sm:block text-sm">{text.toUpperCase()}</p>
         </button>
     )
 }

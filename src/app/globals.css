@@ -25,6 +25,9 @@
 .theme-light {
   --background: var(--my-white);
   --foreground: var(--my-black);
+
+  --background-1: var(--my-white-active);
+  --background-2: var(--my-white-hover);
   
   --container: #d5d5d5;
 }
@@ -40,12 +43,18 @@
   --color-highlight-hover: var(--highlight-hover);
   --color-highlight-active: var(--highlight-active);
 
+  --color-background-1: var(--background-1);
+  --color-background-2: var(--background-2);
+
   --font-outfit: var(--font-outfit);
 }
 
 .theme-dark {
   --background: var(--my-black);
   --foreground: var(--my-white);
+
+  --background-1: var(--my-black-active);
+  --background-2: var(--my-black-hover);
   
   --container: #777;
 }
@@ -57,8 +66,6 @@ body {
 }
 
 input {
-  background-color: var(--my-white);
-  color: var(--my-black);
   padding: 0 4px;
 }
 
