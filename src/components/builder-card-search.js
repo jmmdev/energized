@@ -1,34 +1,64 @@
 "use client";
-import { useEffect, useState } from "react";
-import { FaCaretLeft, FaCaretRight } from "react-icons/fa";
+import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
+import Button from "./button";
+import TCGdex, { Query } from "@tcgdex/sdk";
 
 export default function BuilderCardSearch() {
+    const tcgdex = new TCGdex("en");
     
-    const [search, setSearch] = useState("");
-    const [showCardSearch, setShowCardSearch] = useState(true);
+    const [cardList, setCardList] = useState([]);
 
-    const handleChange = (event) => {
-        const toSearch = event.target.value;
+    const MySearch = () => {
+        const [search, setSearch] = useState("");
 
-        // Card Search
+        const handleSubmit = async (event) => {
+            event.preventDefault();
+            if (search.length >= 3) {
+                const searchLower = search.toLowerCase();
+                const searchCapitalize = searchLower[0].toUpperCase() + searchLower.substring(1);
 
-        setSearch(toSearch);
+                const cards = await tcgdex.card.list(
+                    Query.create().equal("name", searchCapitalize)
+                );
+                setCardList(cards);
+            }
+        }
+
+        return (
+            <form className="w-full flex gap-2" onSubmit={handleSubmit}>
+                <input className={`w-full h-8 bg-background text-foreground border border-background ${search.length > 0 && "capitalize"}`} placeholder="Search cards..." value={search} onChange={(e) => setSearch(e.target.value)} />
+                <Button content="Search" color="blue" disabled={search.length < 3}/>
+            </form>
+        )
+    }
+
+    const GetCardList = () => {
+        const output = cardList.map((elem, index) => {
+            if (elem.image)
+                return (
+                    <div key={elem.id} className="w-full relative">
+                        <Image className="object-contain" src={elem.image + "/low.webp"} width={500} height={500} alt={`${elem.name}#${elem.id}`} />
+                    </div>
+                )
+            else
+                return (
+                    <div key={elem.id} className="w-full relative">
+                        <Image className="object-contain" src={"/assets/images/no-card-image.webp"} width={500} height={500} alt={`${elem.name}#${elem.id}`} />
+                    </div>
+                )
+        })
+        return output;
     }
 
     return (
-        <section className="flex overflow-y-hidden h-full bg-background-2">
-            <div id="builder-card-search" className={`"w-0" ${showCardSearch && "flex"} p-2 min-h-full flex-col bg-background-2 transition-transform`}>
-                <input className="w-full bg-background text-foreground" placeholder="Search cards..." value={search} onChange={handleChange} />    
-            </div>
-            <div className="relative h-full flex justify-center items-center px-2 py-3 cursor-pointer text-my-white opacity-50 hover:opacity-100" 
-            onClick={() => setShowCardSearch(!showCardSearch)}>                    
-                <p className="w-max absolute top-0 text-sm text-my-white -rotate-90" style={{transform: "translateX(-50%)"}}>
-                    {showCardSearch ? "Hide" : "Show"} Card Search
-                </p>
-                <div className="text-2xl">
-                    {showCardSearch ? <FaCaretLeft/> : <FaCaretRight />}
-                </div>
-                <div />
+        <section className="flex bg-background-1 w-96 overflow-hidden gap-4 h-full p-4 flex-col transition-all">
+            <MySearch />
+            <div className="w-full h-[1px] bg-foreground opacity-40" />
+            <div className="w-full grid grid-cols-4 pr-2 gap-2 flex-wrap overflow-auto">
+                {cardList.length > 0 &&
+                    <GetCardList />
+                }
             </div>
         </section>
     )

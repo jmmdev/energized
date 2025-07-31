@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@tcgdex/sdk": "^2.7.0",
     "axios": "^1.8.4",
     "next": "15.4.4",
     "next-auth": "^5.0.0-beta.26",

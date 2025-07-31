@@ -19,14 +19,14 @@ export default function Footer(){
     }, [])
     
     return (
-        <footer className="relative w-full flex md:flex-col justify-center items-center gap-8 md:gap-4 p-8 z-80">
+        <footer className="relative w-full flex flex-col justify-center items-center gap-4 p-8 z-80">
             <div className="h-10">
                 <Logo />
             </div>
-            <div className="flex flex-col gap-2 md:flex-row md:gap-4">
+            <div className="flex gap-2 gap-4">
                 <a href="https://devjosm.vercel.app" target="_blank">About</a>
-                <a href="/" target="_blank">Privacy Policy</a>
-                <a href="/" target="_blank">Copyright Disclaimer</a>
+                <a href="/" target="_blank">Privacy</a>
+                <a href="/" target="_blank">Copyright</a>
             </div>
         </footer>
     )

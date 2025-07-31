@@ -221,9 +221,9 @@ export default function Builder({isNew, deckId}) {
         return <LoginForm onLoginSuccess={refreshSession} />
 
     return (
-        <main className="flex h-full overflow-y-hidden">
+        <main className="flex h-full overflow-y-hidden bg-background">
             <BuilderCardSearch />
-            <section className="flex flex-col flex-[1] gap-1 bg-background-1 p-4 pb-2">
+            <section className="flex flex-col flex-[1] gap-1 px-12 py-4 pb-2">
                 <div className="flex justify-between">
                     <div className="flex items-center gap-2">
                         <div className="group flex relative justify-center h-full rounded-lg aspect-square cursor-pointer" onClick={editImage}>

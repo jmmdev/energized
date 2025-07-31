@@ -44,7 +44,7 @@ export default function Header() {
         <>
             <header className="w-full fixed top-0 z-99">
                 <div className="flex bg-background justify-between items-center h-12 px-4 gap-4">
-                    <Logo />
+                    <Logo isInHeader />
                     {session?.user?.role === "admin" && <HeaderButton text="Admin" icon={<FaUserCog />} handler={() => router.push("/admin")} />}
                     <div className="w-full h-full flex items-center justify-between gap-4">
                         <GetHeaderElements />
