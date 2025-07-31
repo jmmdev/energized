@@ -32,12 +32,14 @@ export default function SessionWrapper({ children }) {
 
   return (
     <SessionProvider>
-      <div className="min-h-screen flex flex-col justify-between">
+      <div className="flex flex-col justify-between">
         <GetHeader />
-        <div className="mt-24 z-1">
+        <div className="flex flex-col h-[calc(100dvh_-_96px)] mt-24 z-1">
           {children}
+          <div className="mt-auto">
+            {!pathname.includes("/build/") && <Footer />}
+          </div>
         </div>
-        <Footer />
       </div>
     </SessionProvider>
   );

@@ -58,7 +58,7 @@ export default function SideMenu({showMenu, setShowMenu}) {
     }
 
     return (
-        <aside id="side-menu-container" className={`w-screen h-screen fixed top-0 left-0 pt-24 transition-all ${showMenu ? "bg-[#0008] z-90" : "z-0"}`}
+        <aside id="side-menu-container" className={`w-dvw h-[calc(100dvh_-_96px)] flex-auto fixed top-24 left-0 transition-all ${showMenu ? "bg-[#0008] z-90" : "z-0"}`}
         onClick={(e) => {
             e.preventDefault();
             setShowMenu(false);
