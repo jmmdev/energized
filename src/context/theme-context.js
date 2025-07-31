@@ -19,6 +19,7 @@ export const ThemeProvider = ({ children }) => {
   useEffect(() => {
     if (typeof window === "undefined") return;
 
+    localStorage.removeItem("theme-preference");
     const stored = localStorage.getItem("theme-preference");
 
     if (stored) 

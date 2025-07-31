@@ -7,10 +7,10 @@ import { usePathname } from "next/navigation";
 
 export default function SessionWrapper({ children }) {
   
-  const HIDE_HEADER = ["/register", "/login", "/build"];
+  const HIDE_HEADER = ["/admin", "/register", "/login"];
   const pathname = usePathname();
 
-  const pathnIsRestricted = () => {
+  const pathIsRestricted = () => {
     let restricted = false;
     let i=0;
 
@@ -24,7 +24,7 @@ export default function SessionWrapper({ children }) {
   const GetHeader = () => {
     const {data: session, status} = useSession();
 
-    if (pathname.includes("/admin") || !session && pathnIsRestricted())
+    if (pathIsRestricted())
       return null;
     
     return <Header />
@@ -34,7 +34,7 @@ export default function SessionWrapper({ children }) {
     <SessionProvider>
       <div className="flex flex-col justify-between">
         <GetHeader />
-        <div className="flex flex-col h-[calc(100dvh_-_96px)] mt-24 z-1">
+        <div className={`flex flex-col ${!pathIsRestricted() ? "h-[calc(100dvh_-_96px)] mt-24" : "h-[100dvh]"} z-1`}>
           {children}
           <div className="mt-auto">
             {!pathname.includes("/build/") && <Footer />}

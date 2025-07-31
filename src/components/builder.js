@@ -60,22 +60,6 @@ export default function Builder({isNew, deckId}) {
     }, [showImgMsg])
 
     useEffect(() => {
-        checkLegality();
-    }, [cards])
-
-    useEffect(() => {
-        if (!hasChanges && saving)
-            setSaving(false);
-    }, [hasChanges])
-
-    const editImage = () => {
-        if (cards.length > 0)
-            setShowImgSelector(true);
-        else
-            setShowImgMsg(true);
-    }
-
-    const checkLegality = () => {
         let stLegal = true;
         let exLegal = true;
 
@@ -94,6 +78,18 @@ export default function Builder({isNew, deckId}) {
             standard: stLegal,
             expanded: exLegal,
         })
+    }, [cards])
+
+    useEffect(() => {
+        if (!hasChanges && saving)
+            setSaving(false);
+    }, [hasChanges])
+
+    const editImage = () => {
+        if (cards.length > 0)
+            setShowImgSelector(true);
+        else
+            setShowImgMsg(true);
     }
 
     const addCard = (card) => {
@@ -221,19 +217,19 @@ export default function Builder({isNew, deckId}) {
         return <LoginForm onLoginSuccess={refreshSession} />
 
     return (
-        <main className="flex h-full overflow-y-hidden bg-background">
+        <main className="flex flex-col lg:flex-row min-h-full lg:h-full bg-background">
             <BuilderCardSearch />
-            <section className="flex flex-col flex-[1] gap-1 px-12 py-4 pb-2">
+            <section className="flex flex-col min-h-1/2 lg:h-auto lg:flex-[1] gap-1 p-2 lg:px-12 lg:py-8">
                 <div className="flex justify-between">
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-6">
                         <div className="group flex relative justify-center h-full rounded-lg aspect-square cursor-pointer" onClick={editImage}>
                             <Image className="rounded-lg object-cover" alt="Deck image" fill sizes="2000" src={`/assets/images/user-dark.png`} />
-                            <div className="hidden rounded-lg group-hover:flex items-center justify-center absolute w-full h-full bg-[#0008]">
-                                <FaPen className="text-2xl"/>
+                            <div className="rounded-full flex items-center justify-center absolute right-0 top-0 p-1.5 -translate-y-1/2 translate-x-1/2 bg-foreground">
+                                <FaPen className="text-xs text-background"/>
                             </div>
                         </div>
                         <div>
-                            <input className="w-full max-w-sm text-2xl bg-transparent text-foreground rounded border border-background-1 hover:border-neutral-500" 
+                            <input className="w-full max-w-sm text-2xl bg-transparent text-foreground rounded border border-background hover:border-neutral-500" 
                             value={name} onChange={(e) => {
                                 setHasChanges(true);
                                 setName(e.target.value);
