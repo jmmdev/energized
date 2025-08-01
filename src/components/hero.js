@@ -15,13 +15,21 @@ export default function Hero() {
     useEffect(() => {
         getLeastUsedColor();
         
-        window.addEventListener("resize",() => {
-            scrollerRef.current.scrollTo({left: window.innerWidth * currentSlide});
-        });
+        const handleScroll = () => {
+            if (scrollerRef && scrollerRef.current)
+                scrollerRef.current.scrollTo({left: window.innerWidth * currentSlide});
+        }
+
+        window.addEventListener("resize", handleScroll);
+
+        return () => {
+            window.removeEventListener('click', handleScroll);
+        };
     }, [])
 
     useEffect(() => {
-        scrollerRef.current.scrollTo({left: window.innerWidth * currentSlide, behavior: "smooth"});
+        if (scrollerRef && scrollerRef.current)
+            scrollerRef.current.scrollTo({left: window.innerWidth * currentSlide, behavior: "smooth"});
     }, [currentSlide]);
 
     const getLeastUsedColor = () => {

@@ -3,6 +3,7 @@ import Builder from "@/components/builder";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import {DeckProvider} from "@/context/deck-context";
 
 export default function BuildNew() {
     const router = useRouter();
@@ -22,7 +23,9 @@ export default function BuildNew() {
 
     if (!isLoading && session?.user)
         return (
-            <Builder isNew />
+            <DeckProvider>
+                <Builder isNew />
+            </DeckProvider>
         );
 
     return null;

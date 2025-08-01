@@ -15,7 +15,6 @@ export const ThemeProvider = ({ children }) => {
     return "light";
   };
 
-  // On mount: load from localStorage
   useEffect(() => {
     if (typeof window === "undefined") return;
 
@@ -30,7 +29,6 @@ export const ThemeProvider = ({ children }) => {
     }
   }, []);
 
-  // When theme changes, update <html> and localStorage
   useEffect(() => {
     if (typeof window === "undefined") return;
 

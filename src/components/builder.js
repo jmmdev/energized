@@ -1,34 +1,30 @@
 "use client";
 import LoginForm from "@/components/login-form";
 import { useSession, getSession } from "next-auth/react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { FaInfoCircle, FaPen } from "react-icons/fa";
 import Button from "./button";
 import BuilderCardSearch from "./builder-card-search";
+import BuilderImageSelector from "./builder-image-selector";
+import { useDeckContext } from "@/context/deck-context";
 
 export default function Builder({isNew, deckId}) {
     const router = useRouter();
     const {data: session, status} = useSession();
 
-    const [name, setName] = useState("Unnamed Deck");
-    const [cards, setCards] = useState([]);
-    const [image, setImage] = useState("placeholder");
-    const [legal, setLegal] = useState({
-        standard: true,
-        expanded: true,
-    });
+    const {
+        name, setName, cards, setCards, img, setImg, legal, setLegal, hasChanges, setHasChanges, cardQuantity, setCardQuantity
+
+    } = useDeckContext();
 
     const [showImgSelector, setShowImgSelector] = useState(false);
     const [showImgMsg, setShowImgMsg] = useState(false);
     const [showErrorMsg, setShowErrorMsg] = useState(false);
     const [saving, setSaving] = useState(false);
-    const [hasChanges, setHasChanges] = useState(false);
     const [showCardSearch, setShowCardSearch] = useState(true);
-
-    const cardQuantityRef = useRef(0);
 
     useEffect(() => {
         const initialize = async () => {
@@ -60,27 +56,6 @@ export default function Builder({isNew, deckId}) {
     }, [showImgMsg])
 
     useEffect(() => {
-        let stLegal = true;
-        let exLegal = true;
-
-        let cardQuantity = 0;
-
-        for (let c of cards) {
-            stLegal &= c.card.legal.standard;
-            exLegal &= c.card.legal.expanded;
-
-            cardQuantity += c.quantity;
-        }
-
-        cardQuantityRef.current = cardQuantity;
-
-        setLegal({
-            standard: stLegal,
-            expanded: exLegal,
-        })
-    }, [cards])
-
-    useEffect(() => {
         if (!hasChanges && saving)
             setSaving(false);
     }, [hasChanges])
@@ -90,69 +65,6 @@ export default function Builder({isNew, deckId}) {
             setShowImgSelector(true);
         else
             setShowImgMsg(true);
-    }
-
-    const addCard = (card) => {
-        const newCards = [...cards];
-
-        const sameNameCards = newCards.filter((elem) => elem.card.name === card.name);
-        let cardQuantity = 0;
-
-        for (let snc of sameNameCards) {
-            cardQuantity += snc.quantity;
-        }
-
-        if (cardQuantity < 4) {
-
-            const oldCardObject = newCards.find((elem) => elem.card.id === card.id);
-
-            if (oldCardObject) {
-                newCards[cardPosition] = {
-                    card,
-                    quantity: oldCardObject.quantity + 1,
-                }
-            }
-            else {
-                newCards.push({
-                    card,
-                    quantity: 1,
-                })
-            }
-
-            setHasChanges(true);
-            setCards(newCards);        
-        }
-
-        else {
-            //Error
-            setShowErrorMsg(true);
-        }
-    }
-
-    const removeCard = (card) => {
-        const newCards = [...cards];
-
-        const oldCardObjectIndex = newCards.findIndex((elem) => elem.id === card.id);
-        const oldCardObject = oldCardObjectIndex >= 0 ? cards[oldCardObjectIndex] : null;
-
-        if (oldCardObject) {
-            if (oldCardObject.quantity > 1){
-                newCards[cardPosition] = {
-                    card,
-                    quantity: oldCardObject.quantity - 1,
-                }
-            }
-            else {
-                newCards.splice(oldCardObjectIndex, 1);
-            }
-
-            setHasChanges(true);
-            setCards(newCards);
-        }
-        else {
-            //Error
-            setShowErrorMsg(true);
-        }
     }
 
     const sortCards = () => {
@@ -217,15 +129,16 @@ export default function Builder({isNew, deckId}) {
         return <LoginForm onLoginSuccess={refreshSession} />
 
     return (
-        <main className="flex flex-col lg:flex-row min-h-full lg:h-full bg-background">
+        <>
+        <main className="relative flex flex-col lg:flex-row min-h-full lg:h-full bg-background">
             <BuilderCardSearch />
             <section className="flex flex-col min-h-1/2 lg:h-auto lg:flex-[1] gap-1 p-2 lg:px-12 lg:py-8">
                 <div className="flex justify-between">
                     <div className="flex items-center gap-6">
                         <div className="group flex relative justify-center h-full rounded-lg aspect-square cursor-pointer" onClick={editImage}>
                             <Image className="rounded-lg object-cover" alt="Deck image" fill sizes="2000" src={`/assets/images/user-dark.png`} />
-                            <div className="rounded-full flex items-center justify-center absolute right-0 top-0 p-1.5 -translate-y-1/2 translate-x-1/2 bg-foreground">
-                                <FaPen className="text-xs text-background"/>
+                            <div className="rounded-full flex items-center justify-center absolute right-0 top-0 p-1.5 -translate-y-1/2 translate-x-1/2 bg-foreground group-hover:bg-blue-500">
+                                <FaPen className="text-xs text-background group-hover:text-my-white"/>
                             </div>
                         </div>
                         <div>
@@ -235,9 +148,9 @@ export default function Builder({isNew, deckId}) {
                                 setName(e.target.value);
                             }}/>
                             <p className="px-1.5">
-                                Standard: {cardQuantityRef.current !== 60 ? "N/A" : <span className={legal.standard ? "text-emerald-400" : "text-red-400"}>{legal.standard ? "Legal" : "Illegal"}</span>}
+                                Standard: {cardQuantity !== 60 ? "N/A" : <span className={legal.standard ? "text-emerald-400" : "text-red-400"}>{legal.standard ? "Legal" : "Illegal"}</span>}
                                 {", "}
-                                Expanded: {cardQuantityRef.current !== 60 ? "N/A" : <span className={legal.expanded ? "text-emerald-400" : "text-red-400"}>{legal.expanded ? "Legal" : "Illegal"}</span>}
+                                Expanded: {cardQuantity !== 60 ? "N/A" : <span className={legal.expanded ? "text-emerald-400" : "text-red-400"}>{legal.expanded ? "Legal" : "Illegal"}</span>}
                             </p>
                         </div>
                     </div>
@@ -253,6 +166,8 @@ export default function Builder({isNew, deckId}) {
                 }
             </section>
         </main>
+        {showImgSelector && <BuilderImageSelector setShowImgSelector={setShowImgSelector} />}
+        </>
     )
 }
 

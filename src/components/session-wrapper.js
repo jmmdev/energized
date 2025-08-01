@@ -34,11 +34,13 @@ export default function SessionWrapper({ children }) {
     <SessionProvider>
       <div className="flex flex-col justify-between">
         <GetHeader />
-        <div className={`flex flex-col ${!pathIsRestricted() ? "h-[calc(100dvh_-_96px)] mt-24" : "h-[100dvh]"} z-1`}>
+        <div className={`flex flex-col ${!pathIsRestricted() ? "h-[calc(100dvh_-_96px)] mt-24" : "h-[100dvh]"}`}>
           {children}
+          {!pathname.includes("/build/") &&
           <div className="mt-auto">
-            {!pathname.includes("/build/") && <Footer />}
+             <Footer />
           </div>
+          }
         </div>
       </div>
     </SessionProvider>

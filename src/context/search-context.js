@@ -7,7 +7,6 @@ const SearchContext = createContext();
 export const SearchProvider = ({ children }) => {
   const [search, setSearch] = useState("");
 
-  // On mount: load from localStorage
   useEffect(() => {
     const stored = sessionStorage.getItem("card-search");
 
@@ -15,7 +14,6 @@ export const SearchProvider = ({ children }) => {
         setSearch(stored);
   }, []);
 
-  // When theme changes, update <html> and localStorage
   useEffect(() => {
     sessionStorage.setItem("card-search", search);
   }, [search]);
