@@ -1,22 +1,25 @@
 "use client";
 import LoginForm from "@/components/login-form";
 import { useSession, getSession } from "next-auth/react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { FaInfoCircle, FaPen } from "react-icons/fa";
+import { FaInfoCircle, FaPen, FaPlus } from "react-icons/fa";
 import Button from "./button";
 import BuilderCardSearch from "./builder-card-search";
 import BuilderImageSelector from "./builder-image-selector";
 import { useDeckContext } from "@/context/deck-context";
+import DeckCardElement from "./deck-card-element";
+import Footer from "./footer";
+import BuilderDeckResume from "./builder-deck-resume";
 
 export default function Builder({isNew, deckId}) {
     const router = useRouter();
     const {data: session, status} = useSession();
 
     const {
-        name, setName, cards, setCards, img, setImg, legal, setLegal, hasChanges, setHasChanges, cardQuantity, setCardQuantity
+        name, setName, cards, setCards, legal, setLegal, hasChanges, setHasChanges, cardQuantity, deckError, closeDeckError
 
     } = useDeckContext();
 
@@ -25,6 +28,8 @@ export default function Builder({isNew, deckId}) {
     const [showErrorMsg, setShowErrorMsg] = useState(false);
     const [saving, setSaving] = useState(false);
     const [showCardSearch, setShowCardSearch] = useState(true);
+
+    const errorRef = useRef(null);
 
     useEffect(() => {
         const initialize = async () => {
@@ -66,6 +71,25 @@ export default function Builder({isNew, deckId}) {
         else
             setShowImgMsg(true);
     }
+
+    useEffect(() => {
+        let timeout;
+        if (errorRef.current) {
+            
+            clearTimeout(timeout);
+            
+            if (deckError.show) {
+
+                timeout = setTimeout(() => {
+                    errorRef.current.style.opacity = 0;
+                }, 1500);
+
+                timeout = setTimeout(() => {
+                    closeDeckError();
+                }, 1900);
+            }
+        }
+    }, [deckError.show])
 
     const sortCards = () => {
         const sorted = [...cards];
@@ -132,39 +156,58 @@ export default function Builder({isNew, deckId}) {
         <>
         <main className="relative flex flex-col lg:flex-row min-h-full lg:h-full bg-background">
             <BuilderCardSearch />
-            <section className="flex flex-col min-h-1/2 lg:h-auto lg:flex-[1] gap-1 p-2 lg:px-12 lg:py-8">
-                <div className="flex justify-between">
-                    <div className="flex items-center gap-6">
-                        <div className="group flex relative justify-center h-full rounded-lg aspect-square cursor-pointer" onClick={editImage}>
-                            <Image className="rounded-lg object-cover" alt="Deck image" fill sizes="2000" src={`/assets/images/user-dark.png`} />
-                            <div className="rounded-full flex items-center justify-center absolute right-0 top-0 p-1.5 -translate-y-1/2 translate-x-1/2 bg-foreground group-hover:bg-blue-500">
-                                <FaPen className="text-xs text-background group-hover:text-my-white"/>
+            <section className="flex-1 flex justify-center p-4">
+                <div className="w-full max-w-[1200px] flex flex-col min-h-1/2 lg:h-auto lg:flex-[1] gap-1 p-2 lg:px-12 lg:py-8 overflow-y-auto">
+                    <div className="w-full flex justify-between">
+                        <div className="flex items-center gap-6">
+                            <div className="group flex relative justify-center h-full rounded-lg aspect-square cursor-pointer" onClick={editImage}>
+                                <Image className="rounded-lg object-cover" alt="Deck image" fill sizes="2000" src={`/assets/images/user-dark.png`} />
+                                <div className="rounded-full flex items-center justify-center absolute right-0 top-0 p-1.5 -translate-y-1/2 translate-x-1/2 bg-foreground group-hover:bg-blue-500">
+                                    <FaPen className="text-xs text-background group-hover:text-my-white"/>
+                                </div>
+                            </div>
+                            <div>
+                                <BuilderDeckResume />
                             </div>
                         </div>
-                        <div>
-                            <input className="w-full max-w-sm text-2xl bg-transparent text-foreground rounded border border-background hover:border-neutral-500" 
-                            value={name} onChange={(e) => {
-                                setHasChanges(true);
-                                setName(e.target.value);
-                            }}/>
-                            <p className="px-1.5">
-                                Standard: {cardQuantity !== 60 ? "N/A" : <span className={legal.standard ? "text-emerald-400" : "text-red-400"}>{legal.standard ? "Legal" : "Illegal"}</span>}
-                                {", "}
-                                Expanded: {cardQuantity !== 60 ? "N/A" : <span className={legal.expanded ? "text-emerald-400" : "text-red-400"}>{legal.expanded ? "Legal" : "Illegal"}</span>}
-                            </p>
+                        <div className="h-full flex flex-col items-end justify-between">
+                            <Button color="blue" content="Save" onClick={isNew ? createDeck : updateDeck} disabled={!hasChanges} />
+                            <p>Card count: {cardQuantity}</p>
                         </div>
                     </div>
-                    <Button color="blue" content="Save" onClick={isNew ? createDeck : updateDeck} disabled={!hasChanges} style="self-start" />
-
+                    <div className={`flex text-neutral-400 gap-1 items-center transition-opacity ${showImgMsg ? "opacity-100" : "opacity-0"}`}>
+                        <FaInfoCircle />
+                        <p>Add cards to your deck to select a cover card</p>
+                    </div>
+                    {
+                    cards.length > 0 ?
+                    <div className="grid grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-4 mb-8">
+                        {
+                            cards.map((elem) => {
+                                return <DeckCardElement key={elem.card.id} elem={elem} />
+                            })
+                        }
+                    </div>
+                    :
+                        <p>{"<- Start adding cards to your deck"}</p>
+                    }
+                    <div className="mt-auto">
+                        <Footer />
+                    </div>
                 </div>
-                <div className={`flex text-neutral-400 gap-1 items-center transition-opacity ${showImgMsg ? "opacity-100" : "opacity-0"}`}>
-                    <FaInfoCircle />
-                    <p>Add cards to your deck to select a cover card</p>
-                </div>
-                {
-                //<DeckBuilder  />
-                }
             </section>
+            {deckError.show &&
+            <div ref={errorRef} className="absolute top-1/2 left-1/2 -translate-1/2 rounded text-xl p-8 bg-background-2 opacity-0 transition-opacity z-0">
+                <div className="flex justify-between items-center">
+                    <strong>Error:</strong>
+                    <button className="cursor-pointer opacity-60 hover:opacity-100" onClick={closeDeckError}>
+                        <FaPlus className="rotate-45" />
+                    </button>
+                </div>
+                <br /><br />
+                {deckError.message}
+            </div>
+            }
         </main>
         {showImgSelector && <BuilderImageSelector setShowImgSelector={setShowImgSelector} />}
         </>

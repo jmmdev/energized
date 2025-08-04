@@ -19,7 +19,7 @@ export default function Footer(){
     }, [])
     
     return (
-        <footer className="relative w-full flex flex-col justify-center items-center gap-4 p-8 z-80">
+        <footer className="relative w-full flex flex-col justify-center items-center gap-4 z-80">
             <div className="h-10">
                 <Logo />
             </div>

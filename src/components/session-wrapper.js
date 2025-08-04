@@ -1,6 +1,6 @@
 "use client";
 
-import { SessionProvider, useSession } from "next-auth/react";
+import { SessionProvider } from "next-auth/react";
 import Header from "./header";
 import Footer from "./footer";
 import { usePathname } from "next/navigation";
@@ -22,8 +22,6 @@ export default function SessionWrapper({ children }) {
   }
 
   const GetHeader = () => {
-    const {data: session, status} = useSession();
-
     if (pathIsRestricted())
       return null;
     

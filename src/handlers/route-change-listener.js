@@ -10,6 +10,7 @@ export function RouteChangeListener() {
   useEffect(() => {
     if (!(pathname.includes("/build/"))) {
         sessionStorage.removeItem("card-search");
+        sessionStorage.removeItem("built-deck-cards");
     }
     setChanges((prev) => prev + 1);
   }, [pathname]);

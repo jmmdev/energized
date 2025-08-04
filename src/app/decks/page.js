@@ -19,6 +19,7 @@ export default function Decks() {
     }, [])
 
     if (decks) {
+        
         if (decks.length > 0)
             return (
                 <p>{`"${router.query.name}" decks (${decks.length} results)`}</p>

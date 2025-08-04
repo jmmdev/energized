@@ -4,8 +4,12 @@ import CardSearchList from "./card-search-list";
 import Button from "./button";
 import { FaCaretDown, FaCaretUp, FaSearch } from "react-icons/fa";
 import { SearchProvider, useSearch } from "@/context/search-context";
+import { useDeckContext } from "@/context/deck-context";
 
 export default function BuilderCardSearch() {
+     const {
+        deckError
+    } = useDeckContext();
     const [showSearch, setShowSearch] = useState(true);
 
     const MySearch = () => {
@@ -30,7 +34,10 @@ export default function BuilderCardSearch() {
             <SearchProvider>
                 <div className={`flex flex-col ${showSearch ? "h-full p-4" : "h-0"} lg:pb-4 bg-background-1 overflow-y-hidden transition-transform`}>
                     <MySearch />
-                    <div className="w-full h-[1px] bg-foreground opacity-40 mt-4" />
+                    <p className={`mt-1 mb-4 ${deckError.show ? "text-red-400" : "text-foreground opacity-70 font-light italic"}`}>
+                        {deckError.show ? deckError.message : 'Search any card by name\neg: "Pikachu"'}
+                    </p>
+                    <div className="w-full h-[1px] bg-foreground opacity-40 mb-4" />
                     <CardSearchList />
                 </div>
                 <div className="group flex lg:hidden bg-background-1 rounded-br-lg rounded-bl-lg justify-center self-center px-3 py-1.5 mb-4 cursor-pointer"

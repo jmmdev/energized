@@ -1,11 +1,10 @@
 import { useDeckContext } from "@/context/deck-context";
 import Image from "next/image";
-import { useEffect } from "react";
 import { FaPlus } from "react-icons/fa";
 
 export default function BuilderImageSelector({setShowImgSelector}) {
     const {
-        name, setName, cards, setCards, image, setImage, legal, setLegal, hasChanges, setHasChanges, addCard, removeCard, cardQuantityRef
+        cards
     } = useDeckContext();
 
     return (

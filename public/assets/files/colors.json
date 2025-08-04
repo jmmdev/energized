@@ -58,5 +58,10 @@
             "color": "bg-my-white",
             "hover": "hover:bg-neutral-400",
             "active": "active:bg-neutral-600"
+        },
+        "none": {
+            "color": "bg-transparent",
+            "hover": "hover:bg-transparent",
+            "active": "active:bg-transparent"
         }
     }
