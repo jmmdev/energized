@@ -50,6 +50,7 @@ export const DeckProvider = ({ children }) => {
 
     useEffect(() => {
         sessionStorage.setItem("built-deck-name", debouncedName);
+        setHasChanges(true);
     }, [debouncedName])
 
     useEffect(() => {

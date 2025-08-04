@@ -19,8 +19,8 @@ export default function Builder({isNew, deckId}) {
     const {data: session, status} = useSession();
 
     const {
-        name, setName, cards, setCards, legal, setLegal, hasChanges, setHasChanges, cardQuantity, deckError, closeDeckError
-
+        name, setName, cards, setCards, image, setImage,legal, setLegal,
+        hasChanges, setHasChanges, cardQuantity, deckError, closeDeckError
     } = useDeckContext();
 
     const [showImgSelector, setShowImgSelector] = useState(false);
@@ -33,22 +33,25 @@ export default function Builder({isNew, deckId}) {
 
     useEffect(() => {
         const initialize = async () => {
-            if (!isNew) {
-                const response = await axios.get(`http://localhost:3500/api/decks/${deckId}`);
-                const deck = response.data;
+            const response = await axios.get(`http://localhost:3500/api/decks/${deckId}`);
+            const deck = response.data;
 
-                if (deck) {
-                    setName(deck.name);
-                    setCards(deck.cards);
-                    setImage(deck.image);
-                    setLegal(deck.legal);
-                }
-                else
-                    router.replace("/");
+            if (deck) {
+                setName(deck.name);
+                setCards(deck.cards);
+                setImage(deck.image);
+                setLegal(deck.legal);
             }
+            else
+                router.replace("/");
         }
 
-        initialize();
+        console.log(session?.user);
+
+        if (isNew)
+            createDeck();
+        else
+            initialize();
         
     }, [isNew, deckId]);
 
@@ -91,6 +94,20 @@ export default function Builder({isNew, deckId}) {
         }
     }, [deckError.show])
 
+    useEffect(() => {
+        const doSave = async () => {
+            await axios.post(`http://localhost:3500/api/decks/${deckId}`, {
+                data: {
+                    name, cards, image, legal
+                }
+            });
+            setSaving(false);
+            setHasChanges(false);
+        }
+        if (saving)
+            doSave();
+    }, [saving])
+
     const sortCards = () => {
         const sorted = [...cards];
         
@@ -116,7 +133,6 @@ export default function Builder({isNew, deckId}) {
                 return 1;
         });
 
-        setHasChanges(true);
         setCards(sorted);
     }
 
@@ -135,18 +151,10 @@ export default function Builder({isNew, deckId}) {
     }
 
     const updateDeck = async () => {
-        
         setSaving(true);
-        
-        await axios.post(`http://localhost:3500/api/decks/${deckId}`, {
-            data: {
-                name, cards, image, legal
-            }
-        });
-        setHasChanges(false);
     }
 
-    if (status === "loading")
+    if (isNew || status === "loading")
         return null;
 
     if (!session || !session.user)
@@ -171,7 +179,7 @@ export default function Builder({isNew, deckId}) {
                             </div>
                         </div>
                         <div className="h-full flex flex-col items-end justify-between">
-                            <Button color="blue" content="Save" onClick={isNew ? createDeck : updateDeck} disabled={!hasChanges} />
+                            <Button color="blue" content="Save" onClick={updateDeck} disabled={!hasChanges} />
                             <p>Card count: {cardQuantity}</p>
                         </div>
                     </div>
