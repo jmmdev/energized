@@ -16,7 +16,7 @@ export default function DeckCardElement({elem}) {
     }
  
         return (
-            <div className="w-full relative">
+            <div className="w-full relative flex items-end">
                 <Image className={`object-contain ${!loaded && "opacity-0"}`} priority src={elem.card.image + "/high.webp"}
                 width={500} height={500}alt={`${elem.card.name}#${elem.card.id}`} onLoad={handleLoad} />
                 <p className={`absolute right-2 bottom-2 rounded bg-background-1 text-foreground px-4 py-1 font-bold ${!loaded && "opacity-0"}`}>

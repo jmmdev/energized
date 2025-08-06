@@ -12,7 +12,7 @@ export const DeckProvider = ({ children }) => {
     const [debouncedName, setDebouncedName] = useState(name);
 
     const [cards, setCards] = useState([]);
-    const [image, setImage] = useState("placeholder");
+    const [image, setImage] = useState(null);
     const [legal, setLegal] = useState({
         standard: true,
         expanded: true,
@@ -79,19 +79,37 @@ export const DeckProvider = ({ children }) => {
       setWaiting(false);
     }, [cards])
 
-    const addCard = async (card) => {
-        setWaiting(true);
-        
+    const cardHasLimit = (name) => {
+        const targetCard = cards.find((elem) => elem.card.name === name);
+
+        if (targetCard) {
+            const card = targetCard.card;
+            return card.category !== "Energy" || card.energyType !== "Normal";
+        }
+        return false;
+    }
+
+    const countCardsWithName = (name) => {
         const newCards = [...cards];
 
-        const sameNameCards = newCards.filter((elem) => elem.card.name === card.name);
+        const sameNameCards = newCards.filter((elem) => elem.card.name === name);
         let cardQuantity = 0;
 
         for (let snc of sameNameCards) {
             cardQuantity += snc.quantity;
         }
 
-        if (cardQuantity < 4) {
+        return cardQuantity;
+    }
+
+    const addCard = async (card) => {
+        setWaiting(true);
+
+        const hasLimit = cardHasLimit(card.id);
+        const cardQuantity = countCardsWithName(card.name)
+
+        if (!hasLimit || cardQuantity < 4) {
+            const newCards = [...cards];
 
             const position = newCards.findIndex((elem) => elem.card.id === card.id);
             const oldCardObject = position >= 0 ? newCards[position] : null;
@@ -116,7 +134,7 @@ export const DeckProvider = ({ children }) => {
 
         else {
             setDeckError({
-                message: `Cannot add more than 4 "${card.name}" cards`,
+                message: `Cannot add more copies of "${card.name}"`,
                 show: true,
             });
         }
@@ -160,8 +178,8 @@ export const DeckProvider = ({ children }) => {
 
   return (
     <DeckContext.Provider value={{ 
-        name, setName, cards, setCards, image, setImage, legal, setLegal, hasChanges, setHasChanges,
-        addCard, removeCard, cardQuantity, setCardQuantity, deckError, closeDeckError, waiting, setWaiting
+        name, setName, cards, setCards, image, setImage, legal, setLegal, hasChanges, setHasChanges, countCardsWithName,
+        cardHasLimit, addCard, removeCard, cardQuantity, setCardQuantity, deckError, closeDeckError, waiting, setWaiting
      }}>
       {children}
     </DeckContext.Provider>

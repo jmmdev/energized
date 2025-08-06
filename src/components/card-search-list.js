@@ -47,6 +47,7 @@ export default function CardSearchList() {
     }, [search])
 
     useEffect(() => {
+        setPageNumber(0);
         setIsLoading(false);
     }, [cardList])
 
@@ -69,8 +70,8 @@ export default function CardSearchList() {
         return (
             <div className="flex-1 w-full flex flex-col p-4 gap-2 justify-center items-center opacity-70">
                 <FaSpinner className="text-2xl animate-spin" />
-                <p className="text-lg capitalize">
-                    Searching Cards...
+                <p className="text-lg">
+                    Searching cards...
                 </p>
             </div>
         )
@@ -103,9 +104,9 @@ export default function CardSearchList() {
     }
     
         return (
-            <div className="w-full h-full flex justify-center p-4">
-                <p className="text-lg opacity-70 capitalize">
-                    {cardList && "no card results"}
+            <div className="flex-1 w-full flex flex-col p-4 gap-2 justify-center items-center opacity-70">
+                <p className="text-lg">
+                    {cardList && `No card results for "${search}"`}
                 </p>
             </div>
         )

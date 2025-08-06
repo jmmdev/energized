@@ -6,11 +6,11 @@ import { FaCaretDown, FaCaretUp, FaSearch } from "react-icons/fa";
 import { SearchProvider, useSearch } from "@/context/search-context";
 import { useDeckContext } from "@/context/deck-context";
 
-export default function BuilderCardSearch() {
+export default function BuilderCardSearch({showSearch, setShowSearch}) {
      const {
         deckError
     } = useDeckContext();
-    const [showSearch, setShowSearch] = useState(true);
+
 
     const MySearch = () => {
         const { search, setSearch } = useSearch();
@@ -30,9 +30,9 @@ export default function BuilderCardSearch() {
     }
 
     return (
-        <section className={`flex w-full lg:w-96 ${showSearch && "h-1/2"} lg:h-full flex-col transition-transform`}>
+        <section className={`flex w-full lg:w-96 ${showSearch && "h-full"} lg:h-full flex-col`}>
             <SearchProvider>
-                <div className={`flex flex-col ${showSearch ? "h-full p-4" : "h-0"} lg:pb-4 bg-background-1 overflow-y-hidden transition-transform`}>
+                <div className={`flex flex-col ${showSearch ? "h-full p-4" : "h-0"} lg:h-full lg:p-4 bg-background-1 overflow-y-hidden transition-transform`}>
                     <MySearch />
                     <p className={`mt-1 mb-4 ${deckError.show ? "text-red-400" : "text-foreground opacity-70 font-light italic"}`}>
                         {deckError.show ? deckError.message : 'Search any card by name\neg: "Pikachu"'}
