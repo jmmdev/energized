@@ -4,6 +4,8 @@ import { FaPlus } from "react-icons/fa";
 
 export default function BuilderImageSelector({setShowImgSelector}) {
 
+    const [selected, setSelected] = useState();
+
     const ENERGY_NUMBER = 9;
 
     const {
