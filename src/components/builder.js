@@ -16,7 +16,8 @@ export default function Builder({isNew, deckId}) {
 
     const {
         name, setName, cards, setCards, image, setImage,legal, setLegal,
-        hasChanges, setHasChanges, cardQuantity, deckError, closeDeckError
+        hasChanges, setHasChanges, cardQuantity, deckError, closeDeckError,
+        createDeck, initializeDeck
     } = useDeckContext();
 
     const [showImgSelector, setShowImgSelector] = useState(false);
@@ -26,26 +27,34 @@ export default function Builder({isNew, deckId}) {
     const errorRef = useRef(null);
 
     useEffect(() => {
-        const initialize = async () => {
-            const response = await axios.get(`http://localhost:3500/api/decks/${deckId}`);
-            const deck = response.data;
-
-            if (deck) {
-                setName(deck.name);
-                setCards(deck.cards);
-                setImage(deck.image);
-                setLegal(deck.legal);
+        const handleBeforeUnload = (e) => {
+            if (hasChanges) {
+                e.preventDefault();
+                console.log("aa t baniaste XD");
             }
-            else
-                router.replace("/");
-        }
+        };
 
-        if (isNew)
+        window.addEventListener('beforeunload', handleBeforeUnload);
+
+        return () => {
+            window.removeEventListener('beforeunload', handleBeforeUnload);
+        };
+    }, [hasChanges]);
+
+    useEffect(() => {
+        if (isNew) {
             createDeck();
-        else
-            initialize();
-        
-    }, [isNew, deckId]);
+            router.replace(`/build/${response.data._id}`);
+        }
+        else {
+            try {
+                initializeDeck(deckId);
+            } 
+            catch (e) {
+                router.replace("/");
+            }
+        }
+    }, []);
 
     useEffect(() => {
         if (!hasChanges && saving)
@@ -113,20 +122,6 @@ export default function Builder({isNew, deckId}) {
         setCards(sorted);
     }
 
-    const createDeck = async () => {
-        const response = await axios.post("http://localhost:3500/api/decks", {
-            data: {
-                creator: {
-                    id: session.user?.id,
-                    name: session.user?.name
-                },
-                name, cards, image, legal
-            }
-        });
-        
-        router.replace(`/build/${response.data._id}`)
-    }
-
     const updateDeck = async () => {
         setSaving(true);
     }
@@ -141,7 +136,9 @@ export default function Builder({isNew, deckId}) {
         <>
         <main className="relative flex flex-col lg:flex-row min-h-full lg:h-full bg-background overflow-y-hidden">
             <BuilderCardSearch showSearch={showSearch} setShowSearch={setShowSearch} />
-            <BuilderDeckInfo showSearch={showSearch} setShowSearch={setShowSearch} updateDeck={updateDeck} setShowImgSelector={setShowImgSelector} />
+            {name && cards && legal &&
+            <BuilderDeckInfo showSearch={showSearch} updateDeck={updateDeck} setShowImgSelector={setShowImgSelector} />
+            }
             {deckError.show &&
             <div ref={errorRef} className="absolute top-1/2 left-1/2 -translate-1/2 rounded text-xl p-8 bg-background-2 opacity-0 transition-opacity z-0">
                 <div className="flex justify-between items-center">

@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import TCGdex from '@tcgdex/sdk';
+import axios from 'axios';
 
 const DeckContext = createContext();
 
@@ -8,15 +9,10 @@ export const useDeckContext = () => useContext(DeckContext);
 export const DeckProvider = ({ children }) => {
   const tcgdex = new TCGdex('en');
 
-    const [name, setName] = useState("Unnamed Deck");
-    const [debouncedName, setDebouncedName] = useState(name);
-
-    const [cards, setCards] = useState([]);
+    const [name, setName] = useState(null);
+    const [cards, setCards] = useState(null);
     const [image, setImage] = useState(null);
-    const [legal, setLegal] = useState({
-        standard: true,
-        expanded: true,
-    });
+    const [legal, setLegal] = useState(null);
     
     const [hasChanges, setHasChanges] = useState(false);
     const [cardQuantity, setCardQuantity] = useState(0);
@@ -27,57 +23,68 @@ export const DeckProvider = ({ children }) => {
     const [waiting, setWaiting] = useState(false);
 
     useEffect(() => {
-        const storedCards = sessionStorage.getItem("built-deck-cards");
-        const storedName = sessionStorage.getItem("built-deck-name");
+        if (cards) {
+            let stLegal = true;
+            let exLegal = true;
 
-        if (storedName)
-            setName(storedName)
+            let count = 0;
 
-        if (storedCards)
-            setCards(JSON.parse(storedCards));
+            for (let c of cards) {
+                stLegal &= c.card.legal.standard;
+                exLegal &= c.card.legal.expanded;
 
-    }, [])
+                count += c.quantity;
+            }
 
-    useEffect(() => {
-        const handler = setTimeout(() => {
-            setDebouncedName(name);
-        }, 500);
+            setCardQuantity(count);
+            
+            setLegal({
+                standard: stLegal,
+                expanded: exLegal,
+            })
 
-        return () => {
-            clearTimeout(handler);
-        };
-    }, [name]);
+            if (setWaiting) {
+                let timeout;
+                clearTimeout(timeout);
 
-    useEffect(() => {
-        sessionStorage.setItem("built-deck-name", debouncedName);
-        setHasChanges(true);
-    }, [debouncedName])
-
-    useEffect(() => {
-      sessionStorage.setItem("built-deck-cards", JSON.stringify(cards));
-
-      let stLegal = true;
-      let exLegal = true;
-
-      let count = 0;
-
-      for (let c of cards) {
-          stLegal &= c.card.legal.standard;
-          exLegal &= c.card.legal.expanded;
-
-          count += c.quantity;
-      }
-
-      setCardQuantity(count);
-      
-      setLegal({
-          standard: stLegal,
-          expanded: exLegal,
-      })
-
-      setHasChanges(true);
-      setWaiting(false);
+                timeout = setTimeout(() => {
+                    setWaiting(false);        
+                }, 500);
+            }
+        }
     }, [cards])
+
+    const createDeck = async () => {
+        await axios.post("http://localhost:3500/api/decks", {
+            data: {
+                creator: {
+                    id: session.user?.id,
+                    name: session.user?.name
+                },
+                name: "Unnamed deck",
+                cards: [],
+                image: null,
+                legal: {
+                    standard: false,
+                    expanded: false,
+                }
+            }
+        });
+    }
+
+    const initializeDeck = async (deckId) => {
+            const response = await axios.get(`http://localhost:3500/api/decks/${deckId}`);
+            const deck = response.data;
+
+            if (deck) {
+                setName(deck.name);
+                setCards(deck.cards);
+                setImage(deck.image);
+                setLegal(deck.legal);
+            }
+            else
+                throw new Error("Deck not found");
+        }
 
     const cardHasLimit = (name) => {
         const targetCard = cards.find((elem) => elem.card.name === name);
@@ -103,8 +110,6 @@ export const DeckProvider = ({ children }) => {
     }
 
     const addCard = async (card) => {
-        setWaiting(true);
-
         const hasLimit = cardHasLimit(card.id);
         const cardQuantity = countCardsWithName(card.name)
 
@@ -121,6 +126,8 @@ export const DeckProvider = ({ children }) => {
                 }
             }
             else {
+                setWaiting(true);
+
                 const cardData = await tcgdex.card.get(card.id);
                 delete cardData.sdk;
                 newCards.push({
@@ -130,6 +137,7 @@ export const DeckProvider = ({ children }) => {
             }
 
             setCards(newCards);
+            setHasChanges(true);
         }
 
         else {
@@ -148,8 +156,6 @@ export const DeckProvider = ({ children }) => {
     }
 
     const removeCard = (card) => {
-        setWaiting(true);
-
         const newCards = [...cards];
 
         const position = newCards.findIndex((elem) => elem.card.id === card.id);
@@ -167,6 +173,7 @@ export const DeckProvider = ({ children }) => {
             }
 
             setCards(newCards);
+            setHasChanges(true);
         }
         else {
             setDeckError({
@@ -178,8 +185,8 @@ export const DeckProvider = ({ children }) => {
 
   return (
     <DeckContext.Provider value={{ 
-        name, setName, cards, setCards, image, setImage, legal, setLegal, hasChanges, setHasChanges, countCardsWithName,
-        cardHasLimit, addCard, removeCard, cardQuantity, setCardQuantity, deckError, closeDeckError, waiting, setWaiting
+        name, setName, cards, setCards, image, setImage, legal, setLegal, hasChanges, setHasChanges, createDeck, initializeDeck,
+        countCardsWithName, cardHasLimit, addCard, removeCard, cardQuantity, setCardQuantity, deckError, closeDeckError, waiting, setWaiting
      }}>
       {children}
     </DeckContext.Provider>

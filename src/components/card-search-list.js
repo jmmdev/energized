@@ -52,9 +52,9 @@ export default function CardSearchList() {
     }, [cardList])
 
     useEffect(() => {
-        if (cardScrollRef.current)
+        if (cardScrollRef.current && !isLoading)
             cardScrollRef.current.scrollTop = 0;
-    }, [pageNumber])
+    }, [isLoading])
 
     
     const getCardQuantity = (elem) => {

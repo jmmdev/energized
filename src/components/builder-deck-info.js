@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { FaArrowAltCircleLeft, FaArrowAltCircleUp, FaInfoCircle, FaPen, FaSearch } from "react-icons/fa";
+import { FaArrowAltCircleLeft, FaArrowAltCircleUp, FaGripHorizontal, FaInfoCircle, FaList, FaPen, FaSearch } from "react-icons/fa";
 import BuilderDeckResume from "./builder-deck-resume";
 import Button from "./button";
 import DeckCardElement from "./deck-card-element";
@@ -7,7 +7,7 @@ import Footer from "./footer";
 import { useEffect, useState } from "react";
 import { useDeckContext } from "@/context/deck-context";
 
-export default function BuilderDeckInfo({showSearch, setShowSearch, updateDeck, setShowImgSelector}) {
+export default function BuilderDeckInfo({showSearch, updateDeck, setShowImgSelector}) {
     
     const {
         name, setName, cards, setCards, image, setImage,legal, setLegal,
@@ -36,8 +36,8 @@ export default function BuilderDeckInfo({showSearch, setShowSearch, updateDeck, 
 
     return (
         <section className={`${showSearch ? "h-0 overflow-y-hidden" : "flex-1 overflow-y-auto"}`}>
-            <div className="w-full flex flex-col min-h-full p-8 lg:px-12">
-                <div className="w-full flex flex-col sm:flex-row gap-4 mb-4 justify-between">
+            <div className="w-full flex flex-col min-h-full px-8 lg:px-12 gap-2">
+                <div className="w-full flex flex-col sm:flex-row gap-4 justify-between pt-8">
                     <div className="flex items-center gap-6">
                         <div className="group w-16 flex relative justify-center h-full rounded-lg aspect-square cursor-pointer" onClick={() => setShowImgSelector(true)}>
                             <Image className="w-full h-auto rounded-lg object-cover" width={2000} height={2000} alt="Deck image" src={image || `/assets/images/deck-logo-0.png`} />
@@ -49,12 +49,15 @@ export default function BuilderDeckInfo({showSearch, setShowSearch, updateDeck, 
                             <BuilderDeckResume />
                         </div>
                     </div>
-                    <div className="sm:h-full flex flex-col items-end justify-between">
-                        <Button color="blue" content="Save" style="w-full" onClick={updateDeck} disabled={!hasChanges} />
-                        <p>Card count: {cardQuantity}</p>
+                    <Button color="blue" content="Save" style="h-fit px-[20px_!important]" onClick={updateDeck} disabled={!hasChanges} />
+                </div>
+                <div className="w-full flex justify-between items-center">
+                    <p className="text-right mb-1">{`${cardQuantity} card${cardQuantity !== 1 ? "s" : ""}`}</p>
+                    <div className="flex gap-2">
+                        {/* 2 BUILDER DECK TOP BUTTON */}
                     </div>
                 </div>
-                <div className={`${cards.length <= 0 && "flex"} flex-1 rounded bg-background-1 p-8 text-center mb-8 lg:mb-12`}>
+                <div className={`${cards.length <= 0 && "flex"} flex-1 rounded bg-background-1 p-8 text-center`}>
                     {
                     cards.length > 0 ?
                     <div className="grid gap-4" style={{gridTemplateColumns: `repeat(${numColumns}, minmax(0, 1fr))`}}>

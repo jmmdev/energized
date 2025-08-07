@@ -38,7 +38,7 @@ export default function LoginForm({onLoginSuccess}) {
             <form className="flex flex-col gap-8" onSubmit={handleFormSubmit}>
                 <div className="flex flex-col">
                     <label className="font-semibold">
-                        Email
+                        Username or email
                     </label>
                     <input
                         className="border border-my-black bg-my-white text-my-black rounded-sm px-2 py-1 mb-1"

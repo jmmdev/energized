@@ -1,16 +1,28 @@
 import { useDeckContext } from "@/context/deck-context";
 import Image from "next/image";
+import { useEffect, useState } from "react";
 import { FaPlus } from "react-icons/fa";
 
 export default function BuilderImageSelector({setShowImgSelector}) {
+    const {
+        image, setImage, setHasChanges
+    } = useDeckContext();
 
-    const [selected, setSelected] = useState();
+    const [loaded, setLoaded] = useState(false);
+
+    useEffect(() => {
+        setLoaded(true);
+    }, [])
+
+    useEffect(() => {
+        if (loaded) {
+            setHasChanges(true);
+            setShowImgSelector(false);
+        }
+    }, [image]);
+
 
     const ENERGY_NUMBER = 9;
-
-    const {
-        setImage
-    } = useDeckContext();
 
     const GetImages = () => {
         const output = [];
