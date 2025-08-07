@@ -15,7 +15,7 @@ export default function Builder({isNew, deckId}) {
     const {data: session, status} = useSession();
 
     const {
-        name, setName, cards, setCards, image, setImage,legal, setLegal,
+        deckCreatorId, name, setName, cards, setCards, image, setImage,legal, setLegal,
         hasChanges, setHasChanges, cardQuantity, deckError, closeDeckError,
         createDeck, initializeDeck
     } = useDeckContext();
@@ -23,8 +23,37 @@ export default function Builder({isNew, deckId}) {
     const [showImgSelector, setShowImgSelector] = useState(false);
     const [saving, setSaving] = useState(false);
     const [showSearch, setShowSearch] = useState(false);
+    const [loaded, setLoaded] = useState(false);
 
     const errorRef = useRef(null);
+
+    useEffect(() => {
+        const initialize = async () => {
+            if (isNew) {
+                const response = await createDeck();
+                router.replace(`/build/${response.data._id}`);
+            }
+            else {
+                try {
+                    await initializeDeck(deckId);
+
+                    console.log(deckCreatorId.current, session.user.id)
+
+                    if (deckCreatorId.current === session.user.id)
+                        setLoaded(true);
+                    else
+                        router.replace("/");
+                } 
+                catch (e) {
+                    router.replace("/");
+                }
+            }
+        }
+
+        if (status !== "loading") {
+            initialize();
+        }
+    }, [session]);
 
     useEffect(() => {
         const handleBeforeUnload = (e) => {
@@ -40,21 +69,6 @@ export default function Builder({isNew, deckId}) {
             window.removeEventListener('beforeunload', handleBeforeUnload);
         };
     }, [hasChanges]);
-
-    useEffect(() => {
-        if (isNew) {
-            createDeck();
-            router.replace(`/build/${response.data._id}`);
-        }
-        else {
-            try {
-                initializeDeck(deckId);
-            } 
-            catch (e) {
-                router.replace("/");
-            }
-        }
-    }, []);
 
     useEffect(() => {
         if (!hasChanges && saving)
@@ -126,7 +140,7 @@ export default function Builder({isNew, deckId}) {
         setSaving(true);
     }
 
-    if (isNew || status === "loading")
+    if (!loaded)
         return null;
 
     if (!session || !session.user)

@@ -1,13 +1,17 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useEffect, useRef, useState } from 'react';
 import TCGdex from '@tcgdex/sdk';
 import axios from 'axios';
+import { useSession } from 'next-auth/react';
 
 const DeckContext = createContext();
 
 export const useDeckContext = () => useContext(DeckContext);
 
 export const DeckProvider = ({ children }) => {
-  const tcgdex = new TCGdex('en');
+    const {data: session, status} = useSession();
+    const tcgdex = new TCGdex('en');
+
+    const deckCreatorId = useRef(null);
 
     const [name, setName] = useState(null);
     const [cards, setCards] = useState(null);
@@ -55,7 +59,7 @@ export const DeckProvider = ({ children }) => {
     }, [cards])
 
     const createDeck = async () => {
-        await axios.post("http://localhost:3500/api/decks", {
+        const response = await axios.post("http://localhost:3500/api/decks", {
             data: {
                 creator: {
                     id: session.user?.id,
@@ -70,6 +74,7 @@ export const DeckProvider = ({ children }) => {
                 }
             }
         });
+        return response;
     }
 
     const initializeDeck = async (deckId) => {
@@ -77,6 +82,7 @@ export const DeckProvider = ({ children }) => {
             const deck = response.data;
 
             if (deck) {
+                deckCreatorId.current = deck.creator.id;
                 setName(deck.name);
                 setCards(deck.cards);
                 setImage(deck.image);
@@ -185,7 +191,7 @@ export const DeckProvider = ({ children }) => {
 
   return (
     <DeckContext.Provider value={{ 
-        name, setName, cards, setCards, image, setImage, legal, setLegal, hasChanges, setHasChanges, createDeck, initializeDeck,
+        deckCreatorId, name, setName, cards, setCards, image, setImage, legal, setLegal, hasChanges, setHasChanges, createDeck, initializeDeck,
         countCardsWithName, cardHasLimit, addCard, removeCard, cardQuantity, setCardQuantity, deckError, closeDeckError, waiting, setWaiting
      }}>
       {children}

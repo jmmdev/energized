@@ -6,6 +6,7 @@ import DeckCardElement from "./deck-card-element";
 import Footer from "./footer";
 import { useEffect, useState } from "react";
 import { useDeckContext } from "@/context/deck-context";
+import BuilderDeckTopButton from "./builder-deck-top-button";
 
 export default function BuilderDeckInfo({showSearch, updateDeck, setShowImgSelector}) {
     
@@ -54,7 +55,8 @@ export default function BuilderDeckInfo({showSearch, updateDeck, setShowImgSelec
                 <div className="w-full flex justify-between items-center">
                     <p className="text-right mb-1">{`${cardQuantity} card${cardQuantity !== 1 ? "s" : ""}`}</p>
                     <div className="flex gap-2">
-                        {/* 2 BUILDER DECK TOP BUTTON */}
+                        <BuilderDeckTopButton content={<FaList />} onClick={() => console.log("list")} />
+                        <BuilderDeckTopButton content={<FaGripHorizontal />} onClick={() => console.log("grid")} />
                     </div>
                 </div>
                 <div className={`${cards.length <= 0 && "flex"} flex-1 rounded bg-background-1 p-8 text-center`}>

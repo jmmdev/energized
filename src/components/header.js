@@ -15,11 +15,16 @@ export default function Header() {
     const {data: session, status} = useSession();
 
     const [showMenu, setShowMenu] = useState(false);
+    const [loaded, setLoaded] = useState(false);
+
+    useEffect(() => {
+        if (status !== "loading")
+            setLoaded(true);
+
+        console.log(session?.user);
+    }, [session])
 
     const GetHeaderElements = () => {
-        if (status === "loading")
-            return null
-
         return (
             <>
                 {!session ?
@@ -39,6 +44,9 @@ export default function Header() {
             </>
         )
     }
+
+    if (!loaded)
+        return null;
 
     return (
         <>

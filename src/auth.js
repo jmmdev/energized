@@ -68,17 +68,23 @@ export const {
 
         async jwt({token, account, user}) {
             if (user) {
-                token.id = user._id;
-                token.name = user.name;
-                token.email = user.email;
-                token.role = user.role;
-                token.favorites = user.favorites;
-                token.accessToken = account?.access_token;
+                const response = await axios.get(`http://localhost:3500/api/users/${user.email}`);
+
+                const dbUser = response.data.user;
+
+                if (dbUser) {
+                    token.id = dbUser.id;
+                    token.name = dbUser.name;
+                    token.email = dbUser.email;
+                    token.role = dbUser.role;
+                    token.favorites = dbUser.favorites;
+                    token.accessToken = account?.access_token;
+                }    
             }
-            return {...token, ...account, ...user};
+            return token;
         },
 
-        async session({ session, token, user }) {
+        async session({ session, token }) {
             session.token = token.accessToken;
             
             session.user = {
