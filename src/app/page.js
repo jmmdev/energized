@@ -1,7 +1,6 @@
 "use client";
 import { useEffect } from "react";
 import Hero from "../components/hero";
-
 export default function Home() {
 
   useEffect(() => {

@@ -9,6 +9,7 @@ export const {
     signIn,
     signOut
 } = NextAuth({
+    secret: process.env.AUTH_SECRET,
     session: {
         strategy: "jwt",
     },
@@ -78,22 +79,18 @@ export const {
                     token.email = dbUser.email;
                     token.role = dbUser.role;
                     token.favorites = dbUser.favorites;
-                    token.accessToken = account?.access_token;
                 }    
             }
             return token;
         },
 
         async session({ session, token }) {
-            session.token = token.accessToken;
-            
             session.user = {
                 id: token.id,
                 name: token.name,
                 email: token.email,
                 role: token.role,
                 favorites: token.favorites,
-                token: token.accessToken,
             };
             return session;
         },

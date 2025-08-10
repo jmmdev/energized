@@ -20,8 +20,6 @@ export default function Header() {
     useEffect(() => {
         if (status !== "loading")
             setLoaded(true);
-
-        console.log(session?.user);
     }, [session])
 
     const GetHeaderElements = () => {

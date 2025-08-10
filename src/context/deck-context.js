@@ -78,7 +78,10 @@ export const DeckProvider = ({ children }) => {
     }
 
     const initializeDeck = async (deckId) => {
-            const response = await axios.get(`http://localhost:3500/api/decks/${deckId}`);
+            const response = await axios.get(`http://localhost:3500/api/decks/${deckId}`,
+                {
+                    withCredentials: true
+                });
             const deck = response.data;
 
             if (deck) {

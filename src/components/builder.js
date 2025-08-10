@@ -37,8 +37,6 @@ export default function Builder({isNew, deckId}) {
                 try {
                     await initializeDeck(deckId);
 
-                    console.log(deckCreatorId.current, session.user.id)
-
                     if (deckCreatorId.current === session.user.id)
                         setLoaded(true);
                     else
@@ -50,7 +48,7 @@ export default function Builder({isNew, deckId}) {
             }
         }
 
-        if (status !== "loading") {
+        if (status !== "loading" && session.user) {
             initialize();
         }
     }, [session]);
@@ -59,7 +57,6 @@ export default function Builder({isNew, deckId}) {
         const handleBeforeUnload = (e) => {
             if (hasChanges) {
                 e.preventDefault();
-                console.log("aa t baniaste XD");
             }
         };
 
