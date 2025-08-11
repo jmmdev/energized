@@ -18,7 +18,7 @@ export default function BuildNew() {
 
     useEffect(() => {
         if (!isLoading && !(session?.user))
-            router.push("/");
+            router.replace("/");
     }, [isLoading])
 
     if (!isLoading && session?.user)

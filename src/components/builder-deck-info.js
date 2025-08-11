@@ -1,12 +1,13 @@
 import Image from "next/image";
-import { FaArrowAltCircleLeft, FaArrowAltCircleUp, FaGripHorizontal, FaInfoCircle, FaList, FaPen, FaSearch } from "react-icons/fa";
+import { FaArrowAltCircleLeft, FaArrowAltCircleUp, FaGripHorizontal, FaList, FaPen } from "react-icons/fa";
 import BuilderDeckResume from "./builder-deck-resume";
 import Button from "./button";
-import DeckCardElement from "./deck-card-element";
+import DeckCardGridElement from "./deck-card-grid-element";
+import DeckCardListElement from "./deck-card-list-element";
 import Footer from "./footer";
-import { useEffect, useState } from "react";
 import { useDeckContext } from "@/context/deck-context";
 import BuilderDeckTopButton from "./builder-deck-top-button";
+import { useState } from "react";
 
 export default function BuilderDeckInfo({showSearch, updateDeck, setShowImgSelector}) {
     
@@ -15,25 +16,40 @@ export default function BuilderDeckInfo({showSearch, updateDeck, setShowImgSelec
         hasChanges, setHasChanges, cardQuantity, deckError, closeDeckError
     } = useDeckContext();
 
-    const [numColumns, setNumColumns] = useState(0);
+    const [display, setDisplay] = useState("list");
 
-    useEffect(() => {
-    }, [])
-
-    useEffect(() => {
-        const handleResize = () => {
-            const width = window.innerWidth >= 1024 ? 350 : 200;
-            setNumColumns(Math.max(3, Math.floor(window.innerWidth / width)));
-        }
-
-        window.addEventListener("resize", handleResize);
-        handleResize();
-
-        return () => {
-            window.removeEventListener('resize', handleResize);
-        };
-    }, [])
-    
+    const GetCards = () => {
+        if (cardQuantity > 0) {
+            if (display === "grid")
+                return (
+                    <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 bg-background-1 p-8 rounded-lg">
+                        {
+                            cards.map((elem) => {
+                                return <DeckCardGridElement key={elem.card.id} elem={elem} />
+                            })
+                        }
+                    </div>
+                )
+            if (display === "list")
+                return (
+                    <div className="flex flex-col p-0.5 gap-0.5 bg-background-2">
+                        {
+                            cards.map((elem) => {
+                                return <DeckCardListElement key={elem.card.id} elem={elem} />
+                            })
+                        }
+                    </div>
+                )
+            }
+        
+        return (
+            <div className="flex flex-col lg:flex-row flex-1 items-center justify-center opacity-40 gap-2">
+                <FaArrowAltCircleUp className="animate-bounce lg:hidden text-3xl lg:text-4xl xl:text-5xl" />
+                <FaArrowAltCircleLeft className="animate-slide hidden lg:block text-3xl lg:text-4xl xl:text-5xl" />
+                <p className="text-2xl sm:text-3xl xl:text-4xl">Search and add cards to your deck</p>
+            </div>
+        )
+    }
 
     return (
         <section className={`${showSearch ? "h-0 overflow-y-hidden" : "flex-1 overflow-y-auto"}`}>
@@ -53,29 +69,16 @@ export default function BuilderDeckInfo({showSearch, updateDeck, setShowImgSelec
                     <Button color="blue" content="Save" style="h-fit px-[20px_!important]" onClick={updateDeck} disabled={!hasChanges} />
                 </div>
                 <div className="w-full flex justify-between items-center">
-                    <p className="text-right mb-1">{`${cardQuantity} card${cardQuantity !== 1 ? "s" : ""}`}</p>
-                    <div className="flex gap-2">
-                        <BuilderDeckTopButton content={<FaList />} onClick={() => console.log("list")} />
-                        <BuilderDeckTopButton content={<FaGripHorizontal />} onClick={() => console.log("grid")} />
-                    </div>
-                </div>
-                <div className={`${cards.length <= 0 && "flex"} flex-1 rounded bg-background-1 p-8 text-center`}>
-                    {
-                    cards.length > 0 ?
-                    <div className="grid gap-4" style={{gridTemplateColumns: `repeat(${numColumns}, minmax(0, 1fr))`}}>
-                        {
-                            cards.map((elem) => {
-                                return <DeckCardElement key={elem.card.id} elem={elem} />
-                            })
-                        }
-                    </div>
-                    :
-                        <div className="flex flex-col lg:flex-row flex-1 items-center justify-center opacity-40 text-2xl lg:text-3xl xl:text-4xl gap-2">
-                            <FaArrowAltCircleUp className="lg:hidden text-3xl lg:text-4xl xl:text-5xl" />
-                            <FaArrowAltCircleLeft className="hidden lg:block text-3xl lg:text-4xl xl:text-5xl" />
-                            <p>Search and add cards to your deck</p>
+                    <p className="font-bold text-lg my-1">{`${cardQuantity}/60 cards`}</p>
+                    {cardQuantity > 0 &&
+                        <div className="flex gap-2">
+                            <BuilderDeckTopButton content={<FaList />} onClick={() => setDisplay("list")} selected={display === "list"} />
+                            <BuilderDeckTopButton content={<FaGripHorizontal />} onClick={() => setDisplay("grid")} selected={display === "grid"} />
                         </div>
                     }
+                </div>
+                <div className={`${cards.length <= 0 ? "flex" : ""} flex-1 text-center`}>
+                    <GetCards />
                 </div>
                 <div className="mt-auto">
                     <Footer />

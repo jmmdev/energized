@@ -48,7 +48,7 @@ export default function Builder({isNew, deckId}) {
             }
         }
 
-        if (status !== "loading" && session.user) {
+        if (status !== "loading" && session.user && !loaded) {
             initialize();
         }
     }, [session]);
