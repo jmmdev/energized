@@ -47,14 +47,8 @@ export const DeckProvider = ({ children }) => {
                 expanded: exLegal,
             })
 
-            if (setWaiting) {
-                let timeout;
-                clearTimeout(timeout);
-
-                timeout = setTimeout(() => {
-                    setWaiting(false);        
-                }, 500);
-            }
+            if (setWaiting)
+                setWaiting(false);
         }
     }, [cards])
 
@@ -116,6 +110,16 @@ export const DeckProvider = ({ children }) => {
         }
 
         return cardQuantity;
+    }
+
+    const deckHasRadiant = () => {
+        for (let c of cards) {
+            const name_lower = c.card.name.toLowerCase();
+
+            if (name_lower.includes("radiant"))
+                return true;
+        }
+        return false;
     }
 
     const addCard = async (card) => {
@@ -195,7 +199,8 @@ export const DeckProvider = ({ children }) => {
   return (
     <DeckContext.Provider value={{ 
         deckCreatorId, name, setName, cards, setCards, image, setImage, legal, setLegal, hasChanges, setHasChanges, createDeck, initializeDeck,
-        countCardsWithName, cardHasLimit, addCard, removeCard, cardQuantity, setCardQuantity, deckError, closeDeckError, waiting, setWaiting
+        countCardsWithName, deckHasRadiant, cardHasLimit, addCard, removeCard, cardQuantity, setCardQuantity, deckError, closeDeckError, waiting, 
+        setWaiting
      }}>
       {children}
     </DeckContext.Provider>

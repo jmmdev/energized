@@ -1,6 +1,6 @@
 export default function Button({content, color, style, name, action, disabled, onClick}) {
 
-    const COLORS = require("/public/assets/files/colors.json");
+    const COLORS = require("/public/assets/files/button-colors.json");
 
     const colorToPick = COLORS[color] || null;
     const textColor = (color === "light" || color === "yellow" ? "text-my-black" : "text-my-white");

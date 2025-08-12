@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { FaArrowAltCircleLeft, FaArrowAltCircleUp, FaGripHorizontal, FaList, FaPen } from "react-icons/fa";
+import { FaArrowAltCircleLeft, FaArrowAltCircleUp, FaGripHorizontal, FaList, FaPen, FaSortAmountDown, FaSpinner } from "react-icons/fa";
 import BuilderDeckResume from "./builder-deck-resume";
 import Button from "./button";
 import DeckCardGridElement from "./deck-card-grid-element";
@@ -7,48 +7,66 @@ import DeckCardListElement from "./deck-card-list-element";
 import Footer from "./footer";
 import { useDeckContext } from "@/context/deck-context";
 import BuilderDeckTopButton from "./builder-deck-top-button";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export default function BuilderDeckInfo({showSearch, updateDeck, setShowImgSelector}) {
     
     const {
-        name, setName, cards, setCards, image, setImage,legal, setLegal,
-        hasChanges, setHasChanges, cardQuantity, deckError, closeDeckError
+        cards, setCards, image, hasChanges, cardQuantity, waiting
     } = useDeckContext();
 
-    const [display, setDisplay] = useState("list");
+    const [display, setDisplay] = useState("grid");
+    const [sorted, setSorted] = useState(true);
 
-    const GetCards = () => {
-        if (cardQuantity > 0) {
-            if (display === "grid")
-                return (
-                    <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 bg-background-1 p-8 rounded-lg">
-                        {
-                            cards.map((elem) => {
-                                return <DeckCardGridElement key={elem.card.id} elem={elem} />
-                            })
-                        }
-                    </div>
-                )
-            if (display === "list")
-                return (
-                    <div className="flex flex-col p-0.5 gap-0.5 bg-background-2">
-                        {
-                            cards.map((elem) => {
-                                return <DeckCardListElement key={elem.card.id} elem={elem} />
-                            })
-                        }
-                    </div>
-                )
-            }
+    const firstSort = useRef(true);
+    const lastCardsLength = useRef();
+
+    useEffect(() => {
+        if (firstSort.current) {
+            sortCards();
+            firstSort.current = false;
+        }
+    }, [cards])
+
+    useEffect(() => {
+        if (sorted && cards.length > lastCardsLength.current)
+            setSorted(false);
         
-        return (
-            <div className="flex flex-col lg:flex-row flex-1 items-center justify-center opacity-40 gap-2">
-                <FaArrowAltCircleUp className="animate-bounce lg:hidden text-3xl lg:text-4xl xl:text-5xl" />
-                <FaArrowAltCircleLeft className="animate-slide hidden lg:block text-3xl lg:text-4xl xl:text-5xl" />
-                <p className="text-2xl sm:text-3xl xl:text-4xl">Search and add cards to your deck</p>
-            </div>
-        )
+        lastCardsLength.current = cards.length;
+    }, [cards.length])
+
+    const sortCards = () => {
+        const sorted = [...cards];
+        
+        sorted.sort((a, b) => {
+            const cardA = a.card;
+            const cardB = b.card;
+
+            if (cardA.category === cardB.category) {
+                return compareCards(cardA, cardB);
+            }
+
+            if (cardA.category === "Pokemon")
+                return -1;
+
+            if (cardA.category === "Trainer") {
+                if (cardB.category === "Energy")
+                    return -1;
+                
+                return 1;
+            }
+
+            if (cardA.category === "Energy")
+                return 1;
+        });
+
+        setCards(sorted);
+        setSorted(true);
+    }
+
+    const handleSave = () => {
+        sortCards();
+        updateDeck();
     }
 
     return (
@@ -66,19 +84,65 @@ export default function BuilderDeckInfo({showSearch, updateDeck, setShowImgSelec
                             <BuilderDeckResume />
                         </div>
                     </div>
-                    <Button color="blue" content="Save" style="h-fit px-[20px_!important]" onClick={updateDeck} disabled={!hasChanges} />
+                    <Button color="blue" content="Save" style="h-fit px-[20px_!important]" onClick={handleSave} disabled={!hasChanges} />
                 </div>
                 <div className="w-full flex justify-between items-center">
-                    <p className="font-bold text-lg my-1">{`${cardQuantity}/60 cards`}</p>
+                    <div className="flex gap-4 items-center">
+                        <p className="font-bold text-lg">{`${cardQuantity}/60 cards`}</p>
+                        {cardQuantity > 0 && !sorted && <BuilderDeckTopButton content={
+                            <div className="flex gap-1 items-center">
+                                <FaSortAmountDown className="text-base" />
+                                <p className="text-base">Sort</p>
+                            </div>
+                        } selected={true} onClick={() => sortCards()} style="hover:text-sky-500" />}
+                    </div>
                     {cardQuantity > 0 &&
                         <div className="flex gap-2">
-                            <BuilderDeckTopButton content={<FaList />} onClick={() => setDisplay("list")} selected={display === "list"} />
                             <BuilderDeckTopButton content={<FaGripHorizontal />} onClick={() => setDisplay("grid")} selected={display === "grid"} />
+                            <BuilderDeckTopButton content={<FaList />} onClick={() => setDisplay("list")} selected={display === "list"} />
                         </div>
                     }
                 </div>
                 <div className={`${cards.length <= 0 ? "flex" : ""} flex-1 text-center`}>
-                    <GetCards />
+                    {
+                    cardQuantity > 0
+                    ?
+                        <>
+                        {
+                        display === "grid"
+                        ?
+                            <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-3 xl:grid-cols-4
+                            gap-4 bg-background-1 p-4 sm:p-8 rounded-3xl xs:rounded-xl sm:rounded-lg">
+                            {
+                                cards.map((elem) => {
+                                    return <DeckCardGridElement key={"grid"+elem.card.id} elem={elem} />
+                                })
+                            }
+                            </div>
+                        :
+                            <>
+                            <div className="flex flex-col gap-1">
+                            {
+                                cards.map((elem) => {
+                                    return <DeckCardListElement key={"list"+elem.card.id} elem={elem} />
+                                })
+                            }
+                            </div>
+                            {waiting && 
+                                <div className="flex justify-center p-4">
+                                    <FaSpinner className="text-3xl lg:text-2xl animate-spin" />
+                                </div>
+                            }
+                            </>
+                        }
+                        </>
+                    :
+                        <div className="flex flex-col lg:flex-row flex-1 items-center justify-center opacity-40 gap-2">
+                            <FaArrowAltCircleUp className="animate-bounce lg:hidden text-3xl lg:text-4xl xl:text-5xl" />
+                            <FaArrowAltCircleLeft className="animate-slide hidden lg:block text-3xl lg:text-4xl xl:text-5xl" />
+                            <p className="text-2xl sm:text-3xl xl:text-4xl">Search and add cards to your deck</p>
+                        </div>
+                    }
                 </div>
                 <div className="mt-auto">
                     <Footer />
@@ -86,4 +150,76 @@ export default function BuilderDeckInfo({showSearch, updateDeck, setShowImgSelec
             </div>
         </section>
     )
+}
+
+const compareCards = (a, b) => {
+    const category = a.category;
+
+    switch (category) {
+        case "Pokemon":
+            return comparePokemon(a, b);
+        
+        case "Trainer":
+            return compareTrainers(a, b);
+        
+        case "Energy":
+            return compareEnergies(a, b);
+    }
+}
+
+const TYPES = require("public/assets/files/energy-types.json");
+
+const comparePokemon = (a, b) => {
+    const STAGES = ["Basic", "Stage1", "Stage2"];
+
+    const stageA = STAGES.indexOf(a.stage);
+    const stageB = STAGES.indexOf(b.stage);
+    
+    if (stageA >= 0 && stageB < 0)
+        return -1;
+
+    if (stageA < 0 && stageB >= 0)
+        return 1;
+
+    const compareStages = stageA - stageB;
+    
+    if (compareStages !== 0)
+        return compareStages;
+    
+    if (a.types && b.types) {
+        const compareTypes = TYPES.indexOf(a.types[0]) - TYPES.indexOf(b.types[0]);
+
+        if (compareTypes !== 0)
+            return compareTypes;
+    }
+
+    return a.name.localeCompare(b.name);
+}
+
+const compareTrainers = (a, b) => {
+    const TRAINER_TYPES = ["Supporter", "Item", "Stadium"];
+    
+    const compareTrainerTypes = TRAINER_TYPES.indexOf(a.trainerType) - TRAINER_TYPES.indexOf(b.trainerType);
+
+    if (compareTrainerTypes !== 0)
+        return compareTrainerTypes;
+
+    return a.name.localeCompare(b.name);
+    
+}
+
+const compareEnergies = (a, b) => {
+    const ENERGY_TYPES = ["Normal", "Special"];
+
+    const compareEnergyTypes = ENERGY_TYPES.indexOf(a.energyType) - ENERGY_TYPES.indexOf(b.energyType);
+
+    if (compareEnergyTypes !== 0)
+        return compareEnergyTypes
+
+    if (a.types && b.types) {
+        const compareTypes = TYPES.indexOf(a.types[0]) - TYPES.indexOf(b.types[0]);
+        return compareTypes;
+    }
+
+    return a.name.localeCompare(b.name);
 }

@@ -7,6 +7,7 @@ import HeaderButton from "@/components/header-button";
 import SideMenu from "@/components/side-menu";
 import CompactLogin from "./compact-login";
 import {FaHammer, FaUserCog, FaTimes, FaBars, FaUser, FaStar} from "react-icons/fa";
+import {TbCardsFilled} from "react-icons/tb"
 import { useRouter } from "next/navigation";
 import Button from "./button";
 
@@ -35,7 +36,7 @@ export default function Header() {
                 :
                 <div className="flex justify-center gap-4 w-full">
                     <HeaderButton text={session.user?.name} icon={<FaUser />} handler={() => {}} />
-                    <HeaderButton text="Build" icon={<FaHammer />} iconStyle={"-scale-x-[1]"} handler={() => router.push("/build/new")} />
+                    <HeaderButton text="my decks" icon={<TbCardsFilled />} handler={() => {}} />
                     <HeaderButton text="favorites" icon={<FaStar />} handler={() => {}} />
                 </div>
                 }
@@ -55,6 +56,7 @@ export default function Header() {
                     <div className="w-full h-full flex items-center justify-between gap-4">
                         <GetHeaderElements />
                     </div>
+                    <HeaderButton text="Build" icon={<FaHammer />} iconStyle={"-scale-x-[1]"} handler={() => router.push("/build/new")} />
                     <button className="text-foreground text-3xl font-bold cursor-pointer" onClick={() => setShowMenu(!showMenu)}>
                         {showMenu ? <FaTimes /> : <FaBars />}
                     </button>
