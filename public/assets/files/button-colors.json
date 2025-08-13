@@ -20,9 +20,9 @@
             "active": "active:bg-lime-600"
         },
         "green": {
-            "color": "bg-green-500",
-            "hover": "hover:bg-green-400",
-            "active": "active:bg-green-600"
+            "color": "bg-emerald-500",
+            "hover": "hover:bg-emerald-400",
+            "active": "active:bg-emerald-600"
         },
         "cyan": {
             "color": "bg-cyan-500",

@@ -24,7 +24,7 @@ export default function BuilderCardSearch({showSearch, setShowSearch}) {
                 }}>
                 <input className="w-full h-8 bg-background text-foreground border border-background" 
                 placeholder="Search cards..." value={text} onChange={(e) => setText(e.target.value)} />
-                <Button content={<FaSearch />} color="blue" disabled={text.length < 3}/>
+                <Button content={<FaSearch />} color="blue" style="text-my-white px-2 rounded" disabled={text.length < 3}/>
             </form>
         )
     }

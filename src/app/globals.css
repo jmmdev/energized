@@ -49,6 +49,7 @@
   --font-outfit: var(--font-outfit);
   --breakpoint-xs: 540px;
   --animate-slide: slide 1s infinite;
+  --animate-highlight: highlight 1.75s infinite;
 }
 
 .theme-dark {
@@ -83,5 +84,11 @@ footer a:hover {
   50% {
     transform: none;
     animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+  }
+}
+
+@keyframes highlight {
+  50% {
+    opacity: 1;
   }
 }

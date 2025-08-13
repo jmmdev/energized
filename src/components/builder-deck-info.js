@@ -1,5 +1,6 @@
 import Image from "next/image";
-import { FaArrowAltCircleLeft, FaArrowAltCircleUp, FaGripHorizontal, FaList, FaPen, FaSortAmountDown, FaSpinner } from "react-icons/fa";
+import { FaArrowAltCircleLeft, FaArrowAltCircleUp, FaGripHorizontal, FaList, FaPen, FaSpinner, FaTrash } from "react-icons/fa";
+import { FaArrowsRotate } from "react-icons/fa6";
 import BuilderDeckResume from "./builder-deck-resume";
 import Button from "./button";
 import DeckCardGridElement from "./deck-card-grid-element";
@@ -69,9 +70,13 @@ export default function BuilderDeckInfo({showSearch, updateDeck, setShowImgSelec
         updateDeck();
     }
 
+    const clearDeck = () => {
+        setCards([]);
+    }
+
     return (
-        <section className={`${showSearch ? "h-0 overflow-y-hidden" : "flex-1 overflow-y-auto"}`}>
-            <div className="w-full flex flex-col min-h-full px-8 lg:px-12 gap-2">
+        <section className={`${showSearch ? "overflow-y-hidden" : "flex-1 overflow-y-auto"} lg:flex-1 lg:overflow-y-auto`}>
+            <div className="w-full flex flex-col min-h-full px-4 md:px-8 xl:px-12 gap-2">
                 <div className="w-full flex flex-col sm:flex-row gap-4 justify-between pt-8">
                     <div className="flex items-center gap-6">
                         <div className="group w-16 flex relative justify-center h-full rounded-lg aspect-square cursor-pointer" onClick={() => setShowImgSelector(true)}>
@@ -84,17 +89,23 @@ export default function BuilderDeckInfo({showSearch, updateDeck, setShowImgSelec
                             <BuilderDeckResume />
                         </div>
                     </div>
-                    <Button color="blue" content="Save" style="h-fit px-[20px_!important]" onClick={handleSave} disabled={!hasChanges} />
+                    <Button color="blue" content="Save" style="h-fit px-5 py-1 rounded-xs font-bold text-my-white" onClick={handleSave} disabled={!hasChanges} />
                 </div>
                 <div className="w-full flex justify-between items-center">
                     <div className="flex gap-4 items-center">
                         <p className="font-bold text-lg">{`${cardQuantity}/60 cards`}</p>
                         {cardQuantity > 0 && !sorted && <BuilderDeckTopButton content={
                             <div className="flex gap-1 items-center">
-                                <FaSortAmountDown className="text-base" />
+                                <FaArrowsRotate className="text-base" />
                                 <p className="text-base">Sort</p>
                             </div>
-                        } selected={true} onClick={() => sortCards()} style="hover:text-sky-500" />}
+                        } style="animate-highlight" onClick={() => sortCards()} />}
+                        {cardQuantity > 0 && <BuilderDeckTopButton content={
+                            <div className="flex gap-1 items-center">
+                                <FaTrash className="text-base" />
+                                <p className="text-base">Clear</p>
+                            </div>
+                        } selected style="hover:text-red-400" onClick={() => clearDeck()} />}
                     </div>
                     {cardQuantity > 0 &&
                         <div className="flex gap-2">
@@ -111,8 +122,8 @@ export default function BuilderDeckInfo({showSearch, updateDeck, setShowImgSelec
                         {
                         display === "grid"
                         ?
-                            <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-3 xl:grid-cols-4
-                            gap-4 bg-background-1 p-4 sm:p-8 rounded-3xl xs:rounded-xl sm:rounded-lg">
+                            <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5
+                            gap-6 bg-background-1 p-4 sm:p-8 rounded-3xl xs:rounded-xl sm:rounded-lg">
                             {
                                 cards.map((elem) => {
                                     return <DeckCardGridElement key={"grid"+elem.card.id} elem={elem} />
@@ -121,7 +132,7 @@ export default function BuilderDeckInfo({showSearch, updateDeck, setShowImgSelec
                             </div>
                         :
                             <>
-                            <div className="flex flex-col gap-1">
+                            <div className="grid grid-cols-1 xl:grid-cols-2 gap-1">
                             {
                                 cards.map((elem) => {
                                     return <DeckCardListElement key={"list"+elem.card.id} elem={elem} />

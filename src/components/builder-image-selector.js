@@ -22,19 +22,19 @@ export default function BuilderImageSelector({setShowImgSelector}) {
     }, [image]);
 
 
-    const ENERGY_NUMBER = 9;
+    const ENERGY_NUMBER = 10;
 
     const GetImages = () => {
         const output = [];
         
         for (let i=0; i<ENERGY_NUMBER; i++) {
             output.push(
-                <div className="relative group" key={i} onClick={() => setImage(`/assets/images/deck-logo-${i}.png`)}>
+                <div key={i} className="group w-1/4 sm:w-1/5 p-3 relative cursor-pointer" onClick={() => setImage(`/assets/images/deck-logo-${i}.png`)}>
                     <div className="relative w-full aspect-square">
                         <Image className="object-contain" priority src={`/assets/images/deck-logo-${i}.png`}
                         width={500} height={500} alt={`Energy logo #${i}`} />
+                        <div className="hidden group-hover:block absolute top-0 w-full h-full bg-foreground opacity-50 z-101" />
                     </div>
-                    <div className="hidden group-hover:block absolute top-0 w-full h-full bg-foreground opacity-50 z-101" />
                 </div>
             )
         }
@@ -51,7 +51,7 @@ export default function BuilderImageSelector({setShowImgSelector}) {
                         <FaPlus className="text-2xl text-foreground rotate-45" />
                     </button>
                 </div>
-                <div className="grid gap-6 grid-cols-4 sm:grid-cols-5">
+                <div className="w-full flex flex-wrap justify-center">
                     <GetImages />
                 </div>
             </div>

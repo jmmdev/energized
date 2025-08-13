@@ -2,6 +2,7 @@ import { useDeckContext } from "@/context/deck-context";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { FaMinus, FaPlus, FaSpinner } from "react-icons/fa";
+import Button from "./button";
 
 export default function DeckCardGridElement({elem}) {
     const {
@@ -44,27 +45,23 @@ export default function DeckCardGridElement({elem}) {
     }
  
         return (
-            <div className={`w-full relative flex flex-col items-end select-none cursor-pointer ${loaded && "hover:opacity-60"}`}>
-                <Image className={`object-contain ${!loaded && "opacity-0"}`} priority src={elem.card.image + "/high.webp"}
-                width={500} height={500}alt={`${elem.card.name}#${elem.card.id}`} onLoad={handleLoad} />
-                <p className="absolute bottom-2 right-2 rounded bg-background-1 text-foreground px-4 py-1 font-bold">
-                    x {elem.quantity} 
-                </p>
-                {!loaded &&
-                <div className="absolute top-0 w-full h-full rounded-lg border-4 flex items-center justify-center">
-                    <FaSpinner className="text-3xl animate-spin" />
+            <div className="flex flex-col items-center gap-3">
+                <div className={`w-full relative flex flex-col items-end select-none`}>
+                    <Image className={`object-contain ${!loaded && "opacity-0"}`} priority src={elem.card.image + "/high.webp"}
+                    width={500} height={500}alt={`${elem.card.name}#${elem.card.id}`} onLoad={handleLoad} />
+                    {!loaded &&
+                    <div className="absolute top-0 w-full h-full rounded-lg border-4 flex items-center justify-center">
+                        <FaSpinner className="text-3xl animate-spin" />
+                    </div>
+                    }
                 </div>
-                }
                 {loaded &&
-                <div className="absolute top-0 left-0 w-full h-full flex text-3xl">
-                    <div className="w-1/2 h-full flex justify-center items-center bg-red-500 opacity-0 hover:opacity-100"
-                    onClick={doRemove}>
-                        <FaMinus className="text-red-200" />
-                    </div>
-                    <div className="w-1/2 h-full flex justify-center items-center bg-emerald-500 opacity-0 hover:opacity-100"
-                    onClick={doAdd}>
-                        <FaPlus className="text-emerald-200"/>
-                    </div>
+                <div className="flex items-center gap-3 text-my-white">
+                    <Button color="red" content={<FaMinus />} style="text-lg p-2 rounded-lg" onClick={doRemove} />
+                    <p className="text-xl text-foreground font-bold">
+                        x{elem.quantity} 
+                    </p>
+                    <Button color="green" content={<FaPlus />} style="text-lg p-2 rounded-lg" onClick={doAdd} disabled={disableAdd} />
                 </div> 
                 }
             </div>
