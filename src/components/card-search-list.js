@@ -8,7 +8,7 @@ import { useDeckContext } from "@/context/deck-context";
 
 export default function CardSearchList() {
      const {
-        cards
+        cards, deckError
     } = useDeckContext();
 
     const PER_PAGE = 24;
@@ -105,8 +105,17 @@ export default function CardSearchList() {
     
         return (
             <div className="flex-1 w-full flex flex-col p-4 gap-2 justify-center items-center opacity-70">
-                <p className="text-lg">
-                    {cardList && `No card results for "${search}"`}
+                <p className={`text-lg ${deckError.show && "text-red-400"}`}>
+                    {deckError.show
+                        ? deckError.message
+                        :
+                            <>
+                            {cardList 
+                                ? `No card results for "${search}"` 
+                                : 'Search any card by name\neg: "Pikachu"'
+                            }
+                            </>
+                    }
                 </p>
             </div>
         )

@@ -31,9 +31,9 @@ export default function BuilderDeckResume() {
             <input className="w-full max-w-sm text-2xl bg-transparent text-foreground rounded border border-background hover:border-neutral-500" 
             value={text} onChange={(e) => setText(e.target.value)}/>
             <p className="px-1.5">
-                Standard: {cardQuantity !== 60 ? "N/A" : <span className={legal.standard ? "text-emerald-400" : "text-red-400"}>{legal.standard ? "Legal" : "Illegal"}</span>}
+                Standard: <span className={legal.standard ? "text-emerald-400" : "text-red-400"}>{legal.standard ? "Legal" : "Illegal"}</span>
                 {", "}
-                Expanded: {cardQuantity !== 60 ? "N/A" : <span className={legal.expanded ? "text-emerald-400" : "text-red-400"}>{legal.expanded ? "Legal" : "Illegal"}</span>}
+                Expanded: <span className={legal.expanded ? "text-emerald-400" : "text-red-400"}>{legal.expanded ? "Legal" : "Illegal"}</span>
             </p>
         </div>
     )

@@ -71,7 +71,7 @@ export default function SideMenu({showMenu, setShowMenu}) {
                     </div>
                     }
                     <GetSections />
-                    {session && session.user && <Button color={"gray"} content="LOG OUT" onClick={handleLogout} style="w-full" />}
+                    {session && session.user && <Button color={"gray"} content="LOG OUT" onClick={handleLogout} style="text-my-white py-1 w-full rounded" />}
                 </div>
             </div>
         </aside>

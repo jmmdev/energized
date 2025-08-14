@@ -40,7 +40,7 @@ export default function DeckCardListElement({elem}) {
         
 
         if (category === "Trainer")
-            return "from-[#bfbfbf]";
+            return "bg-[#bfbfbf]";
 
         if ((category === "Pokemon" || category === "Energy") && types) {
             const typeIndex = TYPES.findIndex((obj) => obj.toLowerCase() === types[0]?.toLowerCase());
@@ -50,12 +50,30 @@ export default function DeckCardListElement({elem}) {
         }
         return null;
     }
+
+    const getCardInfo = () => {
+        const category = elem.card.category;
+        
+        if (category === "Pokemon")
+            return `${elem.card.stage} ${elem.card.types && elem.card.types[0]} Pokémon`;
+
+        if (category === "Trainer")
+            return elem.card.trainerType;
+
+        if (category === "Energy")
+            return `${elem.card.energyType} Energy`
+    }
  
     return (
         <div className={`group w-full flex justify-between items-center gap-4 px-4 py-2 text-my-black rounded select-none ${getBg() || "bg-[#5b5b5b]"}`}>
-            <p className="w-fit text-left text-lg font-bold">
-                {elem.card.name}
-            </p>
+            <div>
+                <p className="w-fit text-left text-lg font-bold">
+                    {elem.card.name}
+                </p>
+                <p className="w-fit text-left text-light">
+                    {getCardInfo()}
+                </p>
+           </div> 
             <div className="flex items-center text-sm">
                 <Button color="dark" style="text-foreground p-1.5 rounded-full border-2" onClick={doRemove} content={<FaMinus />} />
                 <p className="text-xl w-12 font-bold">{elem.quantity}</p>

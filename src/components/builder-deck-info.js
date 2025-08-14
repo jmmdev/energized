@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { FaArrowAltCircleLeft, FaArrowAltCircleUp, FaGripHorizontal, FaList, FaPen, FaSpinner, FaTrash } from "react-icons/fa";
+import { FaArrowAltCircleLeft, FaArrowAltCircleUp, FaGripHorizontal, FaList, FaPen, FaSpinner, FaTrash, FaTrashAlt } from "react-icons/fa";
 import { FaArrowsRotate } from "react-icons/fa6";
 import BuilderDeckResume from "./builder-deck-resume";
 import Button from "./button";
@@ -13,7 +13,7 @@ import { useEffect, useRef, useState } from "react";
 export default function BuilderDeckInfo({showSearch, updateDeck, setShowImgSelector}) {
     
     const {
-        cards, setCards, image, hasChanges, cardQuantity, waiting
+        name, cards, setCards, image, hasChanges, cardQuantity, waiting
     } = useDeckContext();
 
     const [display, setDisplay] = useState("grid");
@@ -70,8 +70,9 @@ export default function BuilderDeckInfo({showSearch, updateDeck, setShowImgSelec
         updateDeck();
     }
 
-    const clearDeck = () => {
-        setCards([]);
+    const doClear = () => {
+        if (confirm(`You're clearing ${cardQuantity} cards from ${name}.\n\n Are you sure?`))
+            setCards([]);
     }
 
     return (
@@ -101,11 +102,12 @@ export default function BuilderDeckInfo({showSearch, updateDeck, setShowImgSelec
                             </div>
                         } style="animate-highlight" onClick={() => sortCards()} />}
                         {cardQuantity > 0 && <BuilderDeckTopButton content={
-                            <div className="flex gap-1 items-center">
-                                <FaTrash className="text-base" />
+                            <div className="group flex gap-1 items-center">
+                                <FaTrash className="group-hover:hidden text-base" />
+                                <FaTrashAlt className="hidden group-hover:block text-base" />
                                 <p className="text-base">Clear</p>
                             </div>
-                        } selected style="hover:text-red-400" onClick={() => clearDeck()} />}
+                        } selected style="hover:text-red-400" onClick={() => doClear()} />}
                     </div>
                     {cardQuantity > 0 &&
                         <div className="flex gap-2">

@@ -43,8 +43,8 @@ export const DeckProvider = ({ children }) => {
             setCardQuantity(count);
             
             setLegal({
-                standard: stLegal,
-                expanded: exLegal,
+                standard: stLegal && (count === 60),
+                expanded: exLegal && (count === 60),
             })
 
             if (setWaiting)
