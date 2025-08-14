@@ -32,8 +32,12 @@ export const DeckProvider = ({ children }) => {
             let exLegal = true;
 
             let count = 0;
+            let hasBasic = false;
 
             for (let c of cards) {
+                if (!hasBasic && c.card.category === "Pokemon")
+                    hasBasic = (c.card.stage === "Basic");
+
                 stLegal &= c.card.legal.standard;
                 exLegal &= c.card.legal.expanded;
 
@@ -43,8 +47,8 @@ export const DeckProvider = ({ children }) => {
             setCardQuantity(count);
             
             setLegal({
-                standard: stLegal && (count === 60),
-                expanded: exLegal && (count === 60),
+                standard: stLegal && (count === 60) && hasBasic,
+                expanded: exLegal && (count === 60) && hasBasic,
             })
 
             if (setWaiting)

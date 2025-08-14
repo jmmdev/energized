@@ -54,8 +54,17 @@ export default function DeckCardListElement({elem}) {
     const getCardInfo = () => {
         const category = elem.card.category;
         
-        if (category === "Pokemon")
+        if (category === "Pokemon") {
+            const stage = elem.card.stage;
+
+            
+            if (stage.toLowerCase().includes("stage")) {
+                const stage_number = stage[stage.length-1];
+                return `Stage ${stage_number} ${elem.card.types && elem.card.types[0]} Pokémon`;
+            }
+            
             return `${elem.card.stage} ${elem.card.types && elem.card.types[0]} Pokémon`;
+        }
 
         if (category === "Trainer")
             return elem.card.trainerType;

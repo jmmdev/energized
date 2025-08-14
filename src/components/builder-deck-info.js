@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { FaArrowAltCircleLeft, FaArrowAltCircleUp, FaGripHorizontal, FaList, FaPen, FaSpinner, FaTrash, FaTrashAlt } from "react-icons/fa";
+import { FaArrowAltCircleLeft, FaArrowAltCircleUp, FaGripHorizontal, FaList, FaPen, FaRegTrashAlt, FaSpinner, FaTrashAlt } from "react-icons/fa";
 import { FaArrowsRotate } from "react-icons/fa6";
 import BuilderDeckResume from "./builder-deck-resume";
 import Button from "./button";
@@ -21,6 +21,28 @@ export default function BuilderDeckInfo({showSearch, updateDeck, setShowImgSelec
 
     const firstSort = useRef(true);
     const lastCardsLength = useRef();
+    const gridRef = useRef();
+
+    const handleResize = () => {
+        const width = window.innerWidth;
+        const numColumns = Math.max(2, Math.floor(width / 250));
+        
+        if (gridRef.current) 
+            gridRef.current.style.gridTemplateColumns = `repeat(${numColumns}, auto)`;
+    }
+
+    useEffect(() => {
+        window.addEventListener("resize", handleResize);
+
+        return () => {
+            window.removeEventListener("resize", handleResize);
+        };
+    }, [])
+
+    useEffect(() => {
+        if (display === "grid" && gridRef.current)
+            handleResize();
+    }, [display])
 
     useEffect(() => {
         if (firstSort.current) {
@@ -71,7 +93,7 @@ export default function BuilderDeckInfo({showSearch, updateDeck, setShowImgSelec
     }
 
     const doClear = () => {
-        if (confirm(`You're clearing ${cardQuantity} cards from ${name}.\n\n Are you sure?`))
+        if (confirm(`${cardQuantity} cards will be removed from ${name}. Are you sure?`))
             setCards([]);
     }
 
@@ -103,8 +125,8 @@ export default function BuilderDeckInfo({showSearch, updateDeck, setShowImgSelec
                         } style="animate-highlight" onClick={() => sortCards()} />}
                         {cardQuantity > 0 && <BuilderDeckTopButton content={
                             <div className="group flex gap-1 items-center">
-                                <FaTrash className="group-hover:hidden text-base" />
-                                <FaTrashAlt className="hidden group-hover:block text-base" />
+                                <FaTrashAlt className="group-hover:hidden text-base" />
+                                <FaRegTrashAlt className="hidden group-hover:block text-base" />
                                 <p className="text-base">Clear</p>
                             </div>
                         } selected style="hover:text-red-400" onClick={() => doClear()} />}
@@ -124,8 +146,7 @@ export default function BuilderDeckInfo({showSearch, updateDeck, setShowImgSelec
                         {
                         display === "grid"
                         ?
-                            <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5
-                            gap-6 bg-background-1 p-4 sm:p-8 rounded-3xl xs:rounded-xl sm:rounded-lg">
+                            <div ref={gridRef} className="grid gap-6 bg-background-1 p-4 sm:p-8 rounded-3xl xs:rounded-xl sm:rounded-lg">
                             {
                                 cards.map((elem) => {
                                     return <DeckCardGridElement key={"grid"+elem.card.id} elem={elem} />

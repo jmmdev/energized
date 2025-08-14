@@ -5,6 +5,7 @@ import { FaSpinner } from "react-icons/fa";
 import CardSearchListElement from "./card-search-list-element";
 import Pagination from "./pagination"
 import { useDeckContext } from "@/context/deck-context";
+import CardSearchFilters from "./card-search-filters";
 
 export default function CardSearchList() {
      const {
@@ -15,7 +16,7 @@ export default function CardSearchList() {
 
     const tcgdex = new TCGdex("en");
 
-    const { search, setSearch } = useSearch();
+    const { search, setFilters } = useSearch();
 
     const [cardList, setCardList] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
@@ -34,6 +35,9 @@ export default function CardSearchList() {
                 .not.isNull("image")
             );
 
+            const filters = await getFilters(cards);
+            setFilters(filters);
+
             let timeout;
             clearTimeout(timeout);
 
@@ -44,7 +48,7 @@ export default function CardSearchList() {
         }
         if (search.length > 0)
             doSearch();
-    }, [search])
+    }, [search]);
 
     useEffect(() => {
         setPageNumber(0);
@@ -56,6 +60,74 @@ export default function CardSearchList() {
             cardScrollRef.current.scrollTop = 0;
     }, [isLoading])
 
+    const getFilters = async (cards) => {
+        const sets = [];
+        const categories = ["Pokemon", "Trainer", "Energy"];
+        const stages = ["Basic", "Stage 1", "Stage 2", "V", "VMAX", "VSTAR", "ex"];
+        const types = ["Grass", "Fire", "Water", "Lightning", "Psychic", "Fighting", "Darkness", "Metal", "Fairy", "Dragon", "Colorless"];
+        const legality = ["Standard", "Expanded"];
+
+        for (let c of cards) {
+            const setTokens = c.id.split("-");
+            const id = setTokens[0];
+
+            if (sets.findIndex((elem) => elem.id === id) < 0) {
+                const set = await tcgdex.fetch("sets", id);
+                if (set)
+                    sets.push({
+                        id,
+                        name: set.name
+                    })
+            }
+        }
+
+        sets.sort((a,b) => {return a.name.localeCompare(b.name)})
+
+        return [
+            {
+                field_name: "Set",
+                field_options: setFilterValues(sets)
+            },
+            {
+                field_name: "Category",
+                field_options: setFilterValues(categories)
+            },
+            {
+                field_name: "Stage",
+                field_options: setFilterValues(stages)
+            },
+            {
+                field_name: "Type",
+                field_options: setFilterValues(types)
+            },
+            {
+                field_name: "Legality",
+                field_options: setFilterValues(legality)
+            },
+        ]
+    }
+
+    const setFilterValues = (filter) => {
+        const initializedValues = [];
+
+        for (let f_key of filter) {
+            const keyType = typeof f_key;
+
+            if (keyType === "string")
+                initializedValues.push({
+                    option_name: f_key,
+                    checked: false
+                })
+            else
+                initializedValues.push({
+                    option_id: f_key.id,
+                    option_name: f_key.name,
+                    checked: false
+                })
+        }
+
+        return initializedValues;
+    }
     
     const getCardQuantity = (elem) => {
         const position = cards.findIndex((card) => card.card.id === elem.id);
@@ -84,8 +156,9 @@ export default function CardSearchList() {
         const subList = cardList.slice(startIndex, endIndex);
 
         return (
-            <div ref={cardScrollRef} className="flex flex-col gap-4 overflow-auto">
-                <div className="relative w-full grid grid-cols-4 md:grid-cols-6 lg:grid-cols-4 pr-2 gap-3 bt-1">
+            <div ref={cardScrollRef} className="flex flex-col p-4 gap-4 overflow-auto">
+                <CardSearchFilters />
+                <div className="relative w-full grid grid-cols-4 md:grid-cols-6 lg:grid-cols-4 pr-2 gap-3">
                     {
                         subList.map((elem) => {
                             if (elem.image) {

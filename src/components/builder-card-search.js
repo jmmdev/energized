@@ -8,16 +8,16 @@ import { useDeckContext } from "@/context/deck-context";
 
 export default function BuilderCardSearch({showSearch, setShowSearch}) {
      const {
-        deckError, waiting
+        waiting
     } = useDeckContext();
 
 
     const MySearch = () => {
-        const { search, setSearch } = useSearch();
+        const { setSearch } = useSearch();
         const [text, setText] = useState(sessionStorage.getItem("card-search") || "");
 
         return (
-            <form className="w-full flex gap-2" onSubmit={(event) => {
+            <form className="w-full flex gap-2 p-4 bg-background-2" onSubmit={(event) => {
                 event.preventDefault();
                 if (text.length >= 3)
                     setSearch(text);
@@ -30,12 +30,11 @@ export default function BuilderCardSearch({showSearch, setShowSearch}) {
     }
 
     return (
-        <section className={`relative w-full lg:w-96 ${showSearch && "h-full"} lg:h-full`}>
+        <section className={`relative w-full lg:w-96 ${showSearch ? "h-full" : "h-auto"} lg:h-full`}>
             <div className="flex flex-col h-full">
                 <SearchProvider>
-                    <div className={`flex flex-col ${showSearch ? "h-full p-4" : "h-0"} lg:h-full lg:p-4 bg-background-1 overflow-y-hidden transition-transform`}>
+                    <div className={`flex flex-col ${showSearch ? "h-full" : "h-0"} lg:h-full bg-background overflow-y-hidden transition-transform`}>
                         <MySearch />
-                        <div className="w-full h-[1px] bg-foreground opacity-40 my-4" />
                         <CardSearchList />
                     </div>
                     <div className="group flex lg:hidden bg-background-1 rounded-br-lg rounded-bl-lg justify-center self-center px-3 py-1.5 mb-4 cursor-pointer"

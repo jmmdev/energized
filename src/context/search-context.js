@@ -6,20 +6,26 @@ const SearchContext = createContext();
 
 export const SearchProvider = ({ children }) => {
   const [search, setSearch] = useState("");
+  const [filters, setFilters] = useState(null);
 
   useEffect(() => {
-    const stored = sessionStorage.getItem("card-search");
+    const st_search = sessionStorage.getItem("card-search");
+    const st_filters = sessionStorage.getItem("search-filters");
 
-    if (stored) 
-        setSearch(stored);
+    if (st_search) 
+        setSearch(st_search);
+
+    if (st_filters)
+      setFilters(st_filters);
   }, []);
 
   useEffect(() => {
     sessionStorage.setItem("card-search", search);
-  }, [search]);
+    sessionStorage.setItem("search-filters", filters);
+  }, [search, filters]);
 
   return (
-    <SearchContext.Provider value={{ search, setSearch }}>
+    <SearchContext.Provider value={{ search, setSearch, filters, setFilters }}>
       {children}
     </SearchContext.Provider>
   );
