@@ -1,58 +1,92 @@
 import { useSearch } from "@/context/search-context";
 import { useEffect, useRef, useState } from "react";
-import { FaCaretUp, FaRegSquare, FaCheckSquare } from "react-icons/fa";
+import { FaCaretUp, FaRegSquare, FaCheckSquare, FaPlus, FaCaretRight } from "react-icons/fa";
 import { FaCaretDown, FaFilter } from "react-icons/fa6";
+import Button from "./button";
 
 export default function CardSearchFilters() {
-    const { filters } = useSearch();
+    const { filters, applyFilters } = useSearch();
 
     const [showFilters, setShowFilters] = useState(false);
+    const [fieldShown, setFieldShown] = useState(-1);
 
-    const filterRef = useRef();
+    const selectedFilters = useRef([]);
 
-    useEffect(() => {
-        if (showFilters)
-            filterRef.current.style.height = filterRef.current.scrollHeight + "px";
-        else
-            filterRef.current.style.height = 0;
-    }, [showFilters]);
-
-    const FilterField = ({field}) => {
+    const FilterField = ({field, index}) => {
         const [showField, setShowField] = useState(false);
 
         useEffect(() => {
-            if (showField)
-                fieldRef.current.style.height = fieldRef.current.scrollHeight + "px";
-            else
-                fieldRef.current.style.height = 0;
-        }, [showField]);
+            setShowField(fieldShown === index);
+        }, [fieldShown])
 
-        const fieldRef = useRef();
-        
-        return (
-            <div className="flex flex-col gap-2">
-                <div className="flex items-center gap-4" onClick={() => setShowField(!showField)}>
-                    <p className="capitalize">{field.field_name}</p>
-                    <div className="flex-1 h-[1px] bg-foreground" />
+        const doShowField = () => {
+            if (fieldShown !== index)
+                setFieldShown(index)
+            else
+                setFieldShown(-1);
+        }
+
+            return (
+                <div className="flex flex-col gap-2">
+                    <div className={`group flex items-center gap-1 cursor-pointer hover:text-sky-400 border-background-2 pb-1 ${showField && "border-b"}`}
+                    onClick={doShowField}>
+                        {showField ? <FaCaretDown /> : <FaCaretRight />}
+                        <p className="capitalize font-bold">{field.field_name}</p>
+                    </div>
+                    {showField &&
+                    <div className="flex flex-wrap gap-4 overflow-y-hidden transition-all">
+                    {
+                        field.field_options.map((option, index) => {
+                            return (
+                                <FieldOption key={index + field.field_name} field={field.field_name} option={option} />
+                            )
+                        })
+                    }
+                    </div>
+                    }
                 </div>
-                <div ref={fieldRef} className="flex flex-wrap gap-4 overflow-y-hidden transition-all">
-                {
-                    field.field_options.map((option, index) => {
-                        return (
-                            <FieldOption key={index + field.field_name} option={option} />
-                        )
-                    })
-                }
-                </div>
-            </div>
-        )
+            )
     }
 
-    const FieldOption = ({option}) => {
-        const [checked, setChecked] = useState(option.checked);
+    const FieldOption = ({field, option}) => {
+        const [checked, setChecked] = useState(false);
+
+        useEffect(() => {
+            setChecked(getChecked() >= 0);
+        }, [])
+
+        const getChecked = () => {
+            const elemIndex = selectedFilters.current.findIndex((elem => 
+                elem.field === field.toLowerCase() && elem.value === (option.option_id || option.option_name.toLowerCase())
+            ));
+
+            return elemIndex;
+        }
+
+        const doCheck = () => {
+            if (!checked) {
+                selectedFilters.current.push(
+                    {
+                        field: field.toLowerCase(),
+                        value: option.option_id || option.option_name.toLowerCase().replace(" ", ""), 
+                    }
+                )
+            console.log(selectedFilters.current);
+                setChecked(true)
+            }
+            else {
+                const indexToRemove = getChecked();
+
+                if (indexToRemove >= 0)
+                    selectedFilters.current.splice(indexToRemove, 1);
+
+            console.log(selectedFilters.current);
+                setChecked(false);
+            }
+        }
 
         return (
-            <div className="flex items-center gap-1 cursor-base" onClick={() => setChecked(!checked)}>
+            <div className="flex items-center gap-1 cursor-default hover:text-sky-400" onClick={doCheck}>
                 {checked ? <FaCheckSquare /> : <FaRegSquare />}
                 {option.option_name}
             </div>
@@ -60,31 +94,43 @@ export default function CardSearchFilters() {
     }
 
     return (
-        <div className="w-full flex flex-col">
-            <button className="text-foreground opacity-60 hover:opacity-100 cursor-pointer" onClick={() => setShowFilters(!showFilters)}>
+        <>
+            <button className="pb-2 text-foreground opacity-60 hover:opacity-100 cursor-pointer border-background-2" onClick={() => setShowFilters(!showFilters)}>
                 <div className="flex items-center gap-1">
+                    <FaFilter />
                     Filter
-                    <div className="flex items-center">
-                        <FaFilter className="text-sm" />
-                        {showFilters ? <FaCaretUp className="text-xs" /> : <FaCaretDown className="text-xs" />}
-                    </div>
                 </div>
             </button>
-            <div className="w-full pt-2 pr-2">
-                <div className="w-full h-[1px] bg-background-2" />
-            </div>
-            <div ref={filterRef} className={`w-full overflow-y-hidden transition-all`}>
-                <div className="flex flex-col gap-4 py-2">
+            
+            <div className={`fixed top-0 left-0 ${showFilters ? "" : "translate-x-full"} w-full h-full bg-background-1 transition-all z-100 overflow-y-hidden lg:hidden`}>
+                <div className="h-full flex flex-col gap-4 overflow-y-auto p-4">
+                    <div className="flex justify-between items-center text-xl font-bold">
+                        Search filters
+                        <button className="cursor-pointer opacity-60 hover:opacity-100" onClick={() => setShowFilters(false)}>
+                            <FaPlus className="text-xl rotate-45" />
+                        </button>
+                    </div>
                     {
-                        filters.map((field) => {
-                            return <FilterField key={field.field_name} field={field} /> 
+                        filters.map((field, index) => {
+                            return <FilterField key={field.field_name} field={field} index={index} /> 
                         })
                     }
-                </div>
-                <div className="w-full pr-2">
-                    <div className="w-full h-[1px] bg-background-2" />
+                    <Button color="blue" content="apply" style="w-full xs:w-fit font-bold py-1 px-4 rounded" />
                 </div>
             </div>
-        </div>
+            
+            {showFilters &&
+             <div className="hidden lg:block relative w-full mb-4">
+                <div className="h-full flex flex-col gap-4 p-4 bg-background-2 rounded">
+                    {
+                        filters.map((field, index) => {
+                            return <FilterField key={field.field_name} field={field} index={index} /> 
+                        })
+                    }
+                    <Button color="blue" content="apply" style="text-sm font-bold py-1 rounded" onClick={applyFilters}/>
+                </div>
+            </div>
+            }
+        </>
     )
 }

@@ -8,22 +8,6 @@ export const SearchProvider = ({ children }) => {
   const [search, setSearch] = useState("");
   const [filters, setFilters] = useState(null);
 
-  useEffect(() => {
-    const st_search = sessionStorage.getItem("card-search");
-    const st_filters = sessionStorage.getItem("search-filters");
-
-    if (st_search) 
-        setSearch(st_search);
-
-    if (st_filters)
-      setFilters(st_filters);
-  }, []);
-
-  useEffect(() => {
-    sessionStorage.setItem("card-search", search);
-    sessionStorage.setItem("search-filters", filters);
-  }, [search, filters]);
-
   return (
     <SearchContext.Provider value={{ search, setSearch, filters, setFilters }}>
       {children}

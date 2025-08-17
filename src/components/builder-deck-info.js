@@ -10,7 +10,7 @@ import { useDeckContext } from "@/context/deck-context";
 import BuilderDeckTopButton from "./builder-deck-top-button";
 import { useEffect, useRef, useState } from "react";
 
-export default function BuilderDeckInfo({showSearch, updateDeck, setShowImgSelector}) {
+export default function BuilderDeckInfo({updateDeck, setShowImgSelector}) {
     
     const {
         name, cards, setCards, image, hasChanges, cardQuantity, waiting
@@ -27,8 +27,9 @@ export default function BuilderDeckInfo({showSearch, updateDeck, setShowImgSelec
         const width = window.innerWidth;
         const numColumns = Math.max(2, Math.floor(width / 250));
         
-        if (gridRef.current) 
+        if (gridRef.current) {
             gridRef.current.style.gridTemplateColumns = `repeat(${numColumns}, auto)`;
+        }
     }
 
     useEffect(() => {
@@ -38,6 +39,12 @@ export default function BuilderDeckInfo({showSearch, updateDeck, setShowImgSelec
             window.removeEventListener("resize", handleResize);
         };
     }, [])
+
+    useEffect(() => {
+        if (gridRef.current) {
+            handleResize();
+        }
+    }, [gridRef.current])
 
     useEffect(() => {
         if (display === "grid" && gridRef.current)
@@ -98,9 +105,9 @@ export default function BuilderDeckInfo({showSearch, updateDeck, setShowImgSelec
     }
 
     return (
-        <section className={`${showSearch ? "overflow-y-hidden" : "flex-1 overflow-y-auto"} lg:flex-1 lg:overflow-y-auto`}>
+        <section className="flex-1 overflow-y-auto lg:flex-1">
             <div className="w-full flex flex-col min-h-full px-4 md:px-8 xl:px-12 gap-2">
-                <div className="w-full flex flex-col sm:flex-row gap-4 justify-between pt-8">
+                <div className="w-full flex flex-col sm:flex-row gap-4 justify-between pt-12 lg:pt-8">
                     <div className="flex items-center gap-6">
                         <div className="group w-16 flex relative justify-center h-full rounded-lg aspect-square cursor-pointer" onClick={() => setShowImgSelector(true)}>
                             <Image className="w-full h-auto rounded-lg object-cover" width={2000} height={2000} alt="Deck image" src={image || `/assets/images/deck-logo-0.png`} />

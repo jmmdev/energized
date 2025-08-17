@@ -12,7 +12,7 @@ export default function CardSearchList() {
         cards, deckError
     } = useDeckContext();
 
-    const PER_PAGE = 24;
+    const PER_PAGE = 12;
 
     const tcgdex = new TCGdex("en");
 
@@ -116,13 +116,11 @@ export default function CardSearchList() {
             if (keyType === "string")
                 initializedValues.push({
                     option_name: f_key,
-                    checked: false
                 })
             else
                 initializedValues.push({
                     option_id: f_key.id,
                     option_name: f_key.name,
-                    checked: false
                 })
         }
 
@@ -156,9 +154,9 @@ export default function CardSearchList() {
         const subList = cardList.slice(startIndex, endIndex);
 
         return (
-            <div ref={cardScrollRef} className="flex flex-col p-4 gap-4 overflow-auto">
+            <div ref={cardScrollRef} className="flex flex-col p-4 pt-0">
                 <CardSearchFilters />
-                <div className="relative w-full grid grid-cols-4 md:grid-cols-6 lg:grid-cols-4 pr-2 gap-3">
+                <div className="relative w-full grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
                     {
                         subList.map((elem) => {
                             if (elem.image) {

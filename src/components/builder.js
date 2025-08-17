@@ -101,11 +101,11 @@ export default function Builder({isNew, deckId}) {
 
     return (
         <>
-        <main className="relative flex flex-col lg:flex-row min-h-full lg:h-full bg-background overflow-y-hidden">
-            <BuilderCardSearch showSearch={showSearch} setShowSearch={setShowSearch} />
+        <main className="relative flex flex-col lg:flex-row-reverse h-full bg-background overflow-y-hidden">
             {name && cards && legal &&
-            <BuilderDeckInfo showSearch={showSearch} updateDeck={updateDeck} setShowImgSelector={setShowImgSelector} />
+            <BuilderDeckInfo updateDeck={updateDeck} setShowImgSelector={setShowImgSelector} />
             }
+            <BuilderCardSearch showSearch={showSearch} setShowSearch={setShowSearch} />
             {(deckError.show || saving) &&
                 <div className="absolute top-0 left-0 w-full h-full bg-[#0008] flex items-center justify-center z-200">
                     {deckError.show &&
