@@ -16,7 +16,7 @@ export default function CardSearchList() {
 
     const tcgdex = new TCGdex("en");
 
-    const { search, setFilters } = useSearch();
+    const { search, setFilters, appliedFilters } = useSearch();
 
     const [cardList, setCardList] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
@@ -51,6 +51,58 @@ export default function CardSearchList() {
     }, [search]);
 
     useEffect(() => {
+        const updateSearch = async () => {
+            setIsLoading(true);
+
+            let setString = "";
+            let catString = "";
+            let stageString = "";
+            let typeString = "";
+            let legString = "";
+
+            for (const af of appliedFilters) {
+                switch (af.field.toLowerCase()) {
+                    case "set":
+                        setString += (setString.length > 0 ? `,${af.value}` : af.value)
+                        break;
+                    case "category":
+                        catString += (catString.length > 0 ? `,${af.value}` : af.value)
+                        break;
+                    case "stage":
+                        stageString += (stageString.length > 0 ? `,${af.value}` : af.value)
+                        break;
+                    case "type":
+                        typeString += (typeString.length > 0 ? `,${af.value}` : af.value)
+                        break;
+                    case "legality":
+                        legString += (legString.length > 0 ? `,${af.value}` : af.value)
+                        break;
+                    default:
+                        break;
+                    }
+            }
+
+            console.log(setString, catString, stageString, typeString, legString);
+
+            const query = Query.create().like("name", search);
+
+            if (catString.length > 0)
+                query.equal("category", catString);
+    
+            const cards = await tcgdex.card.list(
+                query
+                .not.contains("localId", "tcgp")
+                .sort("name", "ASC")
+                .not.isNull("image")
+            );
+            
+            setCardList(cards);
+        }
+        if (search.length > 0)
+            updateSearch();
+    }, [appliedFilters])
+
+    useEffect(() => {
         setPageNumber(0);
         setIsLoading(false);
     }, [cardList])
@@ -65,7 +117,7 @@ export default function CardSearchList() {
         const categories = ["Pokemon", "Trainer", "Energy"];
         const stages = ["Basic", "Stage 1", "Stage 2", "V", "VMAX", "VSTAR", "ex"];
         const types = ["Grass", "Fire", "Water", "Lightning", "Psychic", "Fighting", "Darkness", "Metal", "Fairy", "Dragon", "Colorless"];
-        const legality = ["Standard", "Expanded"];
+        const legality = ["Standard", "Expanded"];;
 
         for (let c of cards) {
             const setTokens = c.id.split("-");
@@ -86,45 +138,25 @@ export default function CardSearchList() {
         return [
             {
                 field_name: "Set",
-                field_options: setFilterValues(sets)
+                field_options: sets
             },
             {
                 field_name: "Category",
-                field_options: setFilterValues(categories)
+                field_options: categories
             },
             {
                 field_name: "Stage",
-                field_options: setFilterValues(stages)
+                field_options: stages
             },
             {
                 field_name: "Type",
-                field_options: setFilterValues(types)
+                field_options: types
             },
             {
                 field_name: "Legality",
-                field_options: setFilterValues(legality)
+                field_options: legality
             },
         ]
-    }
-
-    const setFilterValues = (filter) => {
-        const initializedValues = [];
-
-        for (let f_key of filter) {
-            const keyType = typeof f_key;
-
-            if (keyType === "string")
-                initializedValues.push({
-                    option_name: f_key,
-                })
-            else
-                initializedValues.push({
-                    option_id: f_key.id,
-                    option_name: f_key.name,
-                })
-        }
-
-        return initializedValues;
     }
     
     const getCardQuantity = (elem) => {
@@ -154,9 +186,9 @@ export default function CardSearchList() {
         const subList = cardList.slice(startIndex, endIndex);
 
         return (
-            <div ref={cardScrollRef} className="flex flex-col p-4 pt-0">
+            <div ref={cardScrollRef} className="flex flex-col p-4 pt-0 flex-1">
                 <CardSearchFilters />
-                <div className="relative w-full grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+                <div className="relative w-full grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 mb-4">
                     {
                         subList.map((elem) => {
                             if (elem.image) {

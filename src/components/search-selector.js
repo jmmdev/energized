@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 
 export default function SearchSelector({options, target, setTarget}) {
 

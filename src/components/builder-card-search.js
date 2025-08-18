@@ -2,7 +2,7 @@
 import { useState } from "react";
 import CardSearchList from "./card-search-list";
 import Button from "./button";
-import { FaCaretDown, FaCaretUp, FaPlus, FaSearch } from "react-icons/fa";
+import { FaCaretDown, FaPlus, FaSearch } from "react-icons/fa";
 import { SearchProvider, useSearch } from "@/context/search-context";
 import { useDeckContext } from "@/context/deck-context";
 
@@ -11,10 +11,14 @@ export default function BuilderCardSearch({showSearch, setShowSearch}) {
         waiting
     } = useDeckContext();
 
-
     const MySearch = () => {
-        const { setSearch } = useSearch();
+        const { setSearch, setFilters } = useSearch();
         const [text, setText] = useState("");
+
+        const doSetText = (e) => {
+            setFilters([]);
+            setText(e.target.value);
+        }
 
         return (
             <form className="w-full flex p-4" onSubmit={(event) => {
@@ -22,8 +26,8 @@ export default function BuilderCardSearch({showSearch, setShowSearch}) {
                 if (text.length >= 3)
                     setSearch(text);
                 }}>
-                <input className="h-8 w-full bg-my-white text-my-black border-background" 
-                placeholder="Search cards..." value={text} onChange={(e) => setText(e.target.value)} />
+                <input className="h-8 w-full bg-my-white text-my-black border-background outline-none" 
+                placeholder="Search cards..." value={text} onChange={doSetText} />
                 <Button content={<FaSearch />} color="blue" style="h-8 text-my-white px-2 rounded-tr rounded-br" disabled={text.length < 3}/>
             </form>
         )
