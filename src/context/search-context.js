@@ -1,6 +1,6 @@
 "use client";
 
-import React, { createContext, useContext, useEffect, useRef, useState } from "react";
+import React, { createContext, useContext, useState } from "react";
 
 const SearchContext = createContext();
 
@@ -8,10 +8,6 @@ export const SearchProvider = ({ children }) => {
   const [search, setSearch] = useState("");
   const [filters, setFilters] = useState([]);
   const [appliedFilters, setAppliedFilters] = useState([]);
-  
-  useEffect(() => {
-      console.log("APPLIED FILTERS", appliedFilters);
-  }, [appliedFilters])
   
   return (
     <SearchContext.Provider value={{ search, setSearch, filters, setFilters, appliedFilters, setAppliedFilters }}>

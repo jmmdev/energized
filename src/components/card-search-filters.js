@@ -1,6 +1,6 @@
 import { useSearch } from "@/context/search-context";
-import { useEffect, useState } from "react";
-import { FaPlus } from "react-icons/fa";
+import { useEffect, useRef, useState } from "react";
+import { FaFilter, FaPlus } from "react-icons/fa";
 import Button from "./button";
 
 export default function CardSearchFilters() {
@@ -8,16 +8,21 @@ export default function CardSearchFilters() {
 
     const [showFilters, setShowFilters] = useState(false);
 
-    const FilterField = ({field, isLarge}) => {
+    useEffect(() => {
+        if (showFilters)
+            document.getElementById("filter-list").setAttribute("open", "true")
+    }, [showFilters])
+
+    const FilterField = ({field}) => {
             return (
                 <details className="flex flex-col gap-2">
-                    <summary className="capitalize font-bold">{field.field_name}</summary>
-                    <div className={`flex flex-wrap gap-4 transition-all`}>
+                    <summary className="capitalize font-bold cursor-pointer hover:text-sky-400">{field.field_name}</summary>
+                    <div className={`flex flex-wrap gap-x-4 gap-y-2 transition-all pl-8 lg:pl-4`}>
                     {
                         field.field_options.map((option) => {
                             return (
                                 <FieldOption field={field.field_name} option={option}
-                                key={ (isLarge ? "lg-" : "") + field.field_name + (option.id || option)} />
+                                key={ field.field_name + (option.id || option)} />
                             )
                         })
                     }
@@ -35,7 +40,7 @@ export default function CardSearchFilters() {
 
         const getChecked = () => {
             const elemIndex = appliedFilters.findIndex((elem =>
-                elem.field === field && elem.value === (option.id || option.replace(" ", ""))
+                elem.field === field && elem.value === (option.id || option)
             ));
             return elemIndex;
         }
@@ -48,7 +53,7 @@ export default function CardSearchFilters() {
         )
 
         return (
-            <div className="flex items-center gap-1">
+            <label className="flex items-center gap-1 hover:text-sky-400">
                 <input
                     type="checkbox"
                     name={field}
@@ -57,7 +62,7 @@ export default function CardSearchFilters() {
                     onChange={() => setIsChecked(!isChecked)}
                   />
                 {option.id ? option.name : option}
-            </div>
+            </label>
         )
     }
 
@@ -68,52 +73,51 @@ export default function CardSearchFilters() {
             const checkBoxes = document.getElementsByName(field.field_name);
             for (const cb of checkBoxes) {
                 if (cb.checked) {
-                    console.log(cb.name, cb.value);
                     appliedFiltersData.push(JSON.parse(cb.value));
                 }
             }
         }
-        console.log(appliedFiltersData.length);
         setAppliedFilters(appliedFiltersData);
+        document.getElementById("filter-list").removeAttribute("open");
+        setShowFilters(false);
     }
 
     if (filters.length > 0)
         return (
-            <form onSubmit={handleSubmit}>
-                <details className={`fixed top-0 left-0 ${showFilters ? "" : "translate-x-full"} w-full h-full bg-background-1 transition-all z-100 overflow-y-hidden lg:hidden`}>
-                    <summary>
-                        Filter
-                    </summary>
-                    <div className="h-full flex flex-col gap-4 overflow-y-auto p-4">
-                        <div className="flex justify-between items-center text-xl font-bold">
-                            Search filters
-                            <button className="cursor-pointer opacity-60 hover:opacity-100" onClick={() => setShowFilters(false)}>
-                                <FaPlus className="text-xl rotate-45" />
-                            </button>
+            <div className="px-4 py-2 lg:py-0">
+                <Button style="lg:hidden w-full rounded p-1 text-my-white" color="blue" onClick={() => setShowFilters(!showFilters)}
+                content={   
+                    <div className="flex justify-center items-center gap-2">
+                    <FaFilter />
+                    <p className="text-lg">Show filters</p>
+                    </div>
+                }
+                />
+                <form className={`fixed top-0 left-0 ${showFilters ? "" : "translate-x-full"} w-full h-full bg-background-1 transition-all z-100 overflow-y-hidden p-4 `+
+                `lg:relative lg:h-auto lg:bg-transparent lg:z-0 lg:overflow-y-auto lg:translate-x-0 lg:p-0`}
+                onSubmit={handleSubmit}>
+                    <div className="flex justify-between items-center text-xl font-bold mb-4 lg:hidden">
+                        Search filters
+                        <div className="cursor-pointer opacity-60 hover:opacity-100" onClick={() => setShowFilters(false)}>
+                            <FaPlus className="text-xl rotate-45" />
                         </div>
-                        {
-                            filters.map((field, index) => {
-                                return <FilterField key={"sm-" + field.field_name} field={field} index={index} /> 
-                            })
-                        }
-                        <Button color="blue" content="apply" style="w-full xs:w-fit font-bold py-1 px-4 rounded" />
                     </div>
-                </details>
-                
-                <details className={"hidden lg:block relative w-full mb-4"}>
-                    <summary>
-                        Filter
-                    </summary>
-                    <div className="h-full flex flex-col gap-4 p-4 bg-background-2 rounded">
-                        {
-                            filters.map((field, index) => {
-                                return <FilterField key={"lg-" + field.field_name} field={field} index={index} isLarge={true} /> 
-                            })
-                        }
-                        <Button color="blue" content="apply" style="text-sm font-bold py-1 rounded" />
-                    </div>
-                </details>
-            </form>
+                    <details id="filter-list">
+                        <summary className="cursor-pointer hover:text-sky-400">
+                            Filter
+                        </summary>
+                        <div className="h-full flex flex-col gap-2 p-4 mt-2 lg:bg-background-2 lg:rounded">
+                            {
+                                filters.map((field, index) => {
+                                    if (field.field_options.length > 1)
+                                        return <FilterField key={field.field_name} field={field} index={index} /> 
+                                })
+                            }
+                            <Button color="blue" content="apply" style="w-full xs:w-fit font-bold py-1 px-4 rounded" />
+                        </div>
+                    </details>
+                </form>
+            </div>
         )
     
         return null;

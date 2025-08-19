@@ -25,16 +25,16 @@ export default function CardSearchListElement({elem, quantity}) {
     }, [cardQuantity])
 
     return (
-        <div key={elem.id} className="w-full flex flex-col gap-2">
+        <div key={elem.id} className="w-full flex flex-col gap-4 lg:gap-2">
             <div className="w-full relative">
                 <Image className="object-contain" priority src={elem.image + "/low.webp"}
                 width={500} height={500}alt={`${elem.name}#${elem.id}`} />
             </div>
-            <div className="w-full grid grid-cols-3 justify-between gap-1">
-                <Button color="none" content={<FaMinus />} style="text-xs p-[0_!important]"
+            <div className="w-full flex justify-center lg:justify-between gap-4 px-1 lg:gap-0">
+                <Button color="none" content={<FaMinus />} style="rounded-full bg-[var(--background)_!important] lg:bg-[transparent_!important] p-2 lg:p-0 lg:text-xs"
                 disabled={quantity < 1} onClick={() => removeCard(elem)} />
-                <p className="text-center">{quantity}</p>
-                <Button color="none" content={<FaPlus />} style="text-xs p-[0_!important]"
+                <p className="text-lg lg:text-base text-center">{quantity}</p>
+                <Button color="none" content={<FaPlus />} style="rounded-full bg-[var(--background)_!important] lg:bg-[transparent_!important] p-2 lg:p-0 lg:text-xs"
                 disabled={disableAdd} onClick={() => addCard(elem)} />
             </div>
         </div>

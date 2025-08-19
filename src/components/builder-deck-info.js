@@ -107,7 +107,7 @@ export default function BuilderDeckInfo({updateDeck, setShowImgSelector}) {
     return (
         <section className="flex-1 overflow-y-auto lg:flex-1">
             <div className="w-full flex flex-col min-h-full px-4 md:px-8 xl:px-12 gap-2">
-                <div className="w-full flex flex-col sm:flex-row gap-4 justify-between pt-12 lg:pt-8">
+                <div className="w-full flex flex-col sm:flex-row gap-4 justify-between pt-16 lg:pt-8">
                     <div className="flex items-center gap-6">
                         <div className="group w-16 flex relative justify-center h-full rounded-lg aspect-square cursor-pointer" onClick={() => setShowImgSelector(true)}>
                             <Image className="w-full h-auto rounded-lg object-cover" width={2000} height={2000} alt="Deck image" src={image || `/assets/images/deck-logo-0.png`} />

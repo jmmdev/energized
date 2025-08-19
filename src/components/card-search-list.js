@@ -1,13 +1,12 @@
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useState } from "react"
 import { useSearch } from "@/context/search-context";
 import TCGdex, { Query } from "@tcgdex/sdk";
 import { FaSpinner } from "react-icons/fa";
 import CardSearchListElement from "./card-search-list-element";
 import Pagination from "./pagination"
 import { useDeckContext } from "@/context/deck-context";
-import CardSearchFilters from "./card-search-filters";
 
-export default function CardSearchList() {
+export default function CardSearchList({cardScrollRef}) {
      const {
         cards, deckError
     } = useDeckContext();
@@ -16,32 +15,31 @@ export default function CardSearchList() {
 
     const tcgdex = new TCGdex("en");
 
-    const { search, setFilters, appliedFilters } = useSearch();
+    const { search, setFilters, appliedFilters, setAppliedFilters } = useSearch();
 
     const [cardList, setCardList] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
     const [pageNumber, setPageNumber] = useState(0);
 
-    const cardScrollRef = useRef();
-
     useEffect(() => {
         const doSearch = async () => {
+            document.getElementById("filter-list").removeAttribute("open");
             setIsLoading(true);
     
             const cards = await tcgdex.card.list(
                 Query.create().like("name", search)
-                .not.contains("localId", "tcgp")
-                .sort("name", "ASC")
                 .not.isNull("image")
+                .not.contains("image", "tcgp")
+                .sort("name", "ASC")
             );
 
             const filters = await getFilters(cards);
-            setFilters(filters);
 
             let timeout;
             clearTimeout(timeout);
 
             timeout = setTimeout(() => {
+                setFilters(filters);
                 setCardList(cards);    
             }, 1500);
             
@@ -58,7 +56,7 @@ export default function CardSearchList() {
             let catString = "";
             let stageString = "";
             let typeString = "";
-            let legString = "";
+            let legalTokens = [];
 
             for (const af of appliedFilters) {
                 switch (af.field.toLowerCase()) {
@@ -74,26 +72,36 @@ export default function CardSearchList() {
                     case "type":
                         typeString += (typeString.length > 0 ? `,${af.value}` : af.value)
                         break;
-                    case "legality":
-                        legString += (legString.length > 0 ? `,${af.value}` : af.value)
+                    case "legal":
+                        legalTokens.push(af.value)
                         break;
                     default:
                         break;
                     }
             }
 
-            console.log(setString, catString, stageString, typeString, legString);
-
             const query = Query.create().like("name", search);
 
+            if (setString.length > 0)
+                query.like("set", setString);
+
             if (catString.length > 0)
-                query.equal("category", catString);
+                query.like("category", catString);
+
+            if (stageString.length > 0)
+                query.like("stage", stageString.replace(" ", ""));
+
+            if (typeString.length > 0)
+                query.like("types", typeString);
+
+            for (const t of legalTokens)
+                query.like(`legal.${t.toLowerCase()}`, "true");
     
             const cards = await tcgdex.card.list(
                 query
-                .not.contains("localId", "tcgp")
-                .sort("name", "ASC")
                 .not.isNull("image")
+                .not.contains("image", "tcgp")
+                .sort("name", "ASC")
             );
             
             setCardList(cards);
@@ -112,26 +120,47 @@ export default function CardSearchList() {
             cardScrollRef.current.scrollTop = 0;
     }, [isLoading])
 
+    const pushToArray = (arr, elem) => {
+        const indexToFind = arr.findIndex(arrElem =>
+            (typeof elem === "string" && typeof arrElem === "string" &&
+            arrElem.toLowerCase() === elem.toLowerCase()) ||
+            (elem && typeof elem === "object" && arrElem && typeof arrElem === "object" &&
+            "id" in arrElem && "id" in elem && arrElem.id === elem.id)
+        );
+
+        if (indexToFind < 0)
+            arr.push(elem);
+        return arr;
+    }
+
     const getFilters = async (cards) => {
-        const sets = [];
-        const categories = ["Pokemon", "Trainer", "Energy"];
-        const stages = ["Basic", "Stage 1", "Stage 2", "V", "VMAX", "VSTAR", "ex"];
-        const types = ["Grass", "Fire", "Water", "Lightning", "Psychic", "Fighting", "Darkness", "Metal", "Fairy", "Dragon", "Colorless"];
-        const legality = ["Standard", "Expanded"];;
+        let sets = [];
+        let categories = [];
+        let stages = [];
+        let types = [];
+        const legal = ["Standard", "Expanded"];
 
         for (let c of cards) {
-            const setTokens = c.id.split("-");
-            const id = setTokens[0];
+            const card = await tcgdex.card.get(c.id);
 
-            if (sets.findIndex((elem) => elem.id === id) < 0) {
-                const set = await tcgdex.fetch("sets", id);
-                if (set)
-                    sets.push({
-                        id,
-                        name: set.name
-                    })
+            sets = pushToArray(sets, {
+                id: card.set.id,
+                name: card.set.name
+            })
+
+            categories = pushToArray(categories, card.category);
+
+            if (card.stage)
+                stages = pushToArray(stages, card.stage);
+
+            if (card.types){
+                for (let type of card.types) {
+                    types = pushToArray(types, type);
+                }
             }
         }
+
+        console.log(sets, categories, stages, types);
 
         sets.sort((a,b) => {return a.name.localeCompare(b.name)})
 
@@ -153,8 +182,8 @@ export default function CardSearchList() {
                 field_options: types
             },
             {
-                field_name: "Legality",
-                field_options: legality
+                field_name: "Legal",
+                field_options: legal
             },
         ]
     }
@@ -186,9 +215,8 @@ export default function CardSearchList() {
         const subList = cardList.slice(startIndex, endIndex);
 
         return (
-            <div ref={cardScrollRef} className="flex flex-col p-4 pt-0 flex-1">
-                <CardSearchFilters />
-                <div className="relative w-full grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 mb-4">
+                <>
+                <div className="relative w-full grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 p-12 lg:p-4 gap-12 lg:gap-4">
                     {
                         subList.map((elem) => {
                             if (elem.image) {
@@ -202,7 +230,7 @@ export default function CardSearchList() {
                     }
                 </div>
                 <Pagination list={cardList} pageNumber={pageNumber} setPageNumber={setPageNumber} perPage={PER_PAGE} />
-            </div>
+            </>
         )
     }
     

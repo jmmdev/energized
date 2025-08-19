@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 
 export default function BuilderDeckResume() {
     const {
-        name, setName, legal, cardQuantity, setHasChanges
+        name, setName, legal, setHasChanges
 
     } = useDeckContext();
 

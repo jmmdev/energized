@@ -22,7 +22,6 @@ export default function Builder({isNew, deckId}) {
 
     const [showImgSelector, setShowImgSelector] = useState(false);
     const [saving, setSaving] = useState(false);
-    const [showSearch, setShowSearch] = useState(false);
     const [loaded, setLoaded] = useState(false);
 
     useEffect(() => {
@@ -105,7 +104,7 @@ export default function Builder({isNew, deckId}) {
             {name && cards && legal &&
             <BuilderDeckInfo updateDeck={updateDeck} setShowImgSelector={setShowImgSelector} />
             }
-            <BuilderCardSearch showSearch={showSearch} setShowSearch={setShowSearch} />
+            <BuilderCardSearch />
             {(deckError.show || saving) &&
                 <div className="absolute top-0 left-0 w-full h-full bg-[#0008] flex items-center justify-center z-200">
                     {deckError.show &&

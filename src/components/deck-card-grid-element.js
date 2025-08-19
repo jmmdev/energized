@@ -58,7 +58,7 @@ export default function DeckCardGridElement({elem}) {
                 {loaded &&
                 <div className="flex items-center gap-3 text-my-white">
                     <Button color="red" content={<FaMinus />} style="p-2 rounded" onClick={doRemove} />
-                    <p className="text-xl text-foreground font-bold">
+                    <p className="text-2xl text-foreground font-bold">
                         x{elem.quantity} 
                     </p>
                     <Button color="green" content={<FaPlus />} style="p-2 rounded" onClick={doAdd} disabled={disableAdd} />
