@@ -2,7 +2,6 @@ import { Outfit } from "next/font/google";
 import "./globals.css";
 import SessionWrapper from "@/components/session-wrapper";
 import { ThemeProvider } from "@/context/theme-context";
-import {RouteChangeListener} from "@/handlers/route-change-listener";
 
 const outfit = Outfit({
   variable: "--font-outfit",
@@ -21,7 +20,6 @@ export default function RootLayout({ children }) {
         <body
           className={`${outfit.variable} antialiased`}
         >
-          <RouteChangeListener />
           <ThemeProvider>
             <SessionWrapper>
               {children}

@@ -63,9 +63,10 @@ export default function CompactLogin({onLoginSuccess, vertical}) {
                     onChange={(e) => setPwd(e.target.value)} />
             </div>
             <div className={`flex ${vertical && "flex-col w-full"} items-center gap-2`}>
-                <Button color="blue" content="Log in" style={`${!(user.length > 0 && pwd.length > 0) ? "opacity-50" : "opacity-100"} ${vertical && "w-full"}`}
+                <Button color="blue" content="Log in"
+                style={`rounded-xs px-2 text-my-white ${!(user.length > 0 && pwd.length > 0) ? "opacity-50" : "opacity-100"} ${vertical && "w-full"}`}
                 disabled={!(user.length > 0 && pwd.length > 0)} onClick={() => {}} />
-                <Button color="gray" content="sign up" style={vertical && "w-full"} onClick={(e) => {
+                <Button color="gray" content="sign up" style={`rounded-xs text-my-white px-2 ${vertical && "w-full"}`} onClick={(e) => {
                     e.preventDefault();
                     router.push("/register");
                 }}/>

@@ -1,10 +1,10 @@
 import { useSearch } from "@/context/search-context";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { FaFilter, FaPlus } from "react-icons/fa";
 import Button from "./button";
 
 export default function CardSearchFilters() {
-    const { filters, appliedFilters, setAppliedFilters } = useSearch();
+    const { filters, appliedFilters, setAppliedFilters, isSearching } = useSearch();
 
     const [showFilters, setShowFilters] = useState(false);
 
@@ -82,7 +82,7 @@ export default function CardSearchFilters() {
         setShowFilters(false);
     }
 
-    if (filters.length > 0)
+    if (filters.length > 0 && !isSearching)
         return (
             <div className="px-4 py-2 lg:py-0">
                 <Button style="lg:hidden w-full rounded p-1 text-my-white" color="blue" onClick={() => setShowFilters(!showFilters)}

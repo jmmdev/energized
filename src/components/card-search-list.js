@@ -15,16 +15,19 @@ export default function CardSearchList({cardScrollRef}) {
 
     const tcgdex = new TCGdex("en");
 
-    const { search, setFilters, appliedFilters, setAppliedFilters } = useSearch();
+    const { search, setFilters, appliedFilters, isSearching, setIsSearching } = useSearch();
 
     const [cardList, setCardList] = useState(null);
-    const [isLoading, setIsLoading] = useState(false);
     const [pageNumber, setPageNumber] = useState(0);
 
     useEffect(() => {
         const doSearch = async () => {
-            document.getElementById("filter-list").removeAttribute("open");
-            setIsLoading(true);
+            const filterList = document.getElementById("filter-list")
+            
+            if (filterList)
+                filterList.removeAttribute("open");
+            
+            setIsSearching(true);
     
             const cards = await tcgdex.card.list(
                 Query.create().like("name", search)
@@ -35,13 +38,8 @@ export default function CardSearchList({cardScrollRef}) {
 
             const filters = await getFilters(cards);
 
-            let timeout;
-            clearTimeout(timeout);
-
-            timeout = setTimeout(() => {
-                setFilters(filters);
-                setCardList(cards);    
-            }, 1500);
+            setFilters(filters);
+            setCardList(cards);
             
         }
         if (search.length > 0)
@@ -50,7 +48,7 @@ export default function CardSearchList({cardScrollRef}) {
 
     useEffect(() => {
         const updateSearch = async () => {
-            setIsLoading(true);
+            setIsSearching(true);
 
             let setString = "";
             let catString = "";
@@ -111,14 +109,19 @@ export default function CardSearchList({cardScrollRef}) {
     }, [appliedFilters])
 
     useEffect(() => {
-        setPageNumber(0);
-        setIsLoading(false);
+        let timeout;
+        clearTimeout(timeout);
+
+        timeout = setTimeout(() => {
+            setPageNumber(0);
+            setIsSearching(false);    
+        }, 1500);
     }, [cardList])
 
     useEffect(() => {
-        if (cardScrollRef.current && !isLoading)
+        if (cardScrollRef.current && !isSearching)
             cardScrollRef.current.scrollTop = 0;
-    }, [isLoading])
+    }, [isSearching])
 
     const pushToArray = (arr, elem) => {
         const indexToFind = arr.findIndex(arrElem =>
@@ -134,58 +137,59 @@ export default function CardSearchList({cardScrollRef}) {
     }
 
     const getFilters = async (cards) => {
-        let sets = [];
-        let categories = [];
-        let stages = [];
-        let types = [];
-        const legal = ["Standard", "Expanded"];
+        if (cards.length > 0) {
+            let sets = [];
+            let categories = [];
+            let stages = [];
+            let types = [];
+            const legal = ["Standard", "Expanded"];
 
-        for (let c of cards) {
-            const card = await tcgdex.card.get(c.id);
+            for (let c of cards) {
+                const card = await tcgdex.card.get(c.id);
 
-            sets = pushToArray(sets, {
-                id: card.set.id,
-                name: card.set.name
-            })
+                sets = pushToArray(sets, {
+                    id: card.set.id,
+                    name: card.set.name
+                })
 
-            categories = pushToArray(categories, card.category);
+                categories = pushToArray(categories, card.category);
 
-            if (card.stage)
-                stages = pushToArray(stages, card.stage);
+                if (card.stage)
+                    stages = pushToArray(stages, card.stage);
 
-            if (card.types){
-                for (let type of card.types) {
-                    types = pushToArray(types, type);
+                if (card.types){
+                    for (let type of card.types) {
+                        types = pushToArray(types, type);
+                    }
                 }
             }
+
+            sets.sort((a,b) => {return a.name.localeCompare(b.name)})
+
+            return [
+                {
+                    field_name: "Set",
+                    field_options: sets
+                },
+                {
+                    field_name: "Category",
+                    field_options: categories
+                },
+                {
+                    field_name: "Stage",
+                    field_options: stages
+                },
+                {
+                    field_name: "Type",
+                    field_options: types
+                },
+                {
+                    field_name: "Legal",
+                    field_options: legal
+                },
+            ]
         }
-
-        console.log(sets, categories, stages, types);
-
-        sets.sort((a,b) => {return a.name.localeCompare(b.name)})
-
-        return [
-            {
-                field_name: "Set",
-                field_options: sets
-            },
-            {
-                field_name: "Category",
-                field_options: categories
-            },
-            {
-                field_name: "Stage",
-                field_options: stages
-            },
-            {
-                field_name: "Type",
-                field_options: types
-            },
-            {
-                field_name: "Legal",
-                field_options: legal
-            },
-        ]
+        return [];
     }
     
     const getCardQuantity = (elem) => {
@@ -197,7 +201,7 @@ export default function CardSearchList({cardScrollRef}) {
         return 0;
     }
 
-    if (isLoading)
+    if (isSearching)
         return (
             <div className="flex-1 w-full flex flex-col p-4 gap-2 justify-center items-center opacity-70">
                 <FaSpinner className="text-2xl animate-spin" />

@@ -15,9 +15,8 @@ export default function Builder({isNew, deckId}) {
     const {data: session, status} = useSession();
 
     const {
-        deckCreatorId, name, setName, cards, setCards, image, setImage,legal, setLegal,
-        hasChanges, setHasChanges, cardQuantity, deckError, closeDeckError,
-        createDeck, initializeDeck
+        deckCreatorId, name, cards, image, legal, hasChanges,
+        setHasChanges, deckError, closeDeckError, createDeck, initializeDeck
     } = useDeckContext();
 
     const [showImgSelector, setShowImgSelector] = useState(false);

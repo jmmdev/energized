@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import SearchSelector from "@/components/search-selector";
 import Button from "@/components/button";
 import {FaSearch} from "react-icons/fa";

@@ -1,5 +1,5 @@
 "use client";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import CardSearchList from "./card-search-list";
 import Button from "./button";
 import CardSearchFilters from "./card-search-filters";
@@ -16,7 +16,7 @@ export default function BuilderCardSearch() {
     const cardScrollRef = useRef();
 
     const MySearch = () => {
-        const { search, setSearch } = useSearch();
+        const { search, setSearch, isSearching, setAppliedFilters } = useSearch();
         const [text, setText] = useState(search.length > 0 ? search : "");
 
         const doSetText = (e) => {
@@ -26,12 +26,14 @@ export default function BuilderCardSearch() {
         return (
             <form className="w-full flex p-4" onSubmit={(event) => {
                 event.preventDefault();
-                if (text.length >= 3)
+                if (text.trim().length >= 3) {
+                    setAppliedFilters([]);
                     setSearch(text);
+                }
                 }}>
-                <input className="h-8 w-full bg-my-white text-my-black border-background outline-none" 
-                placeholder="Search cards..." value={text} onChange={doSetText} />
-                <Button content={<FaSearch />} color="blue" style="h-8 text-my-white px-2 rounded-tr rounded-br" disabled={search.length <= 0 && text.length < 3}/>
+                <input className={`h-8 w-full bg-my-white border-background outline-none ${isSearching ? "text-neutral-400" : "text-my-black"}`} 
+                placeholder="Search cards..." value={text} onChange={doSetText} disabled={isSearching} />
+                <Button content={<FaSearch />} color="blue" style="h-8 text-my-white px-2 rounded-tr rounded-br" disabled={search.length <= 0 && text.trim().length < 3 || isSearching}/>
             </form>
         )
     }
@@ -51,22 +53,25 @@ export default function BuilderCardSearch() {
             }
         }
 
-        for (const ap of appliedFilters) {
-            output.push(
-                <div key={ap.field + ap.value} className="group bg-background-2 px-2 py-1 text-sm rounded-full cursor-pointer" onClick={() => removeFilter(ap.field, ap.value)}>
-                    <div className="flex items-center gap-1 opacity-60 group-hover:opacity-100">
-                        <p>{ap.field}: {ap.value}</p>
-                        <FaPlus className="rotate-45" />
+        if (appliedFilters.length > 0) {
+            for (const ap of appliedFilters) {
+                output.push(
+                    <div key={ap.field + ap.value} className="group bg-background-2 px-2 py-1 text-sm rounded-full cursor-pointer" onClick={() => removeFilter(ap.field, ap.value)}>
+                        <div className="flex items-center gap-1 opacity-60 group-hover:opacity-100">
+                            <p>{ap.field}: {ap.value}</p>
+                            <FaPlus className="rotate-45" />
+                        </div>
                     </div>
+                )
+            }
+
+            return (
+                <div className={`w-full flex flex-wrap px-4 gap-2 ${output.length > 0 ? "mb-2" : ""}`}>
+                    {output}
                 </div>
             )
         }
-
-        return (
-            <div className={`w-full flex flex-wrap px-4 gap-2 ${output.length > 0 ? "mb-2" : ""}`}>
-                {output}
-            </div>
-        )
+        return null;
     }
 
     return (
