@@ -44,8 +44,8 @@ export default function User() {
     if (!isLoading) {
         if (userData)
             return (
-                <div className="w-full flex justify-center py-12">
-                    <div className="w-full max-w-[1200px] flex flex-col gap-12">
+                <div className="w-full flex justify-center p-4 md:p-8 xl:p-12">
+                    <div className="w-full max-w-[1000px] flex flex-col gap-12">
                         <UserInfo user={userData.user} />
                         <UserDecks name={userData.user.name} decks={userData.decks} deleteDeck={deleteDeck} />
                         <UserFavorites name={userData.user.name} favorites={userData.user.favorites} />

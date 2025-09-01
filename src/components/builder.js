@@ -1,7 +1,7 @@
 "use client";
 import LoginForm from "@/components/login-form";
 import { useSession, getSession } from "next-auth/react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { FaPlus, FaSpinner } from "react-icons/fa";
@@ -44,10 +44,10 @@ export default function Builder({isNew, deckId}) {
             }
         }
 
-        if (status !== "loading" && session.user && !loaded) {
+        if (status === "authenticated" && session?.user && !loaded) {
             initialize();
         }
-    }, [session]);
+    }, [status]);
 
     useEffect(() => {
         const handleBeforeUnload = (e) => {

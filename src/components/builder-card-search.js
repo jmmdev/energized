@@ -75,7 +75,7 @@ export default function BuilderCardSearch() {
     }
 
     return (
-        <section className={`absolute top-0 lg:relative w-full lg:w-96 ${showSearch ? "h-full" : "h-0"} lg:h-full transition-all`}>
+        <section className={`absolute top-0 lg:relative w-full lg:w-96 ${showSearch ? "h-full" : "h-0"} lg:h-full transition-all z-98`}>
             <div className="flex flex-col h-full">
                 <SearchProvider>
                     <div className={`flex flex-col h-full bg-background-2 overflow-y-auto transition-transform`}>
@@ -92,7 +92,7 @@ export default function BuilderCardSearch() {
                         </div>
                     </div>
                     {!showSearch &&
-                    <div className="group flex lg:hidden bg-background-1 rounded-br-lg rounded-bl-lg justify-center self-center px-4 py-2 cursor-pointer"
+                    <div className="group flex lg:hidden bg-background-2 rounded-br-lg rounded-bl-lg justify-center self-center px-4 py-2 cursor-pointer"
                     onClick={() => setShowSearch(true)}>
                         <div className="flex gap-1 opacity-70 group-hover:opacity-100">
                             <FaSearch className="text-lg" />

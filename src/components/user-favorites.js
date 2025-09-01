@@ -14,7 +14,7 @@ export default function UserFavorites({name, favorites, removeFavorite}) {
     return (
         <div className="flex flex-col gap-2">
             <h1 className="text-3xl font-medium">Favorite decks</h1>
-            <div className="flex flex-col gap-2 bg-background-1 rounded-lg p-8">
+            <div className="flex flex-col gap-2 bg-background-1 rounded-lg p-4 md:p-8">
                 {isLoading ? <FaSpinner className="text-4xl self-center animate-spin" /> :
                 favorites.length > 0 ?
                 <>

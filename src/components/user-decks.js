@@ -45,7 +45,11 @@ export default function UserDecks({name, decks, deleteDeck}) {
                     })
                 }
                 </>
-                : <p className="text-center text-lg opacity-60">{name} did not create decks yet</p>}
+                : 
+                <div className="bg-background-1 rounded-lg p-4 md:p-8">
+                    <p className="text-center text-lg opacity-60">{name} did not create decks yet</p>
+                </div>
+                }
             </div>
         </div>
     )

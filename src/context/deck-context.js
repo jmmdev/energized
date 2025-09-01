@@ -65,33 +65,36 @@ export const DeckProvider = ({ children }) => {
                 },
                 name: "Unnamed deck",
                 cards: [],
-                image: null,
+                image: "/assets/images/deck-logo-0.png",
                 legal: {
                     standard: false,
                     expanded: false,
                 }
-            }
+            },
+        },
+        {
+            withCredentials: true
         });
         return response;
     }
 
     const initializeDeck = async (deckId) => {
-            const response = await axios.get(`http://localhost:3500/api/decks/${deckId}`,
-                {
-                    withCredentials: true
-                });
-            const deck = response.data;
+        const response = await axios.get(`http://localhost:3500/api/decks/${deckId}`,
+            {
+                withCredentials: true
+            });
+        const deck = response.data;
 
-            if (deck) {
-                deckCreatorId.current = deck.creator.id;
-                setName(deck.name);
-                setCards(deck.cards);
-                setImage(deck.image);
-                setLegal(deck.legal);
-            }
-            else
-                throw new Error("Deck not found");
+        if (deck) {
+            deckCreatorId.current = deck.creator.id;
+            setName(deck.name);
+            setCards(deck.cards);
+            setImage(deck.image);
+            setLegal(deck.legal);
         }
+        else
+            throw new Error("Deck not found");
+    }
 
     const cardHasLimit = (name) => {
         const targetCard = cards.find((elem) => elem.card.name === name);
