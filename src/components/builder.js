@@ -100,7 +100,7 @@ export default function Builder({isNew, deckId}) {
     return (
         <>
         <main className="relative flex flex-col lg:flex-row-reverse h-full bg-background overflow-y-hidden">
-            {name && cards && legal &&
+            {cards && legal &&
             <BuilderDeckInfo updateDeck={updateDeck} setShowImgSelector={setShowImgSelector} />
             }
             <BuilderCardSearch />

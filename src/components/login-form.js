@@ -63,10 +63,10 @@ export default function LoginForm({onLoginSuccess}) {
                         onChange={(e) => setPwd(e.target.value)}
                     />
                 </div>
-                <Button color="blue" disabled={!(user.length > 0 && pwd.length > 0)} style="w-fit self-center" content="Log in" />
+                <Button color="blue" disabled={!(user.length > 0 && pwd.length > 0)} style="w-fit rounded px-4 py-2 self-center" content="Log in" />
             </form>
             
-            <Button content="Sign in with Google" style="w-fit" onClick={() => signIn("google")} />
+            <Button color="red" content="Sign in with Google" style="w-fit rounded p-2" onClick={() => signIn("google")} />
 
             <div>
                 <p>Need an account?</p>

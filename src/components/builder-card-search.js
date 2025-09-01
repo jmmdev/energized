@@ -78,7 +78,7 @@ export default function BuilderCardSearch() {
         <section className={`absolute top-0 lg:relative w-full lg:w-96 ${showSearch ? "h-full" : "h-0"} lg:h-full transition-all`}>
             <div className="flex flex-col h-full">
                 <SearchProvider>
-                    <div className={`flex flex-col h-full bg-background-1 overflow-y-auto transition-transform`}>
+                    <div className={`flex flex-col h-full bg-background-2 overflow-y-auto transition-transform`}>
                         <div className="lg:hidden w-full flex justify-end items-center p-4 pb-0">
                             <button className="cursor-pointer opacity-60 hover:opacity-100" onClick={() => setShowSearch(false)}>
                                 <FaPlus className="text-2xl rotate-45" />

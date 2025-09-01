@@ -8,31 +8,55 @@ import { usePathname } from "next/navigation";
 export default function SessionWrapper({ children }) {
   
   const HIDE_HEADER = ["/admin", "/register", "/login"];
+  const SIMPLE_HEADER = ["/build"];
   const pathname = usePathname();
 
-  const pathIsRestricted = () => {
-    let restricted = false;
+  const getPathType = () => {
+    if (searchPathInList(HIDE_HEADER))
+      return "restricted";
+
+    if (searchPathInList(SIMPLE_HEADER))
+      return "simplified";
+  }
+
+  const searchPathInList = (pathList) => {
+    let pathFound = false;
+    
     let i=0;
 
-    while (!restricted && i < HIDE_HEADER.length) {
-      restricted = pathname.includes(HIDE_HEADER[i]);
+    while (!pathFound && i < pathList.length) {
+      if (pathname.includes(pathList[i]))
+        pathFound = true;
+      
       i++;
     }
-    return restricted;
+
+    return pathFound;
   }
 
   const GetHeader = () => {
-    if (pathIsRestricted())
+    if (getPathType() === "restricted")
       return null;
     
     return <Header />
+  }
+
+  const getContentMargin = () => {
+    switch (getPathType()) {
+      case "restricted":
+        return "h-[100dvh]"
+      case "simplified":
+        return "h-[calc(100dvh_-_48px)] mt-12";
+      default:
+        return "h-[calc(100dvh_-_96px)] mt-24";
+    }
   }
 
   return (
     <SessionProvider>
       <div className="flex flex-col justify-between">
         <GetHeader />
-        <div className={`flex flex-col ${!pathIsRestricted() ? "h-[calc(100dvh_-_96px)] mt-24" : "h-[100dvh]"}`}>
+        <div className={`flex flex-col ${getContentMargin()}`}>
           {children}
           {!pathname.includes("/build/") &&
           <div className="mt-auto">

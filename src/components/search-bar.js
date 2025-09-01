@@ -23,10 +23,10 @@ export default function SearchBar() {
             <form onSubmit={(e) => {
                 e.preventDefault();
                 router.push(`/${target}?name=${searchText}`);
-            }} className="w-full max-w-[1200px] flex justify-center rounded-sm border border-my-white">
+            }} className="w-full max-w-[1200px] flex justify-center rounded-sm">
                 <SearchSelector options={OPTIONS} target={target} setTarget={setTarget} />
-                <input placeholder="Search..." name="search-text" value={searchText} onChange={handleChange} className="w-full h-8 bg-my-white text-my-black" />
-                <Button style="px-2 rounded-tr-sm rounded-br-sm text-lg text-my-white" content={<FaSearch />} />
+                <input placeholder="Search..." name="search-text" value={searchText} onChange={handleChange} className="w-full h-8 bg-my-white text-my-black outline-none" />
+                <Button color="blue" style="px-2 rounded-tr-sm rounded-br-sm text-lg text-my-white" content={<FaSearch />} />
             </form>
         </div>
     )

@@ -17,9 +17,9 @@
   --my-white-active: #d8d8d8;
   --my-black-active: #282828;
 
-  --highlight: oklch(63.7% 0.237 25.331);
-  --highlight-hover: oklch(70.4% 0.191 22.216);
-  --highlight-active: oklch(57.7% 0.245 27.325);
+  --highlight: oklch(62.3% 0.214 259.815);
+  --highlight-hover: oklch(70.7% 0.165 254.624);
+  --highlight-active: oklch(54.6% 0.245 262.881);
 }
 
 .theme-light {

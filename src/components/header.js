@@ -10,8 +10,10 @@ import {FaHammer, FaUserCog, FaTimes, FaBars, FaUser, FaStar} from "react-icons/
 import {TbCardsFilled} from "react-icons/tb"
 import { useRouter } from "next/navigation";
 import Button from "./button";
+import { usePathname } from "next/navigation";
 
 export default function Header() {
+    const pathname = usePathname();
     const router = useRouter();
     const {data: session, status} = useSession();
 
@@ -35,9 +37,8 @@ export default function Header() {
                 </div>
                 :
                 <div className="flex justify-center gap-4 w-full">
-                    <HeaderButton text={session.user?.name} icon={<FaUser />} handler={() => {}} />
-                    <HeaderButton text="my decks" icon={<TbCardsFilled />} handler={() => {}} />
-                    <HeaderButton text="favorites" icon={<FaStar />} handler={() => {}} />
+                    <HeaderButton text={session.user?.name} icon={<FaUser />} href={`/user/${session.user?.name}`} />
+                    <HeaderButton text="Build" icon={<FaHammer />} iconStyle={"-scale-x-[1]"} href="/build/new" />
                 </div>
                 }
             </>
@@ -52,20 +53,21 @@ export default function Header() {
             <header className="w-full fixed top-0 z-99">
                 <div className="flex bg-background justify-between items-center h-12 px-4 gap-4">
                     <Logo isInHeader />
-                    {session?.user?.role === "admin" && <HeaderButton text="Admin" icon={<FaUserCog />} handler={() => router.push("/admin")} />}
+                    {session?.user?.role === "admin" && <HeaderButton text="Admin" icon={<FaUserCog />} href="/admin" />}
                     <div className="w-full h-full flex items-center justify-between gap-4">
                         <GetHeaderElements />
                     </div>
-                    <HeaderButton text="Build" icon={<FaHammer />} iconStyle={"-scale-x-[1]"} handler={() => router.push("/build/new")} />
                     <button className="text-foreground text-3xl font-bold cursor-pointer" onClick={() => setShowMenu(!showMenu)}>
                         {showMenu ? <FaTimes /> : <FaBars />}
                     </button>
                 </div>
-                <div className="flex items-center h-12 bg-container">
+                {!(pathname.includes("/build/")) &&
+                <div className="flex items-center h-12 bg-background-1">
                     <div className="color-background w-full h-full flex justify-center items-center gap-2 py-2 px-4">
                         <SearchBar />
                     </div>
                 </div>
+                }
             </header>
             <SideMenu showMenu={showMenu} setShowMenu={setShowMenu} />
         </>

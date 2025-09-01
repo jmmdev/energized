@@ -9,7 +9,7 @@ export default function Admin() {
     const {data: session, status} = useSession();
 
     useEffect(() => {
-        if (session?.user.role !== "admin")
+        if (session && session.user?.role !== "admin")
             setTimeout(() => {
                 router.push("/");
             }, 3000);

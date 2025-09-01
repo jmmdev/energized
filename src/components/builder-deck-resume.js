@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 export default function BuilderDeckResume() {
     const {
         name, setName, legal, setHasChanges
-
     } = useDeckContext();
 
     const [text, setText] = useState(name);
@@ -16,9 +15,13 @@ export default function BuilderDeckResume() {
 
     useEffect(() => {
             const handler = setTimeout(() => {
-                setName(text);
-                if (!firstLoad)
-                    setHasChanges(true);
+                if (text.length <= 0)
+                    setHasChanges(false);
+                else {
+                    setName(text);
+                    if (!firstLoad)
+                        setHasChanges(true);
+                }
             }, 300);
     
             return () => {
@@ -28,7 +31,7 @@ export default function BuilderDeckResume() {
 
     return (
         <div>
-            <input className="w-full max-w-sm text-2xl bg-transparent text-foreground rounded border border-background hover:border-neutral-500" 
+            <input className="w-full max-w-sm text-2xl bg-transparent text-foreground rounded border border-transparent hover:border-neutral-500" 
             value={text} onChange={(e) => setText(e.target.value)}/>
             <p className="px-1.5">
                 Standard: <span className={legal.standard ? "text-emerald-400" : "text-red-400"}>{legal.standard ? "Legal" : "Illegal"}</span>

@@ -105,7 +105,7 @@ export default function BuilderDeckInfo({updateDeck, setShowImgSelector}) {
     }
 
     return (
-        <section className="flex-1 overflow-y-auto lg:flex-1">
+        <section className="flex-1 overflow-y-auto lg:flex-1 bg-background-1">
             <div className="w-full flex flex-col min-h-full px-4 md:px-8 xl:px-12 gap-2">
                 <div className="w-full flex flex-col sm:flex-row gap-4 justify-between pt-16 lg:pt-8">
                     <div className="flex items-center gap-6">
