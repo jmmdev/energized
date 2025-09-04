@@ -16,7 +16,7 @@ export default function CardSearchFilters() {
     const FilterField = ({field}) => {
             return (
                 <details className="flex flex-col gap-2">
-                    <summary className="capitalize font-bold cursor-pointer hover:text-sky-400">{field.field_name}</summary>
+                    <summary className="capitalize font-bold cursor-pointer hover:text-highlight">{field.field_name}</summary>
                     <div className={`flex flex-wrap gap-x-4 gap-y-2 transition-all pl-8 lg:pl-4`}>
                     {
                         field.field_options.map((option) => {
@@ -53,7 +53,7 @@ export default function CardSearchFilters() {
         )
 
         return (
-            <label className="flex items-center gap-1 hover:text-sky-400">
+            <label className="flex items-center gap-1 hover:text-highlight">
                 <input
                     type="checkbox"
                     name={field}
@@ -103,7 +103,7 @@ export default function CardSearchFilters() {
                         </div>
                     </div>
                     <details id="filter-list">
-                        <summary className="cursor-pointer hover:text-sky-400">
+                        <summary className="cursor-pointer hover:text-highlight">
                             Filter
                         </summary>
                         <div className="h-full flex flex-col gap-2 p-4 mt-2 lg:bg-background-2 lg:rounded">

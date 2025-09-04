@@ -79,7 +79,11 @@ export default function Builder({isNew, deckId}) {
             await axios.post(`http://localhost:3500/api/decks/${deckId}`, {
                 data: {
                     name, cards, image, legal
-                }
+                },
+            },
+            {
+                withCredentials: true
+
             });
             setHasChanges(false);
         }
@@ -101,7 +105,7 @@ export default function Builder({isNew, deckId}) {
         <>
         <main className="relative flex flex-col lg:flex-row-reverse h-full bg-background overflow-y-hidden">
             {cards && legal &&
-            <BuilderDeckInfo updateDeck={updateDeck} setShowImgSelector={setShowImgSelector} />
+                <BuilderDeckInfo updateDeck={updateDeck} setShowImgSelector={setShowImgSelector} />
             }
             <BuilderCardSearch />
             {(deckError.show || saving) &&

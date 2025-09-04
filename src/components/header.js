@@ -57,7 +57,7 @@ export default function Header() {
                     <div className="w-full h-full flex items-center justify-between gap-4">
                         <GetHeaderElements />
                     </div>
-                    <button className="text-foreground text-3xl font-bold cursor-pointer" onClick={() => setShowMenu(!showMenu)}>
+                    <button className="text-foreground text-3xl font-bold cursor-pointer hover:text-highlight transition-all" onClick={() => setShowMenu(!showMenu)}>
                         {showMenu ? <FaTimes /> : <FaBars />}
                     </button>
                 </div>

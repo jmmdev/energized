@@ -28,7 +28,7 @@ export default function BuilderDeckInfo({updateDeck, setShowImgSelector}) {
         const numColumns = Math.max(2, Math.floor(width / 250));
         
         if (gridRef.current) {
-            gridRef.current.style.gridTemplateColumns = `repeat(${numColumns}, auto)`;
+            gridRef.current.style.gridTemplateColumns = `repeat(${numColumns}, minmax(0, 1fr))`;
         }
     }
 
@@ -153,7 +153,7 @@ export default function BuilderDeckInfo({updateDeck, setShowImgSelector}) {
                         {
                         display === "grid"
                         ?
-                            <div ref={gridRef} className="grid gap-6 bg-background-1 p-4 sm:p-8 rounded-3xl xs:rounded-xl sm:rounded-lg">
+                            <div ref={gridRef} className="grid gap-6 bg-background-1 py-4 sm:py-8 rounded-3xl xs:rounded-xl sm:rounded-lg">
                             {
                                 cards.map((elem) => {
                                     return <DeckCardGridElement key={"grid"+elem.card.id} elem={elem} />

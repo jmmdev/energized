@@ -1,35 +1,40 @@
 "use client";
 import axios from "axios";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSession } from "next-auth/react";
+import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import DeckListDisplay from "@/components/deck-list-display";
 
 export default function Decks() {
-    const router = useRouter();
+    const {data: session, status} = useSession();
     const searchParams = useSearchParams();
 
     const [decks, setDecks] = useState(null);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         const getDecks = async () => {
-            const decksInfo = await axios.get(`http://localhost:3500/api/decks/search/${searchParams.get("name")}`);
-            
-            setDecks(decksInfo);
+            const response = await axios.get(`http://localhost:3500/api/decks/search/${searchParams.get("name")}`);
+            setDecks(response.data);
         }
         getDecks();
-    }, [])
+    }, [searchParams.get("name")])
 
-    if (decks) {
-        
-        if (decks.length > 0)
-            return (
-                <p>{`"${router.query.name}" decks (${decks.length} results)`}</p>
-            )
+    useEffect(() => {
+        if (decks && (status !== "loading")){
+            setIsLoading(false);
+        }
+    }, [decks, status])
 
-        return(
-            <p>No results</p>
+    if (!isLoading) {
+       return (
+            <div className="w-full flex justify-center">
+                <div className="w-full flex flex-col max-w-[1000px] justify-center p-4 md:p-8 xl:p-12 gap-4">
+                    <DeckListDisplay decks={decks} name={searchParams.get("name")} />
+                </div>
+            </div>
         )
     }
-    return (
-        <p>Loading...</p>
-    )
+    
+    return null;
 }

@@ -46,9 +46,9 @@ export default function DeckCardGridElement({elem}) {
  
         return (
             <div className="flex flex-col items-center gap-3">
-                <div className={`w-full relative flex flex-col items-end select-none`}>
+                <div className={`relative flex flex-col select-none`}>
                     <Image className={`object-contain ${!loaded && "opacity-0"}`} priority src={elem.card.image + "/high.webp"}
-                    width={500} height={500}alt={`${elem.card.name}#${elem.card.id}`} onLoad={handleLoad} />
+                    width={2000} height={2000} alt={`${elem.card.name}#${elem.card.id}`} onLoad={handleLoad} />
                     {!loaded &&
                     <div className="absolute top-0 w-full h-full rounded-lg border-4 flex items-center justify-center">
                         <FaSpinner className="text-3xl animate-spin" />

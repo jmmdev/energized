@@ -31,8 +31,8 @@ export default function Footer(){
         return null;
 
     return (
-        <footer className="relative w-full z-80 py-8">
-            <div className="relative w-full flex flex-col justify-center items-center gap-2 border-t-1 border-background-2 pt-8">
+        <footer className="relative w-full z-80">
+            <div className="relative w-full flex flex-col justify-center items-center gap-2 border-t-1 border-background-2 py-8">
                 <div className="h-10">
                     <Logo />
                 </div>

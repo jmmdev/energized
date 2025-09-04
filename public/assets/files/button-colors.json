@@ -61,7 +61,7 @@
         },
         "none": {
             "color": "bg-transparent",
-            "hover": "hover:text-sky-500",
-            "active": "active:text-sky-500"
+            "hover": "hover:text-blue-500",
+            "active": "active:text-blue-500"
         }
     }
