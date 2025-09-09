@@ -13,10 +13,6 @@ export default function SearchBar() {
     const [target, setTarget] = useState("decks");
     const [searchText, setSearchText] = useState("");
 
-    useEffect(() => {
-        console.log(target);
-    }, [target])
-
     const handleChange = (e) => {
         const content = e.target.value;
         setSearchText(content);
@@ -27,7 +23,7 @@ export default function SearchBar() {
             <form onSubmit={(e) => {
                 e.preventDefault();
                 if (searchText.length > 0)
-                    router.push(`/${target}?name=${searchText}`);
+                    router.push(`/search/${target}?name=${searchText}`);
             }} className="w-full max-w-[1200px] flex justify-center rounded-sm">
                 <SearchSelector options={OPTIONS} target={target} setTarget={setTarget} />
                 <input placeholder="Search..." name="search-text" value={searchText} onChange={handleChange} className="w-full h-8 bg-my-white text-my-black outline-none" />

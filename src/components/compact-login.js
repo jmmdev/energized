@@ -11,9 +11,6 @@ export default function CompactLogin({onLoginSuccess, vertical}) {
     const [user, setUser] = useState('');
     const [pwd, setPwd] = useState('');
     const [errMsg, setErrMsg] = useState('');
-    const [showPwd, setShowPwd] = useState(false);
-
-    const showPwdRef = useRef(null);
 
     useEffect(() => {
         setErrMsg('');
@@ -56,7 +53,7 @@ export default function CompactLogin({onLoginSuccess, vertical}) {
                 <FaKey className="text-xl text-neutral-400" />
                 <input className={`${vertical && "w-full"} bg-my-white text-my-black rounded-xs border border-container`}
                     placeholder="Password"
-                    type={showPwd ? "text" : "password"}
+                    type="password"
                     name="password"
                     autoComplete="off"
                     maxLength={24}

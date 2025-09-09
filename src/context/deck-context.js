@@ -57,7 +57,7 @@ export const DeckProvider = ({ children }) => {
     }, [cards])
 
     const createDeck = async () => {
-        const response = await axios.post("http://localhost:3500/api/decks", {
+        const response = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/decks`, {
             data: {
                 creator: {
                     id: session.user?.id,
@@ -79,7 +79,7 @@ export const DeckProvider = ({ children }) => {
     }
 
     const initializeDeck = async (deckId) => {
-        const response = await axios.get(`http://localhost:3500/api/decks/${deckId}`,
+        const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/decks/${deckId}`,
             {
                 withCredentials: true
             });

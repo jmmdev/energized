@@ -33,7 +33,8 @@ export default function Header() {
                     <div className="hidden lg:block">
                         <CompactLogin onLoginSuccess={refreshSession} />
                     </div>
-                    <Button color="blue" content="Log in" style="block lg:hidden" onClick={() => setShowMenu(true)} />
+                    <Button color="blue" content="Log in"
+                    style="block lg:hidden rounded-xs px-2 text-my-white" onClick={() => setShowMenu(true)} />
                 </div>
                 :
                 <div className="flex justify-center gap-4 w-full">

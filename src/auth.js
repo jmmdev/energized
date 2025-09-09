@@ -9,7 +9,7 @@ export const {
     signIn,
     signOut
 } = NextAuth({
-    secret: process.env.AUTH_SECRET,
+    secret: process.env.NEXTAUTH_URL,
     session: {
         strategy: "jwt",
     },
@@ -29,13 +29,13 @@ export const {
         CredentialsProvider({
             async authorize(credentials) {
                 try {
-                    const existingUser = await axios.get(`http://localhost:3500/api/users/${credentials?.user}`);
+                    const existingUser = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/${credentials?.user}`);
 
                     if (!(existingUser?.data?.hasPassword)) {
                         throw new Error("Your email was used for a Google account login. Please, use that option instead");
                     }
 
-                    const response = await axios.post("http://localhost:3500/api/login", {
+                    const response = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/login`, {
                         user: credentials?.user,
                         password: credentials?.password
                     });
@@ -52,11 +52,11 @@ export const {
         async signIn({ user, account, profile }) {
             let existingUser;
             try {
-                existingUser = await axios.get(`http://localhost:3500/api/users/${user.email}`);
+                existingUser = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/${user.email}`);
             }
             catch (e) {
                 if (!existingUser?.data) {
-                    await axios.post("http://localhost:3500/api/register",{
+                    await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/register`,{
                         username: user.name,
                         email: user.email,
                     });
@@ -69,7 +69,7 @@ export const {
 
         async jwt({token, account, user}) {
             if (user) {
-                const response = await axios.get(`http://localhost:3500/api/users/${user.email}`);
+                const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/${user.email}`);
 
                 const dbUser = response.data.user;
 

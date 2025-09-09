@@ -5,7 +5,7 @@ import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import DeckListDisplay from "@/components/deck-list-display";
 
-export default function Decks() {
+export default function DeckSearch() {
     const {data: session, status} = useSession();
     const searchParams = useSearchParams();
 
@@ -14,7 +14,7 @@ export default function Decks() {
 
     useEffect(() => {
         const getDecks = async () => {
-            const response = await axios.get(`http://localhost:3500/api/decks/search/${searchParams.get("name")}`);
+            const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/decks/search/${searchParams.get("name")}`);
             setDecks(response.data);
         }
         getDecks();

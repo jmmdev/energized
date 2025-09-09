@@ -76,7 +76,7 @@ export default function Builder({isNew, deckId}) {
 
     useEffect(() => {
         const doSave = async () => {
-            await axios.post(`http://localhost:3500/api/decks/${deckId}`, {
+            await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/decks/${deckId}`, {
                 data: {
                     name, cards, image, legal
                 },

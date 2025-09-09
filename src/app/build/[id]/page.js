@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 export default function BuildEdit() {
     const router = useRouter();
     const {data: session, status} = useSession();
+    const params = useParams();
     
     const [isLoading, setIsLoading] = useState(true);
     
@@ -21,8 +22,6 @@ export default function BuildEdit() {
             router.replace("/");
     }, [isLoading])
 
-
-    const params = useParams();
     if (!isLoading && session?.user)
         return (
             <DeckProvider>

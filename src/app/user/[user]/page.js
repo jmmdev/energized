@@ -17,12 +17,13 @@ export default function User() {
     useEffect(() => {
         const getUserData = async () => {
             try {
-                const response = await axios.get(`http://localhost:3500/api/users/user/${params.user}`);
+                const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/user/${params.user}`);
                 setUserData(response.data);
             } catch (e) {
                 console.log(e);
             }
         }
+        console.log(`${process.env.NEXT_PUBLIC_SERVER_URL}`);
         getUserData();
     }, [])
 
@@ -34,9 +35,9 @@ export default function User() {
     const deleteDeck = async (deck) => {
         if (confirm(`${deck.name} will be completely removed from the database. Are you sure?`)) {
             setIsLoading(true);
-            await axios.delete(`http://localhost:3500/api/decks/${deck._id}`);
+            await axios.delete(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/decks/${deck._id}`);
             
-            const response = await axios.get(`http://localhost:3500/api/users/user/${params.user}`);
+            const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/user/${params.user}`);
             setUserData(response.data);
         }
     }
