@@ -11,46 +11,47 @@ export default function CardSearchList({cardScrollRef}) {
         cards, deckError
     } = useDeckContext();
 
-    const PER_PAGE = 12;
+    const PER_PAGE = 24;
 
     const tcgdex = new TCGdex("en");
 
-    const { search, setFilters, appliedFilters, isSearching, setIsSearching } = useSearch();
+    const { search, setFilters, appliedFilters, isSearching, setIsSearching, trigger } = useSearch();
 
     const [cardList, setCardList] = useState(null);
     const [pageNumber, setPageNumber] = useState(0);
 
     useEffect(() => {
-        const doSearch = async () => {
-            const filterList = document.getElementById("filter-list")
-            
-            if (filterList)
-                filterList.removeAttribute("open");
-            
-            setIsSearching(true);
-    
-            const cards = await tcgdex.card.list(
-                Query.create().like("name", search)
-                .not.isNull("image")
-                .not.contains("image", "tcgp")
-                .sort("name", "ASC")
-            );
+        const categories = ["Pokemon","Trainer","Energy"];
+        const stages = ["Basic","Stage1","Stage2","VMAX","VSTAR","MEGA","V-UNION","BREAK","RESTORED","LEVEL-UP"];
+        const types = require("public/assets/files/energy-types.json");
+        const legal = ["Standard", "Expanded"];
 
-            const filters = await getFilters(cards);
-
-            setFilters(filters);
-            setCardList(cards);
-            
-        }
-        if (search.length > 0)
-            doSearch();
-    }, [search]);
+        setFilters(
+            [
+                {
+                    field_name: "Category",
+                    field_options: categories
+                },
+                {
+                    field_name: "Stage",
+                    field_options: stages
+                },
+                {
+                    field_name: "Type",
+                    field_options: types
+                },
+                {
+                    field_name: "Legal",
+                    field_options: legal
+                },
+            ]
+        )
+    }, [])
 
     useEffect(() => {
-        const updateSearch = async () => {
+        const doSearch = async () => {
             setIsSearching(true);
 
-            let setString = "";
             let catString = "";
             let stageString = "";
             let typeString = "";
@@ -58,9 +59,6 @@ export default function CardSearchList({cardScrollRef}) {
 
             for (const af of appliedFilters) {
                 switch (af.field.toLowerCase()) {
-                    case "set":
-                        setString += (setString.length > 0 ? `,${af.value}` : af.value)
-                        break;
                     case "category":
                         catString += (catString.length > 0 ? `,${af.value}` : af.value)
                         break;
@@ -80,9 +78,6 @@ export default function CardSearchList({cardScrollRef}) {
 
             const query = Query.create().like("name", search);
 
-            if (setString.length > 0)
-                query.like("set", setString);
-
             if (catString.length > 0)
                 query.like("category", catString);
 
@@ -94,6 +89,8 @@ export default function CardSearchList({cardScrollRef}) {
 
             for (const t of legalTokens)
                 query.like(`legal.${t.toLowerCase()}`, "true");
+
+            console.log(typeString);
     
             const cards = await tcgdex.card.list(
                 query
@@ -105,92 +102,18 @@ export default function CardSearchList({cardScrollRef}) {
             setCardList(cards);
         }
         if (search.length > 0)
-            updateSearch();
-    }, [appliedFilters])
+            doSearch();
+    }, [search, trigger])
 
     useEffect(() => {
-        let timeout;
-        clearTimeout(timeout);
-
-        timeout = setTimeout(() => {
-            setPageNumber(0);
-            setIsSearching(false);    
-        }, 1500);
+        setPageNumber(0);
+        setIsSearching(false);
     }, [cardList])
 
     useEffect(() => {
         if (cardScrollRef.current && !isSearching)
             cardScrollRef.current.scrollTop = 0;
     }, [isSearching])
-
-    const pushToArray = (arr, elem) => {
-        const indexToFind = arr.findIndex(arrElem =>
-            (typeof elem === "string" && typeof arrElem === "string" &&
-            arrElem.toLowerCase() === elem.toLowerCase()) ||
-            (elem && typeof elem === "object" && arrElem && typeof arrElem === "object" &&
-            "id" in arrElem && "id" in elem && arrElem.id === elem.id)
-        );
-
-        if (indexToFind < 0)
-            arr.push(elem);
-        return arr;
-    }
-
-    const getFilters = async (cards) => {
-        if (cards.length > 0) {
-            let sets = [];
-            let categories = [];
-            let stages = [];
-            let types = [];
-            const legal = ["Standard", "Expanded"];
-
-            for (let c of cards) {
-                const card = await tcgdex.card.get(c.id);
-
-                sets = pushToArray(sets, {
-                    id: card.set.id,
-                    name: card.set.name
-                })
-
-                categories = pushToArray(categories, card.category);
-
-                if (card.stage)
-                    stages = pushToArray(stages, card.stage);
-
-                if (card.types){
-                    for (let type of card.types) {
-                        types = pushToArray(types, type);
-                    }
-                }
-            }
-
-            sets.sort((a,b) => {return a.name.localeCompare(b.name)})
-
-            return [
-                {
-                    field_name: "Set",
-                    field_options: sets
-                },
-                {
-                    field_name: "Category",
-                    field_options: categories
-                },
-                {
-                    field_name: "Stage",
-                    field_options: stages
-                },
-                {
-                    field_name: "Type",
-                    field_options: types
-                },
-                {
-                    field_name: "Legal",
-                    field_options: legal
-                },
-            ]
-        }
-        return [];
-    }
     
     const getCardQuantity = (elem) => {
         const position = cards.findIndex((card) => card.card.id === elem.id);
@@ -220,7 +143,7 @@ export default function CardSearchList({cardScrollRef}) {
 
         return (
                 <>
-                <div className="relative w-full grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 p-12 lg:p-4 gap-12 lg:gap-4">
+                <div className="relative w-full grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 px-12 lg:px-4 gap-12 lg:gap-4 overflow-auto">
                     {
                         subList.map((elem) => {
                             if (elem.image) {

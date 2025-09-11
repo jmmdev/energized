@@ -29,7 +29,7 @@ export default function SideMenu({showMenu, setShowMenu}) {
             timeout = setTimeout(() => {
                 sideMenu.classList.add("transition-transform");
                 sideMenuContainer.classList.add("transition-all");
-            }, 100);
+            }, 200);
         };
 
         window.addEventListener("resize", handleResize);

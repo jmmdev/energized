@@ -3,12 +3,13 @@ import { FaArrowAltCircleLeft, FaArrowAltCircleUp, FaGripHorizontal, FaList, FaP
 import { FaArrowsRotate } from "react-icons/fa6";
 import BuilderDeckResume from "./builder-deck-resume";
 import Button from "./button";
-import DeckCardGridElement from "./deck-card-grid-element";
-import DeckCardListElement from "./deck-card-list-element";
+import BuildDeckGridCard from "./build-deck-grid-card";
+import BuildDeckListCard from "./build-deck-list-card";
 import Footer from "./footer";
 import { useDeckContext } from "@/context/deck-context";
 import BuilderDeckTopButton from "./builder-deck-top-button";
 import { useEffect, useRef, useState } from "react";
+import CardGrid from "./card-grid";
 
 export default function BuilderDeckInfo({updateDeck, setShowImgSelector}) {
     
@@ -21,35 +22,6 @@ export default function BuilderDeckInfo({updateDeck, setShowImgSelector}) {
 
     const firstSort = useRef(true);
     const lastCardsLength = useRef();
-    const gridRef = useRef();
-
-    const handleResize = () => {
-        const width = window.innerWidth;
-        const numColumns = Math.max(2, Math.floor(width / 250));
-        
-        if (gridRef.current) {
-            gridRef.current.style.gridTemplateColumns = `repeat(${numColumns}, minmax(0, 1fr))`;
-        }
-    }
-
-    useEffect(() => {
-        window.addEventListener("resize", handleResize);
-
-        return () => {
-            window.removeEventListener("resize", handleResize);
-        };
-    }, [])
-
-    useEffect(() => {
-        if (gridRef.current) {
-            handleResize();
-        }
-    }, [gridRef.current])
-
-    useEffect(() => {
-        if (display === "grid" && gridRef.current)
-            handleResize();
-    }, [display])
 
     useEffect(() => {
         if (firstSort.current) {
@@ -106,7 +78,7 @@ export default function BuilderDeckInfo({updateDeck, setShowImgSelector}) {
 
     return (
         <section className="flex-1 overflow-y-auto lg:flex-1 bg-background-1">
-            <div className="w-full flex flex-col min-h-full px-4 md:px-8 xl:px-12 gap-2">
+            <div className="w-full flex flex-col min-h-full px-4 md:px-8 gap-2">
                 <div className="w-full flex flex-col sm:flex-row gap-4 justify-between pt-16 lg:pt-8">
                     <div className="flex items-center gap-6">
                         <div className="group w-16 flex relative justify-center h-full rounded-lg aspect-square cursor-pointer" onClick={() => setShowImgSelector(true)}>
@@ -134,7 +106,7 @@ export default function BuilderDeckInfo({updateDeck, setShowImgSelector}) {
                             <div className="group flex gap-1 items-center">
                                 <FaTrashAlt className="group-hover:hidden text-base" />
                                 <FaRegTrashAlt className="hidden group-hover:block text-base" />
-                                <p className="text-base">Clear</p>
+                                <p className="text-base underline">Clear</p>
                             </div>
                         } selected style="hover:text-red-400" onClick={() => doClear()} />}
                     </div>
@@ -145,7 +117,7 @@ export default function BuilderDeckInfo({updateDeck, setShowImgSelector}) {
                         </div>
                     }
                 </div>
-                <div className={`${cards.length <= 0 ? "flex" : ""} flex-1 text-center`}>
+                <div className={`${cards.length <= 0 ? "flex" : ""} flex-1 text-center my-4`}>
                     {
                     cardQuantity > 0
                     ?
@@ -153,19 +125,13 @@ export default function BuilderDeckInfo({updateDeck, setShowImgSelector}) {
                         {
                         display === "grid"
                         ?
-                            <div ref={gridRef} className="grid gap-6 bg-background-1 py-4 sm:py-8 rounded-3xl xs:rounded-xl sm:rounded-lg">
-                            {
-                                cards.map((elem) => {
-                                    return <DeckCardGridElement key={"grid"+elem.card.id} elem={elem} />
-                                })
-                            }
-                            </div>
+                            <CardGrid cards={cards} editable />
                         :
                             <>
                             <div className="grid grid-cols-1 xl:grid-cols-2 gap-1">
                             {
                                 cards.map((elem) => {
-                                    return <DeckCardListElement key={"list"+elem.card.id} elem={elem} />
+                                    return <BuildDeckListCard key={"list"+elem.card.id} elem={elem} />
                                 })
                             }
                             </div>

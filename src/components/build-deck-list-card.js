@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import Button from "./button";
 import { FaMinus, FaPlus } from "react-icons/fa";
 
-export default function DeckCardListElement({elem}) {
+export default function BuildDeckListCard({elem}) {
     const {
         countCardsWithName, cardHasLimit, addCard, removeCard, cardQuantity, deckHasRadiant
     } = useDeckContext();

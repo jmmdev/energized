@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import CardSearchList from "./card-search-list";
 import Button from "./button";
 import CardSearchFilters from "./card-search-filters";
@@ -16,7 +16,7 @@ export default function BuilderCardSearch() {
     const cardScrollRef = useRef();
 
     const MySearch = () => {
-        const { search, setSearch, isSearching, setAppliedFilters } = useSearch();
+        const { search, setSearch, setTrigger, isSearching } = useSearch();
         const [text, setText] = useState(search.length > 0 ? search : "");
 
         const doSetText = (e) => {
@@ -27,8 +27,8 @@ export default function BuilderCardSearch() {
             <form className="w-full flex p-4" onSubmit={(event) => {
                 event.preventDefault();
                 if (text.trim().length >= 3) {
-                    setAppliedFilters([]);
                     setSearch(text);
+                    setTrigger((t) => t+1)
                 }
                 }}>
                 <input className={`h-8 w-full bg-my-white border-background outline-none ${isSearching ? "text-neutral-400" : "text-my-black"}`} 
@@ -56,8 +56,8 @@ export default function BuilderCardSearch() {
         if (appliedFilters.length > 0) {
             for (const ap of appliedFilters) {
                 output.push(
-                    <div key={ap.field + ap.value} className="group bg-background-2 px-2 py-1 text-sm rounded-full cursor-pointer" onClick={() => removeFilter(ap.field, ap.value)}>
-                        <div className="flex items-center gap-1 opacity-60 group-hover:opacity-100">
+                    <div key={ap.field + ap.value} className="group bg-background-1 px-2 py-1 text-sm rounded-full cursor-pointer" onClick={() => removeFilter(ap.field, ap.value)}>
+                        <div className="flex items-center gap-1 opacity-70 group-hover:opacity-100">
                             <p>{ap.field}: {ap.value}</p>
                             <FaPlus className="rotate-45" />
                         </div>
@@ -75,7 +75,7 @@ export default function BuilderCardSearch() {
     }
 
     return (
-        <section className={`absolute top-0 lg:relative w-full lg:w-96 ${showSearch ? "h-full" : "h-0"} lg:h-full transition-all z-98`}>
+        <section className={`absolute top-0 lg:relative w-full lg:w-96 ${showSearch ? "h-full" : "h-0"} lg:h-full transition-all z-100`}>
             <div className="flex flex-col h-full">
                 <SearchProvider>
                     <div className={`flex flex-col h-full bg-background-2 overflow-y-auto transition-transform`}>
@@ -86,7 +86,7 @@ export default function BuilderCardSearch() {
                         </div>
                         <MySearch />
                         <GetAppliedFilterPills />
-                        <div ref={cardScrollRef} className="flex flex-col flex-1">
+                        <div ref={cardScrollRef} className="flex flex-col flex-1 max-h-full overflow-hidden">
                             <CardSearchFilters />
                             <CardSearchList cardScrollRef={cardScrollRef} />
                         </div>
