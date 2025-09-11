@@ -1,37 +1,68 @@
 import { useSearch } from "@/context/search-context";
-import { useEffect, useState } from "react";
-import { FaFilter, FaPlus } from "react-icons/fa";
+import { useEffect, useRef, useState } from "react";
+import { FaCaretDown, FaCaretRight, FaFilter, FaPlus } from "react-icons/fa";
 import Button from "./button";
 
 export default function CardSearchFilters() {
-    const { search, filters, appliedFilters, setAppliedFilters, isSearching } = useSearch();
-
+    const { filters, search, trigger, isSearching } = useSearch();
     const [showFilters, setShowFilters] = useState(false);
+    const [showFields, setShowFields] = useState(false);
+
+    const optionsDisplayed = useRef([]);
 
     useEffect(() => {
         if (showFilters)
             document.getElementById("filter-list").setAttribute("open", "true")
     }, [showFilters])
 
+    useEffect(() => {
+        setShowFields(false);
+    }, [search, trigger])
+
     const FilterField = ({field}) => {
+        const [showOptions, setShowOptions] = useState(false);
+
+        useEffect(() => {
+            setShowOptions(optionsDisplayed.current.findIndex((elem) => elem === field.field_name) >= 0);
+        }, [])
+
+        const doShowOptions = () => {
+            const elemIndex = optionsDisplayed.current.findIndex((elem) => elem === field.field_name);
+            const newShowOptions = !showOptions;
+
+            if (elemIndex >= 0 && !newShowOptions)
+                optionsDisplayed.current.splice(elemIndex, 1);
+
+            if(elemIndex < 0 && newShowOptions)
+                optionsDisplayed.current.push(field.field_name);
+
+            setShowOptions(newShowOptions);
+        }
+
         return (
-            <details className="flex flex-col gap-2">
-                <summary className="capitalize font-bold cursor-pointer hover:text-highlight">{field.field_name}</summary>
-                <div className={`flex flex-wrap gap-x-4 gap-y-2 transition-all pl-8 lg:pl-4`}>
-                {
-                    field.field_options.map((option) => {
-                        return (
-                            <FieldOption field={field.field_name} option={option}
-                            key={ field.field_name + (option.id || option)} />
-                        )
-                    })
-                }
+            <div className="flex flex-col gap-2">
+                <div className={`flex items-center gap-1 capitalize font-bold ${isSearching ? "cursor-default" : "cursor-pointer hover:text-highlight"}`} onClick={isSearching ? () => {} : doShowOptions}>
+                    {showOptions ? <FaCaretDown /> : <FaCaretRight />}
+                    {field.field_name}
                 </div>
-            </details>
+                {showOptions &&
+                    <div className={`flex flex-wrap gap-x-4 gap-y-2 transition-all pl-8 lg:pl-4`}>
+                    {
+                        field.field_options.map((option) => {
+                            return (
+                                <FieldOption field={field.field_name} option={option}
+                                key={ field.field_name + (option.id || option)} />
+                            )
+                        })
+                    }
+                    </div>
+                }
+            </div>
         )
     }
 
     const FieldOption = ({field, option}) => {
+        const { search, appliedFilters, setAppliedFilters } = useSearch();
         const [isChecked, setIsChecked] = useState(false);
 
         useEffect(() => {
@@ -66,7 +97,7 @@ export default function CardSearchFilters() {
                 setAppliedFilters(newAppliedFilters);
             }
 
-            setIsChecked(checked);
+            setIsChecked(!isChecked);
         }
 
         return (
@@ -83,10 +114,47 @@ export default function CardSearchFilters() {
         )
     }
 
-    if (filters.length > 0 && !isSearching)
+     const GetAppliedFilterPills = () => {
+        const { appliedFilters, setAppliedFilters } = useSearch();
+        const output = [];
+
+        const removeFilter = (field, value) => {
+            const newAppliedFilters = [...appliedFilters];
+
+            const elemIndex = newAppliedFilters.findIndex(elem => elem.field === field && elem.value === value);
+            
+            if (elemIndex >= 0) {
+                newAppliedFilters.splice(elemIndex, 1);
+                setAppliedFilters(newAppliedFilters);
+            }
+        }
+
+        if (appliedFilters.length > 0) {
+            for (const ap of appliedFilters) {
+                output.push(
+                    <div key={ap.field + ap.value} className={`group bg-background-1 px-2 py-1 text-sm rounded-full ${isSearching ? "cursor-default" : "cursor-pointer"}`}
+                    onClick={isSearching ? () => {} : () => removeFilter(ap.field, ap.value)}>
+                        <div className={`flex items-center gap-1 opacity-70 ${!isSearching && "group-hover:opacity-100"}`}>
+                            <p>{ap.field}: {ap.value}</p>
+                            <FaPlus className="rotate-45" />
+                        </div>
+                    </div>
+                )
+            }
+
+            return (
+                <div className={`w-full flex flex-wrap gap-2 ${output.length > 0 ? "mb-2" : ""}`}>
+                    {output}
+                </div>
+            )
+        }
+        return null;
+    }
+
+    if (filters.length > 0)
         return (
-            <div className="px-4 py-2 lg:py-0">
-                <Button style="lg:hidden w-full rounded p-1 text-my-white" color="blue" onClick={() => setShowFilters(!showFilters)}
+            <div className={`px-4 py-2 lg:py-0 ${isSearching && "opacity-60"}`}>
+                <Button style="lg:hidden w-full rounded p-1 text-my-white" color="blue" onClick={isSearching ? () => {} : () => setShowFilters(!showFilters)}
                 content={   
                     <div className="flex justify-center items-center gap-2">
                     <FaFilter />
@@ -98,14 +166,19 @@ export default function CardSearchFilters() {
                 `lg:relative lg:h-auto lg:bg-transparent lg:z-0 lg:overflow-y-auto lg:translate-x-0 lg:p-0`}>
                     <div className="flex justify-between items-center text-xl font-bold mb-4 lg:hidden">
                         Search filters
-                        <div className="cursor-pointer opacity-60 hover:opacity-100" onClick={() => setShowFilters(false)}>
+                        <div className={`opacity-60 ${!isSearching ? "cursor-default" : "cursor-pointer hover:opacity-100"}`}
+                        onClick={isSearching ? () => {} : () => setShowFilters(false)}>
                             <FaPlus className="text-xl rotate-45" />
                         </div>
                     </div>
-                    <details id="filter-list" className="mb-2">
-                        <summary className="cursor-pointer hover:text-highlight">
+                    <GetAppliedFilterPills />
+                    <div id="filter-list" className="mb-2">
+                        <div className={`flex items-center gap-1 ${isSearching ? "cursor-default" : "cursor-pointer hover:text-highlight"}`}
+                        onClick={isSearching ? () => {} : () => setShowFields(!showFields)}>
+                            {showFields ? <FaCaretDown /> : <FaCaretRight />}
                             Filter
-                        </summary>
+                        </div>
+                        {showFields &&
                         <div className="h-full flex flex-col gap-2 px-4 py-2 lg:bg-background-2 lg:rounded">
                             {
                                 filters.map((field, index) => {
@@ -114,7 +187,8 @@ export default function CardSearchFilters() {
                                 })
                             }
                         </div>
-                    </details>
+                        }
+                    </div>
                 </div>
             </div>
         )

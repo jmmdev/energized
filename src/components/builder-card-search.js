@@ -38,42 +38,6 @@ export default function BuilderCardSearch() {
         )
     }
 
-    const GetAppliedFilterPills = () => {
-        const { appliedFilters, setAppliedFilters } = useSearch();
-        const output = [];
-
-        const removeFilter = (field, value) => {
-            const newAppliedFilters = [...appliedFilters];
-
-            const elemIndex = newAppliedFilters.findIndex(elem => elem.field === field && elem.value === value);
-            
-            if (elemIndex >= 0) {
-                newAppliedFilters.splice(elemIndex, 1);
-                setAppliedFilters(newAppliedFilters);
-            }
-        }
-
-        if (appliedFilters.length > 0) {
-            for (const ap of appliedFilters) {
-                output.push(
-                    <div key={ap.field + ap.value} className="group bg-background-1 px-2 py-1 text-sm rounded-full cursor-pointer" onClick={() => removeFilter(ap.field, ap.value)}>
-                        <div className="flex items-center gap-1 opacity-70 group-hover:opacity-100">
-                            <p>{ap.field}: {ap.value}</p>
-                            <FaPlus className="rotate-45" />
-                        </div>
-                    </div>
-                )
-            }
-
-            return (
-                <div className={`w-full flex flex-wrap px-4 gap-2 ${output.length > 0 ? "mb-2" : ""}`}>
-                    {output}
-                </div>
-            )
-        }
-        return null;
-    }
-
     return (
         <section className={`absolute top-0 lg:relative w-full lg:w-96 ${showSearch ? "h-full" : "h-0"} lg:h-full transition-all z-100`}>
             <div className="flex flex-col h-full">
@@ -85,7 +49,6 @@ export default function BuilderCardSearch() {
                             </button>
                         </div>
                         <MySearch />
-                        <GetAppliedFilterPills />
                         <div ref={cardScrollRef} className="flex flex-col flex-1 max-h-full overflow-hidden">
                             <CardSearchFilters />
                             <CardSearchList cardScrollRef={cardScrollRef} />

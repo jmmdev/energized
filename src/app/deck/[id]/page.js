@@ -1,15 +1,14 @@
 "use client";
 import { useSession } from "next-auth/react";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import ViewDeckListCard from "@/components/view-deck-list-card";
-import { FaArrowAltCircleUp, FaArrowAltCircleLeft, FaUser, FaGripHorizontal, FaList } from "react-icons/fa";
+import { FaArrowAltCircleUp, FaArrowAltCircleLeft, FaUser, FaGripHorizontal, FaList, FaStar } from "react-icons/fa";
 import CardGrid from "@/components/card-grid";
 import BuilderDeckTopButton from "@/components/builder-deck-top-button";
 
 export default function Deck() {
-    const router = useRouter();
     const {data: session, status} = useSession();
     const params = useParams();
 
@@ -24,7 +23,7 @@ export default function Deck() {
         initialize();
     }, [])
 
-    if (deck)
+    if (status !== "loading" && deck)
         return (
             <div className={`${deck.cards.length <= 0 ? "flex" : ""} flex-1`}>
                 {
@@ -33,7 +32,15 @@ export default function Deck() {
                     <div className="flex justify-center">
                         <div className="w-full max-w-[1350px]">
                             <div className="flex flex-col gap-2 p-4 md:p-8 xl:p-12 pb-[0_!important]">
-                                <h1 className="text-3xl md:text-4xl xl:text-5xl font-bold">{deck.name}</h1>
+                                <div className="flex justify-between">
+                                    <h1 className="text-3xl md:text-4xl xl:text-5xl font-bold">{deck.name}</h1>
+                                    {session.user?.id !== deck.creator.id &&
+                                    <button /*onClick={Añadir a favoritos}*/ className={`text-4xl rounded-full p-2 cursor-pointer transition-all 
+                                    ${session.user?.favorites.includes(deck._id) ? "text-yellow-500" : "text-background bg-container hover:text-foreground hover:bg-transparent"}`}>
+                                        <FaStar />
+                                    </button>
+                                    }
+                                </div>
                                 <div className="w-full flex items-center justify-between">
                                     <a className="w-fit flex items-center cursor-pointer hover:text-highlight md:text-lg xl:text-xl gap-2 font-light"
                                     href={`/user/${deck.creator.name}`}>

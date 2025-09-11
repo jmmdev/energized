@@ -90,7 +90,6 @@ export default function CardSearchList({cardScrollRef}) {
             for (const t of legalTokens)
                 query.like(`legal.${t.toLowerCase()}`, "true");
 
-            console.log(typeString);
     
             const cards = await tcgdex.card.list(
                 query
@@ -106,8 +105,13 @@ export default function CardSearchList({cardScrollRef}) {
     }, [search, trigger])
 
     useEffect(() => {
-        setPageNumber(0);
-        setIsSearching(false);
+        let timeout;
+        clearTimeout(timeout);
+
+        timeout = setTimeout(() => {
+            setPageNumber(0);
+            setIsSearching(false);
+        }, 1500);
     }, [cardList])
 
     useEffect(() => {

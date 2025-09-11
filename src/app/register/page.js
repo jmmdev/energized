@@ -99,7 +99,7 @@ export default function Register() {
     }
 
   return (
-    <main className="flex flex-col items-center p-16">
+    <main className="w-screen relative flex flex-col items-center p-16">
         <section className="w-full max-w-[720px] flex flex-col gap-8">
             <h1 className="text-2xl font-medium border-b-2">Register</h1>
             <form className="flex flex-col gap-8" onSubmit={handleSubmit}>
@@ -112,7 +112,8 @@ export default function Register() {
                         {username.length > 0 && !validName && <FaTimes color="#f44" />}
                     </div>
                     <input
-                        className={`${username.length > 0 ? validName ? "bg-emerald-100" : "bg-red-100" : ""} border border-gray-900 rounded-sm px-2 py-1 mb-1`}
+                        className={`${username.length > 0 ? validName ? "bg-emerald-100" : "bg-red-100" : "bg-my-white"}
+                        border border-my-black text-my-black rounded-sm px-2 py-1 mb-1`}
                         type="text"
                         id="username"
                         name="username"
@@ -133,12 +134,13 @@ export default function Register() {
                         {email.length > 0 && !validEmail && <FaTimes color="#f44" />}
                     </div>
                     <input
-                        className={`${email.length > 0 ? validEmail ? "bg-emerald-100" : "bg-red-100" : ""} border border-gray-900 rounded-sm px-2 py-1 mb-1`}
+                        className={`${email.length > 0 ? validEmail ? "bg-emerald-100" : "bg-red-100" : "bg-my-white"}
+                        border border-my-black text-my-black rounded-sm px-2 py-1 mb-1`}
                         type="text"
                         id="email"
                         name="email"
                         autoComplete="off"
-                        maxLength={24}
+                        maxLength={40}
                         onChange={(e) => setEmail(e.target.value)}
                         required
                     />
@@ -153,7 +155,8 @@ export default function Register() {
                     </div>
                     <div className="relative flex items-center gap-2">
                         <input
-                            className={`${pwd.length > 0 ? validPwd ? "bg-emerald-100" : "bg-red-100" : ""} w-full border border-gray-900 rounded-sm pl-2 pr-8 py-1 mb-1`}
+                            className={`${pwd.length > 0 ? validPwd ? "bg-emerald-100" : "bg-red-100" : "bg-my-white"}
+                            w-full border border-my-black text-my-black rounded-sm pl-2 pr-8 py-1 mb-1`}
                             type={showPwd ? "text" : "password"}
                             id="password"
                             name="password"
@@ -178,7 +181,8 @@ export default function Register() {
                     </div>
                     <div className="relative flex items-center gap-2">
                         <input
-                            className={`${match.length > 0 ? validMatch ? "bg-emerald-100" : "bg-red-100" : ""} w-full border border-gray-900 rounded-sm px-2 py-1 mb-1`}
+                            className={`${match.length > 0 ? validMatch ? "bg-emerald-100" : "bg-red-100" : "bg-my-white"}
+                            w-full border border-my-black text-my-black rounded-sm px-2 py-1 mb-1`}
                             type={showMatch ? "text" : "password"}
                             id="match"
                             name="match"
@@ -194,10 +198,10 @@ export default function Register() {
                 </div>
                 {errMsg.length > 0 && <p className="text-red-500">{errMsg}</p>}
                 {msg.length > 0 && <p className="text-emerald-500">{msg}</p>}
-                <Button color="blue" disabled={!validName || !validPwd || !validMatch} style="w-[fit-content_!important] self-center" content="sign up" />
+                <Button color="blue" disabled={!validName || !validPwd || !validMatch} style="w-fit rounded px-4 py-2 self-center" content="sign up" />
             </form>
             
-            <Button content="Sign in with Google" style="w-fit" onClick={() => signIn("google")} />
+            <Button color="red" content="Sign in with Google" style="w-fit rounded p-2" onClick={() => signIn("google")} />
             
             <div>
                 <p>Already registered?</p>
