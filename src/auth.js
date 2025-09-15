@@ -29,7 +29,7 @@ export const {
         CredentialsProvider({
             async authorize(credentials) {
                 try {
-                    const existingUser = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/${credentials?.user}`);
+                    const existingUser = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/find/${credentials?.user}`);
 
                     if (!(existingUser?.data?.hasPassword)) {
                         throw new Error("Your email was used for a Google account login. Please, use that option instead");
@@ -52,7 +52,7 @@ export const {
         async signIn({ user, account, profile }) {
             let existingUser;
             try {
-                existingUser = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/${user.email}`);
+                existingUser = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/find/${user.email}`);
             }
             catch (e) {
                 if (!existingUser?.data) {
@@ -69,7 +69,7 @@ export const {
 
         async jwt({token, account, user}) {
             if (user) {
-                const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/${user.email}`);
+                const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/find/${user.email}`);
 
                 const dbUser = response.data.user;
 
@@ -78,7 +78,6 @@ export const {
                     token.name = dbUser.name;
                     token.email = dbUser.email;
                     token.role = dbUser.role;
-                    token.favorites = dbUser.favorites;
                 }    
             }
             return token;
@@ -90,7 +89,6 @@ export const {
                 name: token.name,
                 email: token.email,
                 role: token.role,
-                favorites: token.favorites,
             };
             return session;
         },

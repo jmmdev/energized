@@ -15,7 +15,7 @@ export default function Builder({isNew, deckId}) {
     const {data: session, status} = useSession();
 
     const {
-        deckCreatorId, name, cards, image, legal, hasChanges,
+        deckCreatorId, name, cards, cardQuantity, image, legal, hasChanges,
         setHasChanges, deckError, closeDeckError, createDeck, initializeDeck
     } = useDeckContext();
 
@@ -78,7 +78,7 @@ export default function Builder({isNew, deckId}) {
         const doSave = async () => {
             await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/decks/${deckId}`, {
                 data: {
-                    name, cards, image, legal
+                    name, cards, image, legal, cardCount: cardQuantity
                 },
             },
             {

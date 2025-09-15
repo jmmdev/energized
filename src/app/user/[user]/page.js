@@ -23,7 +23,6 @@ export default function User() {
                 console.log(e);
             }
         }
-        console.log(`${process.env.NEXT_PUBLIC_SERVER_URL}`);
         getUserData();
     }, [])
 
@@ -49,7 +48,7 @@ export default function User() {
                     <div className="w-full max-w-[1000px] flex flex-col gap-12">
                         <UserInfo user={userData.user} />
                         <UserDecks name={userData.user.name} decks={userData.decks} deleteDeck={deleteDeck} />
-                        <UserFavorites name={userData.user.name} favorites={userData.user.favorites} />
+                        <UserFavorites name={userData.user.name} favorites={userData.favorites} />
                     </div>
                 </div>
             );

@@ -14,7 +14,7 @@ import CardGrid from "./card-grid";
 export default function BuilderDeckInfo({updateDeck, setShowImgSelector}) {
     
     const {
-        name, cards, setCards, image, hasChanges, cardQuantity, waiting
+        name, cards, setCards, image, hasChanges, cardQuantity, waiting, visible, setVisible
     } = useDeckContext();
 
     const [display, setDisplay] = useState("grid");
@@ -91,8 +91,19 @@ export default function BuilderDeckInfo({updateDeck, setShowImgSelector}) {
                             <BuilderDeckResume />
                         </div>
                     </div>
-                    <Button color="blue" content="Save" style="h-fit px-5 py-1 rounded-xs font-bold text-my-white" onClick={handleSave} disabled={!hasChanges} />
+                    <div className="flex flex-col gap-2 items-end">
+                        <Button color="blue" content="Save" style="hidden sm:block h-fit px-5 py-1 rounded-xs font-bold text-my-white" onClick={handleSave} disabled={!hasChanges} />
+                        <button className="flex" onClick={() => setVisible(!visible)}>
+                            <div className="rounded-tl rounded-bl bg-gray-500 px-4 py-1">
+                                A
+                            </div>
+                            <div className="rounded-tr rounded-br bg-blue-500 px-4 py-1">
+                                B
+                            </div>
+                        </button>
+                    </div>
                 </div>
+                <Button color="blue" content="Save" style="sm:hidden h-fit px-5 py-1 rounded-xs font-bold text-my-white" onClick={handleSave} disabled={!hasChanges} />
                 <div className="w-full flex justify-between items-center">
                     <div className="flex gap-4 items-center">
                         <p className="font-bold text-lg">{`${cardQuantity}/60 cards`}</p>
@@ -102,16 +113,16 @@ export default function BuilderDeckInfo({updateDeck, setShowImgSelector}) {
                                 <p className="text-base">Sort</p>
                             </div>
                         } style="animate-highlight" onClick={() => sortCards()} />}
-                        {cardQuantity > 0 && <BuilderDeckTopButton content={
-                            <div className="group flex gap-1 items-center">
-                                <FaTrashAlt className="group-hover:hidden text-base" />
-                                <FaRegTrashAlt className="hidden group-hover:block text-base" />
-                                <p className="text-base underline">Clear</p>
-                            </div>
-                        } selected style="hover:text-red-400" onClick={() => doClear()} />}
                     </div>
                     {cardQuantity > 0 &&
                         <div className="flex gap-2">
+                            <BuilderDeckTopButton content={
+                                <div className="group flex gap-1 items-center">
+                                    <FaTrashAlt className="group-hover:hidden text-base" />
+                                    <FaRegTrashAlt className="hidden group-hover:block text-base" />
+                                    <p className="text-base underline">Clear</p>
+                                </div>
+                            } selected style="hover:text-red-400" onClick={() => doClear()} />
                             <BuilderDeckTopButton content={<FaGripHorizontal />} onClick={() => setDisplay("grid")} selected={display === "grid"} />
                             <BuilderDeckTopButton content={<FaList />} onClick={() => setDisplay("list")} selected={display === "list"} />
                         </div>

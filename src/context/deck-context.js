@@ -17,6 +17,7 @@ export const DeckProvider = ({ children }) => {
     const [cards, setCards] = useState(null);
     const [image, setImage] = useState(null);
     const [legal, setLegal] = useState(null);
+    const [visible, setVisible] = useState(null);
     
     const [hasChanges, setHasChanges] = useState(false);
     const [cardQuantity, setCardQuantity] = useState(0);
@@ -69,7 +70,9 @@ export const DeckProvider = ({ children }) => {
                 legal: {
                     standard: false,
                     expanded: false,
-                }
+                },
+                cardCount: 0,
+                visible: true,
             },
         },
         {
@@ -91,6 +94,7 @@ export const DeckProvider = ({ children }) => {
             setCards(deck.cards);
             setImage(deck.image);
             setLegal(deck.legal);
+            setVisible(deck.visible);
         }
         else
             throw new Error("Deck not found");

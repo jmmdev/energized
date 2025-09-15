@@ -4,7 +4,7 @@ import { useParams } from "next/navigation";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import ViewDeckListCard from "@/components/view-deck-list-card";
-import { FaArrowAltCircleUp, FaArrowAltCircleLeft, FaUser, FaGripHorizontal, FaList, FaStar } from "react-icons/fa";
+import { FaArrowAltCircleUp, FaArrowAltCircleLeft, FaUser, FaGripHorizontal, FaList, FaStar, FaRegStar } from "react-icons/fa";
 import CardGrid from "@/components/card-grid";
 import BuilderDeckTopButton from "@/components/builder-deck-top-button";
 
@@ -14,16 +14,41 @@ export default function Deck() {
 
     const [deck, setDeck] = useState(null);
     const [display, setDisplay] = useState("grid");
+    const [isFavorite, setIsFavorite] = useState(null);
     
     useEffect(() => {
         const initialize = async () => {
-            const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/decks/${params.id}`);
-            setDeck(response.data);
-        }
-        initialize();
-    }, [])
+            const deckResponse = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/decks/${params.id}`);
+            const deckData = deckResponse.data;
+            
+            setDeck(deckData);
+            
+            if (status === "authenticated") {
+                const favResponse = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/favorites`,
+                {
+                    withCredentials: true
+                });
 
-    if (status !== "loading" && deck)
+                const favsData = favResponse.data;
+                setIsFavorite(favsData.includes(deckData._id));
+            }
+        }
+        if (status !== "loading")
+            initialize();
+    }, [status])
+
+    const modifyFavorite = async () => {
+        await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/favorites`, {
+            deckId: deck._id
+        },
+        {
+            withCredentials: true
+        });
+        
+        setIsFavorite(!isFavorite);
+    }
+
+    if (deck)
         return (
             <div className={`${deck.cards.length <= 0 ? "flex" : ""} flex-1`}>
                 {
@@ -34,10 +59,15 @@ export default function Deck() {
                             <div className="flex flex-col gap-2 p-4 md:p-8 xl:p-12 pb-[0_!important]">
                                 <div className="flex justify-between">
                                     <h1 className="text-3xl md:text-4xl xl:text-5xl font-bold">{deck.name}</h1>
-                                    {session.user?.id !== deck.creator.id &&
-                                    <button /*onClick={Añadir a favoritos}*/ className={`text-4xl rounded-full p-2 cursor-pointer transition-all 
-                                    ${session.user?.favorites.includes(deck._id) ? "text-yellow-500" : "text-background bg-container hover:text-foreground hover:bg-transparent"}`}>
-                                        <FaStar />
+                                    {session && session?.user.id !== deck.creator.id &&
+                                    <button onClick={modifyFavorite} className="group text-4xl cursor-pointer hover:opacity-70">
+                                        {isFavorite === true 
+                                            ? <FaStar className="text-yellow-500"/> 
+                                            : <>
+                                                <FaRegStar className="text-foreground group-hover:hidden" />
+                                                <FaStar className="hidden text-foreground group-hover:block" />
+                                            </> 
+                                        }
                                     </button>
                                     }
                                 </div>
