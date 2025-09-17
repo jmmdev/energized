@@ -15,7 +15,7 @@ export default function Builder({isNew, deckId}) {
     const {data: session, status} = useSession();
 
     const {
-        deckCreatorId, name, cards, cardQuantity, image, legal, hasChanges,
+        deckCreatorId, name, cards, cardQuantity, image, legal, visible, hasChanges,
         setHasChanges, deckError, closeDeckError, createDeck, initializeDeck
     } = useDeckContext();
 
@@ -78,7 +78,7 @@ export default function Builder({isNew, deckId}) {
         const doSave = async () => {
             await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/decks/${deckId}`, {
                 data: {
-                    name, cards, image, legal, cardCount: cardQuantity
+                    name, cards, image, legal, visible, cardCount: cardQuantity
                 },
             },
             {
@@ -109,7 +109,7 @@ export default function Builder({isNew, deckId}) {
             }
             <BuilderCardSearch />
             {(deckError.show || saving) &&
-                <div className="absolute top-0 left-0 w-full h-full bg-[#0008] flex items-center justify-center z-200">
+                <div className="absolute top-0 left-0 w-full h-full bg-[#000a] flex items-center justify-center z-200">
                     {deckError.show &&
                     <div className="w-full max-w-[400px] rounded text-xl p-8 bg-background-1">
                         <div className="flex justify-between items-center">

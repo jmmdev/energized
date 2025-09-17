@@ -11,25 +11,21 @@
 
 :root {
   --my-white: #fafafa;
-  --my-black: #171717;
-  --my-white-hover: #b6b6b6;
-  --my-black-hover: #393939;
-  --my-white-active: #d8d8d8;
-  --my-black-active: #282828;
+  --my-black: #0b0b0b;
 
-  --highlight: oklch(62.3% 0.214 259.815);
-  --highlight-hover: oklch(70.7% 0.165 254.624);
-  --highlight-active: oklch(54.6% 0.245 262.881);
+  --highlight: #3b82f6;
+  --highlight-hover: #60a5fa;
+  --highlight-active: #2563eb;
 }
 
 .theme-light {
-  --background: var(--my-white);
+  --background: #fafafa;
   --foreground: var(--my-black);
 
-  --background-1: var(--my-white-active);
-  --background-2: var(--my-white-hover);
+  --background-1: #e2e2e2;
+  --background-2: #c8c8c8;
   
-  --container: #b6b6b6;
+  --container: #f0f0f0;
 }
 
 @theme inline {
@@ -53,13 +49,13 @@
 }
 
 .theme-dark {
-  --background: var(--my-black);
+  --background: #0a0a0a;
   --foreground: var(--my-white);
 
-  --background-1: var(--my-black-active);
-  --background-2: var(--my-black-hover);
+  --background-1: #1f1f1f;
+  --background-2: #404040;
   
-  --container: #777;
+  --container: #050101;
 }
 
 body {
@@ -73,7 +69,7 @@ input {
 }
 
 footer a:hover {
-  color: var(--highlight-hover)
+  color: var(--highlight)
 }
 
 @keyframes slide {

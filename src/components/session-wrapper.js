@@ -8,6 +8,7 @@ import { usePathname } from "next/navigation";
 export default function SessionWrapper({ children }) {
   
   const HIDE_HEADER = ["/admin", "/register", "/login"];
+  const HIDE_FOOTER = ["/build", "/deck"];
   const SIMPLE_HEADER = ["/build"];
   const pathname = usePathname();
 
@@ -58,7 +59,7 @@ export default function SessionWrapper({ children }) {
         <GetHeader />
         <div className={`flex flex-col ${getContentMargin()}`}>
           {children}
-          {!pathname.includes("/build/") &&
+          {!searchPathInList(HIDE_FOOTER) &&
           <div className="mt-auto">
              <Footer />
           </div>

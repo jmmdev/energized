@@ -7,7 +7,7 @@ import { useSession } from "next-auth/react";
 import { usePathname, useRouter } from "next/navigation";
 import CompactLogin from "./compact-login";
 import { getSession } from "next-auth/react";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 export default function SideMenu({showMenu, setShowMenu}) {
 
@@ -17,19 +17,29 @@ export default function SideMenu({showMenu, setShowMenu}) {
     const router = useRouter();
     const pathname = usePathname();
 
+    const resizeTimer = useRef(null);
+    const isResizing = useRef(false);
+
     useEffect(() => {
         const handleResize = () => {
             const sideMenuContainer = document.getElementById("side-menu-container");
             const sideMenu = document.getElementById("side-menu"); 
-            let timeout;
 
-            sideMenu.classList.remove("transition-transform");
-            sideMenuContainer.classList.remove("transition-all");
-            clearTimeout(timeout);
-            timeout = setTimeout(() => {
+            if (!isResizing.current) {
+                isResizing.current = true;
+                sideMenu.classList.remove("transition-transform");
+                sideMenuContainer.classList.remove("transition-all");
+            }
+
+            if (resizeTimer.current) {
+                clearTimeout(resizeTimer.current);
+            }
+
+            resizeTimer.current = setTimeout(() => {
+                isResizing.current = false;
                 sideMenu.classList.add("transition-transform");
                 sideMenuContainer.classList.add("transition-all");
-            }, 200);
+            }, 500);
         };
 
         window.addEventListener("resize", handleResize);
@@ -41,7 +51,7 @@ export default function SideMenu({showMenu, setShowMenu}) {
             <div>
                 {USER_SECTIONS.map((elem, index) => {
                     return (
-                        <div key={elem} className={`w-full border-container ${index < USER_SECTIONS.length - 1 && "border-b"}`}>
+                        <div key={elem} className={`w-full border-background-1 ${index < USER_SECTIONS.length - 1 && "border-b"}`}>
                             <SideMenuSection type="button" content={elem.toUpperCase()} />
                         </div>
                     )
@@ -67,7 +77,7 @@ export default function SideMenu({showMenu, setShowMenu}) {
         }}>
             <div className="relative w-full h-full">
                 <div id="side-menu"
-                className={"w-full md:w-2/5 xl:w-1/4 h-full flex flex-col gap-4 bg-background absolute top-0 left-full text-foreground p-4 transition-transform border-t border-background-1 " +
+                className={"w-full md:w-2/5 xl:w-1/4 h-full flex flex-col gap-4 bg-background absolute top-0 left-full text-foreground p-4 transition-transform " +
                     `${showMenu && "-translate-x-full"}`} onClick={(e) => e.stopPropagation()}>
                     {!session &&
                     <div className="w-full lg:hidden">

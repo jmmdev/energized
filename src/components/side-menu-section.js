@@ -2,7 +2,7 @@ export default function SideMenuSection({content, type, handler, children}) {
     
     if (type === "button") {
         return (
-            <button className="w-full text-left text-foreground border-l-5 border-transparent hover:border-highlight-hover hover:bg-container p-2 cursor-pointer" onClick={(e) => {
+            <button className="w-full text-left text-foreground border-l-5 border-transparent hover:border-highlight hover:bg-background-1 p-2 cursor-pointer" onClick={(e) => {
                 e.stopPropagation();
             //handler();
             }}>
@@ -12,7 +12,7 @@ export default function SideMenuSection({content, type, handler, children}) {
     }
 
     return (
-        <div className="w-full text-left text-foreground border-l-5 border-transparent hover:bg-container p-2">
+        <div className="w-full text-left text-foreground border-l-5 border-transparent p-2">
             {content}
         </div>
     );

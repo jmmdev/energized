@@ -39,7 +39,7 @@ export default function BuilderCardSearch() {
     }
 
     return (
-        <section className={`absolute top-0 lg:relative w-full lg:w-96 ${showSearch ? "h-full" : "h-0"} lg:h-full transition-all z-100`}>
+        <section className={`fixed top-0 lg:relative w-full lg:w-96 ${showSearch ? "h-full" : "h-0"} lg:h-full transition-all z-98`}>
             <div className="flex flex-col h-full">
                 <SearchProvider>
                     <div className={`flex flex-col h-full bg-background-2 overflow-y-auto transition-transform`}>

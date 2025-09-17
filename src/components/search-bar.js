@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation";
 export default function SearchBar() {
     const router = useRouter();
 
-    const OPTIONS = ["decks", "cards"];
+    const OPTIONS = ["decks", "cards", "users"];
 
     const [target, setTarget] = useState("decks");
     const [searchText, setSearchText] = useState("");

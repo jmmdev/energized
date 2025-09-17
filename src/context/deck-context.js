@@ -211,7 +211,7 @@ export const DeckProvider = ({ children }) => {
     <DeckContext.Provider value={{ 
         deckCreatorId, name, setName, cards, setCards, image, setImage, legal, setLegal, hasChanges, setHasChanges, createDeck, initializeDeck,
         countCardsWithName, deckHasRadiant, cardHasLimit, addCard, removeCard, cardQuantity, setCardQuantity, deckError, closeDeckError, waiting, 
-        setWaiting
+        setWaiting, visible, setVisible
      }}>
       {children}
     </DeckContext.Provider>

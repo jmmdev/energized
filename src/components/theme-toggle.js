@@ -19,8 +19,8 @@ export default function ThemeToggle() {
                 <p className="uppercase">
                     theme
                 </p>
-                <button className="group flex w-10 p-0.5 rounded-full border-2 border-foreground hover:border-highlight-hover bg-background cursor-pointer" onClick={switchTheme}>
-                    <div className={`w-1/2 aspect-square bg-foreground rounded-full group-hover:bg-highlight-hover transition-transform
+                <button className="group flex w-10 p-0.5 rounded-full border-2 border-foreground hover:border-highlight bg-background cursor-pointer" onClick={switchTheme}>
+                    <div className={`w-1/2 aspect-square bg-foreground rounded-full group-hover:bg-highlight transition-transform
                         ${theme === "light" ? "translate-x-0 group-active:translate-x-full" : "translate-x-full group-active:translate-x-0"}`} />
                 </button>
                 <p className="font-semibold">{theme === "light" ? "Light" : "Dark"}</p>

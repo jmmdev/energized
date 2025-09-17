@@ -1,9 +1,7 @@
 import Image from "next/image";
-import { FaArrowAltCircleLeft, FaArrowAltCircleUp, FaGripHorizontal, FaList, FaPen, FaRegTrashAlt, FaSpinner, FaTrashAlt } from "react-icons/fa";
-import { FaArrowsRotate } from "react-icons/fa6";
+import { FaArrowAltCircleLeft, FaArrowAltCircleUp, FaGripHorizontal, FaInfoCircle, FaList, FaPen, FaRegTrashAlt, FaSpinner, FaTrashAlt } from "react-icons/fa";
 import BuilderDeckResume from "./builder-deck-resume";
 import Button from "./button";
-import BuildDeckGridCard from "./build-deck-grid-card";
 import BuildDeckListCard from "./build-deck-list-card";
 import Footer from "./footer";
 import { useDeckContext } from "@/context/deck-context";
@@ -14,7 +12,7 @@ import CardGrid from "./card-grid";
 export default function BuilderDeckInfo({updateDeck, setShowImgSelector}) {
     
     const {
-        name, cards, setCards, image, hasChanges, cardQuantity, waiting, visible, setVisible
+        name, cards, setCards, image, hasChanges, setHasChanges, cardQuantity, waiting, visible, setVisible
     } = useDeckContext();
 
     const [display, setDisplay] = useState("grid");
@@ -71,6 +69,11 @@ export default function BuilderDeckInfo({updateDeck, setShowImgSelector}) {
         updateDeck();
     }
 
+    const switchVisible = () => {
+        setVisible(!visible);
+        setHasChanges(true);
+    }
+
     const doClear = () => {
         if (confirm(`${cardQuantity} cards will be removed from ${name}. Are you sure?`))
             setCards([]);
@@ -78,42 +81,53 @@ export default function BuilderDeckInfo({updateDeck, setShowImgSelector}) {
 
     return (
         <section className="flex-1 overflow-y-auto lg:flex-1 bg-background-1">
-            <div className="w-full flex flex-col min-h-full px-4 md:px-8 gap-2">
+            <div className="w-full flex flex-col min-h-full px-4 md:px-8 gap-4">
                 <div className="w-full flex flex-col sm:flex-row gap-4 justify-between pt-16 lg:pt-8">
-                    <div className="flex items-center gap-6">
-                        <div className="group w-16 flex relative justify-center h-full rounded-lg aspect-square cursor-pointer" onClick={() => setShowImgSelector(true)}>
-                            <Image className="w-full h-auto rounded-lg object-cover" width={2000} height={2000} alt="Deck image" src={image || `/assets/images/deck-logo-0.png`} />
-                            <div className="rounded-full flex items-center justify-center absolute right-0 top-0 p-1.5 -translate-y-1/2 translate-x-1/2 bg-foreground group-hover:bg-blue-500">
-                                <FaPen className="text-xs text-background group-hover:text-my-white"/>
+                    <div className="flex flex-col gap-4">
+                        <div className="flex items-center gap-6">
+                            <div className="group w-16 flex relative justify-center h-full rounded-lg aspect-square cursor-pointer" onClick={() => setShowImgSelector(true)}>
+                                <Image className="w-full h-auto rounded-lg object-cover" width={2000} height={2000} alt="Deck image" src={image || `/assets/images/deck-logo-0.png`} />
+                                <div className="rounded-full flex items-center justify-center absolute right-0 top-0 p-1.5 -translate-y-1/2 translate-x-1/2 bg-foreground group-hover:bg-blue-500">
+                                    <FaPen className="text-xs text-background group-hover:text-my-white"/>
+                                </div>
+                            </div>
+                            <div>
+                                <BuilderDeckResume />
                             </div>
                         </div>
-                        <div>
-                            <BuilderDeckResume />
-                        </div>
                     </div>
-                    <div className="flex flex-col gap-2 items-end">
-                        <Button color="blue" content="Save" style="hidden sm:block h-fit px-5 py-1 rounded-xs font-bold text-my-white" onClick={handleSave} disabled={!hasChanges} />
-                        <button className="flex" onClick={() => setVisible(!visible)}>
-                            <div className="rounded-tl rounded-bl bg-gray-500 px-4 py-1">
-                                A
-                            </div>
-                            <div className="rounded-tr rounded-br bg-blue-500 px-4 py-1">
-                                B
-                            </div>
-                        </button>
-                    </div>
+                    <Button color="blue" content="Save" style="hidden sm:block h-fit px-5 py-1 rounded-xs font-bold text-my-white" onClick={handleSave} disabled={!hasChanges} />
                 </div>
-                <Button color="blue" content="Save" style="sm:hidden h-fit px-5 py-1 rounded-xs font-bold text-my-white" onClick={handleSave} disabled={!hasChanges} />
-                <div className="w-full flex justify-between items-center">
-                    <div className="flex gap-4 items-center">
-                        <p className="font-bold text-lg">{`${cardQuantity}/60 cards`}</p>
-                        {cardQuantity > 0 && !sorted && <BuilderDeckTopButton content={
-                            <div className="flex gap-1 items-center">
-                                <FaArrowsRotate className="text-base" />
-                                <p className="text-base">Sort</p>
+                <div className="w-full flex flex-col sm:flex-row sm:items-center gap-4 justify-between">
+                    <div>
+                        <div className="flex gap-4 justify-between items-center">
+                            <button className="group cursor-pointer font-medium rounded-full bg-background-2 p-1" onClick={switchVisible}>
+                                <div className="group relative flex">
+                                    <div className="w-1/2 rounded-full px-3 py-1">
+                                        Public
+                                    </div>
+                                    <div className="w-1/2 rounded-full px-3 py-1">
+                                        Private
+                                    </div>
+                                    <div className={`absolute w-1/2 h-full flex justify-center items-center rounded-full px-3 py-1 bg-background transition-all ${visible ? "translate-x-0" : "translate-x-full"}`}>
+                                        {visible ? "Public" : "Private"}
+                                    </div>
+                                </div>
+                            </button>
+                            <div>
+                                <div className="flex gap-1 items-center">
+                                    <p className="font-bold text-xl">
+                                        {`${cardQuantity}/60 cards`}
+                                    </p>
+                                    <FaInfoCircle className="group animate-pulse" />
+                                </div>
+                                <div className="hidden group-hover:block w-max rounded flex-col gap-2 opacity-80">
+                                    <p>Decks under 60 cards are hidden for all users, even if marked <span className="font-bold">Public</span>. <span className="font-bold">Private</span> decks with 60 cards remain accessible via direct URL</p>
+                                </div>
                             </div>
-                        } style="animate-highlight" onClick={() => sortCards()} />}
+                        </div>
                     </div>
+                    <Button color="blue" content="Save" style="sm:hidden w-full h-fit px-5 py-1 rounded-xs font-bold text-my-white" onClick={handleSave} disabled={!hasChanges} />
                     {cardQuantity > 0 &&
                         <div className="flex gap-2">
                             <BuilderDeckTopButton content={

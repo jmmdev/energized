@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 
 export default function BuilderDeckResume() {
     const {
-        name, setName, legal, setHasChanges
+        name, setName, cardQuantity, legal, setHasChanges
     } = useDeckContext();
 
     const [text, setText] = useState(name);
@@ -31,13 +31,20 @@ export default function BuilderDeckResume() {
 
     return (
         <div>
-            <input className="w-full max-w-sm text-2xl bg-transparent text-foreground rounded border border-transparent hover:border-neutral-500" 
+            <input className="w-full max-w-sm text-2xl bg-background-2 text-foreground rounded border border-transparent font-semibold hover:border-foreground" 
             value={text} onChange={(e) => setText(e.target.value)}/>
-            <p className="px-1.5">
-                Standard: <span className={legal.standard ? "text-emerald-400" : "text-red-400"}>{legal.standard ? "Legal" : "Illegal"}</span>
-                {", "}
-                Expanded: <span className={legal.expanded ? "text-emerald-400" : "text-red-400"}>{legal.expanded ? "Legal" : "Illegal"}</span>
-            </p>
+            <div className="flex gap-2 font-medium mt-2">
+                <p>
+                Standard: <span className={`text-my-white px-2 py-0.5 rounded-sm ${cardQuantity === 60 ? legal.standard ? "bg-emerald-500" : "bg-red-500" : "bg-neutral-500"}`}>
+                            {cardQuantity === 60 ? legal.standard ? "Legal" : "Illegal" : "N/A"}
+                        </span>
+                </p>
+                <p>
+                Expanded: <span className={`text-my-white px-2 py-0.5 rounded-sm ${cardQuantity === 60 ? legal.expanded ? "bg-emerald-500" : "bg-red-500" : "bg-neutral-500"}`}>
+                            {cardQuantity === 60 ? legal.expanded ? "Legal" : "Illegal" : "N/A"}
+                        </span>
+                </p>
+            </div>
         </div>
     )
 }

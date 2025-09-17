@@ -63,7 +63,7 @@ export default function BuildDeckGridCard({elem}) {
                         <FaSpinner className="text-3xl animate-spin" />
                     </div>
                     }
-                    <div className="absolute text-xl -top-2 -right-2 p-2 bg-background-2 rounded-full border-3 border-background-1 group-hover:bg-foreground group-hover:text-highlight transition-all">
+                    <div className="absolute text-xl -top-2 -right-2 p-2 text-my-white bg-neutral-700 rounded-full border-3 border-background-1 group-hover:bg-highlight transition-all">
                         <FaSearchPlus />
                     </div>
                 </div>
@@ -78,7 +78,7 @@ export default function BuildDeckGridCard({elem}) {
                 }
             </div>
             {zoomIn &&
-                <div className="fixed flex flex-col w-full h-full bg-[#000c] z-100 p-8 top-0 left-0">
+                <div className="fixed flex flex-col w-full h-full bg-[#000c] z-[101] p-8 top-0 left-0">
                     <div className="w-full flex-1 flex flex-col justify-center gap-4">
                         <button className="self-end opacity-60 hover:opacity-100 cursor-pointer text-my-white" onClick={() => setZoomIn(false)}>
                             <FaPlus className="text-3xl rotate-45" />

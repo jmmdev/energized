@@ -4,9 +4,11 @@ import { useParams } from "next/navigation";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import ViewDeckListCard from "@/components/view-deck-list-card";
-import { FaArrowAltCircleUp, FaArrowAltCircleLeft, FaUser, FaGripHorizontal, FaList, FaStar, FaRegStar } from "react-icons/fa";
+import { FaUser, FaGripHorizontal, FaList, FaStar, FaRegStar } from "react-icons/fa";
 import CardGrid from "@/components/card-grid";
 import BuilderDeckTopButton from "@/components/builder-deck-top-button";
+import Footer from "@/components/footer";
+import DeckStats from "@/components/deck-stats";
 
 export default function Deck() {
     const {data: session, status} = useSession();
@@ -50,64 +52,66 @@ export default function Deck() {
 
     if (deck)
         return (
-            <div className={`${deck.cards.length <= 0 ? "flex" : ""} flex-1`}>
-                {
-                deck.cards.length > 0
-                ?
-                    <div className="flex justify-center">
-                        <div className="w-full max-w-[1350px]">
-                            <div className="flex flex-col gap-2 p-4 md:p-8 xl:p-12 pb-[0_!important]">
-                                <div className="flex justify-between">
-                                    <h1 className="text-3xl md:text-4xl xl:text-5xl font-bold">{deck.name}</h1>
-                                    {session && session?.user.id !== deck.creator.id &&
-                                    <button onClick={modifyFavorite} className="group text-4xl cursor-pointer hover:opacity-70">
-                                        {isFavorite === true 
-                                            ? <FaStar className="text-yellow-500"/> 
-                                            : <>
-                                                <FaRegStar className="text-foreground group-hover:hidden" />
-                                                <FaStar className="hidden text-foreground group-hover:block" />
-                                            </> 
-                                        }
-                                    </button>
+                <div className="w-full flex flex-col lg:flex-row justify-center flex-1 overflow-y-hidden">
+                    <div className="flex flex-col w-full w-3/4 max-w-[1440px] overflow-y-auto">
+                        <div className="flex flex-col gap-2 p-8 pb-[0_!important]">
+                            <div className="flex justify-between">
+                                <h1 className="text-3xl md:text-4xl xl:text-5xl font-bold">{deck.name}</h1>
+                                {session && session?.user.id !== deck.creator.id &&
+                                <button onClick={modifyFavorite} className="group text-4xl cursor-pointer hover:opacity-70">
+                                    {isFavorite === true 
+                                        ? <FaStar className="text-yellow-500"/> 
+                                        : <>
+                                            <FaRegStar className="text-foreground group-hover:hidden" />
+                                            <FaStar className="hidden text-foreground group-hover:block" />
+                                        </> 
                                     }
-                                </div>
-                                <div className="w-full flex items-center justify-between">
-                                    <a className="w-fit flex items-center cursor-pointer hover:text-highlight md:text-lg xl:text-xl gap-2 font-light"
-                                    href={`/user/${deck.creator.name}`}>
-                                        <FaUser />
-                                        <h2 className="underline">{deck.creator.name}</h2>
-                                    </a>
+                                </button>
+                                }
+                            </div>
+                            <div className="w-full flex items-center justify-between">
+                                <a className="w-fit flex items-center cursor-pointer hover:text-highlight md:text-lg xl:text-xl gap-2 font-light"
+                                href={`/user/${deck.creator.name}`}>
+                                    <FaUser />
+                                    <h2 className="underline">{deck.creator.name}</h2>
+                                </a>
+                                {deck.cards.length > 0 &&
                                     <div className="self-end flex gap-2">
                                         <BuilderDeckTopButton content={<FaGripHorizontal />} onClick={() => setDisplay("grid")} selected={display === "grid"} />
                                         <BuilderDeckTopButton content={<FaList />} onClick={() => setDisplay("list")} selected={display === "list"} />
                                     </div>
-                                </div>
-                            </div>
-                            <div className="p-4 md:p-8 xl:p-12">
-                                {
-                                display === "grid"
-                                ?
-                                    <CardGrid cards={deck.cards} />
-                                :
-                                    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-1">
-                                    {
-                                        deck.cards.map((elem) => {
-                                            return <ViewDeckListCard key={"list"+elem.card.id} elem={elem} />
-                                        })
-                                    }
-                                    </div>
                                 }
                             </div>
                         </div>
+                        {deck.cards.length > 0 ?
+                        <div className="flex-1 p-8">
+                            {
+                            display === "grid"
+                            ?
+                                <CardGrid cards={deck.cards} />
+                            :
+                                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-1">
+                                {
+                                    deck.cards.map((elem) => {
+                                        return <ViewDeckListCard key={"list"+elem.card.id} elem={elem} />
+                                    })
+                                }
+                                </div>
+                            }
+                        </div>
+                        : 
+                        <div className="flex-1 p-8">
+                            <div className="flex items-center justify-center h-full text-3xl opacity-60 text-center bg-background-1 rounded-xl">
+                                <p>This deck has no cards yet</p>
+                            </div>
+                        </div>
+                        }
+                        <Footer />
                     </div>
-                :
-                    <div className="flex flex-col lg:flex-row flex-1 items-center justify-center opacity-40 gap-2">
-                        <FaArrowAltCircleUp className="animate-bounce lg:hidden text-3xl lg:text-4xl xl:text-5xl" />
-                        <FaArrowAltCircleLeft className="animate-slide hidden lg:block text-3xl lg:text-4xl xl:text-5xl" />
-                        <p className="text-2xl sm:text-3xl xl:text-4xl">Search and add cards to your deck</p>
+                    <div className="w-full lg:w-1/4 border-t-2 border-background bg-background-1 overflow-y-auto">
+                        <DeckStats deck={deck} />
                     </div>
-                }
-            </div>
+                </div>
         )
 
     return null;
