@@ -7,6 +7,19 @@
   -ms-overflow-style: none;
   scrollbar-width: none;
  }
+
+ ::-webkit-scrollbar {
+    width: 20px;
+  }
+
+ ::-webkit-scrollbar-track {
+    background: var(--background-2);
+  }
+
+ ::-webkit-scrollbar-thumb {
+    background: var(--background-1);
+    border: 1px solid var(--background-2);
+  }
 }
 
 :root {
