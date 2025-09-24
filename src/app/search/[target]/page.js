@@ -31,7 +31,7 @@ export default function TargetSearch() {
         return (
             <div className="w-full flex h-full justify-center">
                 <div className="w-full flex flex-col max-w-[1440px] justify-center p-8 xl:p-12 gap-4">
-                    <ListDisplay type={params.target} list={output} name={searchParams.get("name")} />
+                    <ListDisplay type={params.target} list={output} name={searchParams.get("name")} perPage={12} />
                 </div>
             </div>
         )

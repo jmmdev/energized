@@ -1,26 +1,30 @@
 [
     {
         "img": "test1.jpg",
-        "title": "welcome to energizer!",
+        "title": "welcome to energized!",
         "subtitle": "build NOW!",
-        "href": "/build/new"
+        "href": "/build/new",
+        "background": "bg-gradient-to-r from-background-2 via-background-1 to-background-2"
     },
     {
         "img": "test1.jpg",
         "title": "raging bolt ex",
         "subtitle": "release a furious shock at your opponents!",
-        "href": "/deck/6894402305057f0bbbfa0679"
+        "href": "/deck/6894402305057f0bbbfa0679",
+        "background": "bg-gradient-to-r from-yellow-600 via-yellow-800 to-yellow-600"
     },
     {
         "img": "test1.jpg",
-        "title": "[featured deck #2]",
-        "subtitle": "catchy phrase #2",
-        "href": "/"
+        "title": "dragapult ex",
+        "subtitle": "storm the board nonstop",
+        "href": "/deck/68c1d21a617aea1a22555ff0",
+        "background": "bg-gradient-to-r from-teal-500 via-teal-700 to-teal-500"
     },
     {
         "img": "test1.jpg",
         "title": "new to energized?",
         "subtitle": "check out our new user guide",
-        "href": "/"
+        "href": "/",
+        "background": "bg-gradient-to-r from-violet-400 via-violet-700 to-violet-400"
     }
 ]

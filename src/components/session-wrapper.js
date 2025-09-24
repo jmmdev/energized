@@ -26,7 +26,7 @@ export default function SessionWrapper({ children }) {
     let i=0;
 
     while (!pathFound && i < pathList.length) {
-      if (pathname.includes(pathList[i]))
+      if (!pathname.includes("/search") && pathname.includes(pathList[i]))
         pathFound = true;
       
       i++;

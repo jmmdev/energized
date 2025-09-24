@@ -82,7 +82,7 @@ export const DeckProvider = ({ children }) => {
     }
 
     const initializeDeck = async (deckId) => {
-        const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/decks/${deckId}`,
+        const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/decks?id=${deckId}`,
             {
                 withCredentials: true
             });

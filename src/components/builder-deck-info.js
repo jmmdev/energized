@@ -101,7 +101,13 @@ export default function BuilderDeckInfo({updateDeck, setShowImgSelector}) {
                 <div className="w-full flex flex-col sm:flex-row sm:items-center gap-4 justify-between">
                     <div>
                         <div className="flex gap-4 justify-between items-center">
-                            <button className="group cursor-pointer font-medium rounded-full bg-background-2 p-1" onClick={switchVisible}>
+                            <div className="flex gap-1 items-center">
+                                <p className="font-bold text-xl">
+                                    {`${cardQuantity}/60 cards`}
+                                </p>
+                            </div>
+                            <button className={`group font-medium rounded-full bg-background-2 p-1 ${cardQuantity !== 60 ? "opacity-70 cursor-default" : "cursor-pointer"}`}
+                            onClick={switchVisible} disabled={cardQuantity !== 60}>
                                 <div className="group relative flex">
                                     <div className="w-1/2 rounded-full px-3 py-1">
                                         Public
@@ -109,22 +115,17 @@ export default function BuilderDeckInfo({updateDeck, setShowImgSelector}) {
                                     <div className="w-1/2 rounded-full px-3 py-1">
                                         Private
                                     </div>
-                                    <div className={`absolute w-1/2 h-full flex justify-center items-center rounded-full px-3 py-1 bg-background transition-all ${visible ? "translate-x-0" : "translate-x-full"}`}>
+                                    <div className={`absolute w-1/2 h-full flex justify-center items-center rounded-full px-3 py-1 bg-background transition-all 
+                                        ${visible ? "translate-x-0" : "translate-x-full"}`}>
                                         {visible ? "Public" : "Private"}
                                     </div>
                                 </div>
                             </button>
-                            <div>
-                                <div className="flex gap-1 items-center">
-                                    <p className="font-bold text-xl">
-                                        {`${cardQuantity}/60 cards`}
-                                    </p>
-                                    <FaInfoCircle className="group animate-pulse" />
-                                </div>
-                                <div className="hidden group-hover:block w-max rounded flex-col gap-2 opacity-80">
-                                    <p>Decks under 60 cards are hidden for all users, even if marked <span className="font-bold">Public</span>. <span className="font-bold">Private</span> decks with 60 cards remain accessible via direct URL</p>
-                                </div>
+                            {cardQuantity !== 60 &&
+                            <div className="w-max gap-2 text-red-400">
+                                <p>Decks under 60 cards are <span className="font-bold uppercase">always</span> hidden.</p>
                             </div>
+                            }
                         </div>
                     </div>
                     <Button color="blue" content="Save" style="sm:hidden w-full h-fit px-5 py-1 rounded-xs font-bold text-my-white" onClick={handleSave} disabled={!hasChanges} />

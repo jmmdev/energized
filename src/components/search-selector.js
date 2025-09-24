@@ -16,8 +16,8 @@ export default function SearchSelector({options, target, setTarget}) {
                 <div id="arrow" className= 
                 {`border-l-transparent border-r-transparent border-l-6 border-r-6 ${showOptions ? "border-b-6" : "border-t-6"}`} />
             </div>
-            <div id="options" className={`${!showOptions && "invisible"} w-full absolute z-99 top-full left-0 bg-highlight text-my-white cursor-default border-t border-[#fff8]`}>
-                {options.map((element, index) => {
+            <div id="options" className={`${!showOptions && "invisible"} w-full absolute z-99 top-full left-0 bg-highlight text-my-white cursor-default`}>
+                {options.map(element => {
                     return (
                         <p className={`capitalize px-2 py-1 text-foregorund ${element === target && "hover:bg-highlight-hover"} hover:bg-highlight-hover`}
                         key={element} onClick={(e) => {

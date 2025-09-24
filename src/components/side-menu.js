@@ -11,7 +11,7 @@ import { useEffect, useRef } from "react";
 
 export default function SideMenu({showMenu, setShowMenu}) {
 
-    const USER_SECTIONS = ["user search", "about", "privacy", "copyright"];
+    const USER_SECTIONS = ["about", "privacy", "copyright"];
 
     const {data: session, status} = useSession();
     const router = useRouter();
