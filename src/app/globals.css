@@ -60,6 +60,7 @@
   --font-outfit: var(--font-outfit);
   --breakpoint-xs: 500px;
   --breakpoint-lg: 1152px;
+  --breakpoint-2xl: 1650px;
   --animate-slide: slide 1s infinite;
   --animate-highlight: highlight 1.75s infinite;
 }
@@ -86,6 +87,10 @@ input {
 
 footer a:hover {
   color: var(--highlight)
+}
+
+.recharts-wrapper {
+  align-self: center;
 }
 
 .recharts-wrapper * {

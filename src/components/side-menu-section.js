@@ -1,13 +1,11 @@
-export default function SideMenuSection({content, type, handler, children}) {
+export default function SideMenuSection({content, type, href}) {
     
-    if (type === "button") {
+    if (type === "link") {
         return (
-            <button className="w-full text-left text-foreground border-l-5 border-transparent hover:border-highlight hover:bg-background-1 p-2 cursor-pointer" onClick={(e) => {
-                e.stopPropagation();
-            //handler();
-            }}>
+            <a className="inline-block w-full text-foreground border-l-5 border-transparent hover:border-highlight hover:bg-background-1 cursor-pointer p-2" 
+            href={href}>
                 {content}
-            </button>
+            </a>
         );
     }
 

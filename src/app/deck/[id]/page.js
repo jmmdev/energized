@@ -38,7 +38,6 @@ export default function Deck() {
             }
         }
         if (status !== "loading") {
-            console.log(session);
             initialize();
         }
     }, [status])
@@ -83,17 +82,46 @@ export default function Deck() {
         return (
                 <div className="relative w-full flex flex-col lg:flex-row justify-center flex-1 overflow-y-hidden max-w-[1920px] self-center">
                     <div className="flex flex-col w-full h-full lg:w-2/3 overflow-y-auto">
-                        <div className="flex flex-col gap-2 p-8 pb-[0_!important]">
-                            <div className={`flex flex-col justify-between gap-4 ${deck.cardCount === 60 ? "mt-8 lg:mt-0" : ""}`}>
-                                <div className="flex flex-col w-full gap-4 lg:flex-row lg:justify-between lg:items-center">
-                                    <div className="w-full max-w-4/5">
-                                        <h1 className="w-full truncate text-3xl/10 md:text-4xl/12 xl:text-5xl/14 font-bold">
+                        <div className="flex flex-col gap-4 lg:gap-2 p-8">
+                            <div className="flex flex-col justify-between gap-4">
+                                <div className="flex flex-col w-full lg:flex-row lg:justify-between lg:items-start gap-4 lg:gap-0">
+                                    <div className="w-full">
+                                        <h1 className="w-full max-w-[90%] truncate text-3xl/10 md:text-4xl/12 xl:text-5xl/14 font-bold">
                                             {deck.name}
                                         </h1>
-                                        <p className="font-light opacity-70">Last modified: {getDeckDate(deck)}</p>
+                                        <div className="flex flex-col lg:justify-between sm:flex-row sm:items-center gap-2 sm:gap-8">
+                                            <p className="font-light opacity-70">Last modified: {getDeckDate(deck)}</p>
+                                            <div className="flex items-center gap-4 lg:hidden">
+                                                <a className="w-fit flex items-center cursor-pointer hover:text-highlight md:text-lg xl:text-xl gap-2 font-light"
+                                                href={`/user/${deck.creator.name}`}>
+                                                    <FaUser />
+                                                    <h2>{deck.creator.name}</h2>
+                                                </a>
+                                                <div className="flex items-center gap-1">
+                                                    {session && session?.user.id !== deck.creator.id ?
+                                                    <button onClick={modifyFavorite} className="group text-2xl cursor-pointer hover:opacity-70">
+                                                        {isFavorite === true 
+                                                            ? <FaStar className="text-yellow-500"/> 
+                                                            : <>
+                                                                <FaRegStar className="text-foreground group-hover:hidden" />
+                                                                <FaStar className="hidden text-foreground group-hover:block" />
+                                                            </> 
+                                                        }
+                                                    </button>
+                                                    :
+                                                    <div className="text-2xl opacity-70">
+                                                        <FaStar />
+                                                    </div>
+                                                    }
+                                                    <p className="font-light italic">
+                                                        {`${deck.favCount} favorite${deck.favCount !== 1 ? "s" : ""}`}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                     {session && session?.user.id === deck.creator.id &&
-                                        <div className="hidden lg:flex gap-4 ">
+                                        <div className="hidden 2xl:flex gap-4 ">
                                             <a className="flex items-center gap-1 uppercase px-4 py-1 rounded bg-blue-500 hover:bg-blue-400 active:bg-blue-600"
                                             href={`/build/${deck._id}`}>
                                                 <FaEdit />
@@ -109,7 +137,7 @@ export default function Deck() {
                                         </div>
                                     }
                                 </div>
-                                <div className="flex items-center gap-4">
+                                <div className="hidden lg:flex items-center gap-4">
                                     <a className="w-fit flex items-center cursor-pointer hover:text-highlight md:text-lg xl:text-xl gap-2 font-light"
                                     href={`/user/${deck.creator.name}`}>
                                         <FaUser />
@@ -137,9 +165,9 @@ export default function Deck() {
                                     </div>
                                 </div>
                             </div>
-                            <div className="flex justify-between lg:justify-end gap-4 items-center mt-8 lg:mt-0">
+                            <div className="flex justify-between 2xl:justify-end gap-4 items-center mb-4">
                                 {session && session?.user.id === deck.creator.id &&
-                                    <div className="flex lg:hidden gap-4">
+                                    <div className="flex 2xl:hidden gap-4">
                                         <a className="flex items-center gap-1 uppercase px-2 py-0.5 text-sm rounded bg-blue-500 hover:bg-blue-400 active:bg-blue-600"
                                         href={`/build/${deck._id}`}>
                                             <FaEdit />
@@ -161,9 +189,9 @@ export default function Deck() {
                                     </div>
                                 }
                             </div>
-                        </div>
+                            
                         {deck.cards.length > 0 ?
-                        <div className="flex-1 p-8">
+                        <div className="flex-1">
                             {
                             display === "grid"
                             ?
@@ -185,6 +213,7 @@ export default function Deck() {
                             </div>
                         </div>
                         }
+                        </div>
                         <Footer />
                     </div>
                     {deck.cardCount === 60 && <DeckStats deck={deck.cards} />}

@@ -52,7 +52,7 @@ export default function SideMenu({showMenu, setShowMenu}) {
                 {USER_SECTIONS.map((elem, index) => {
                     return (
                         <div key={elem} className={`w-full border-background-1 ${index < USER_SECTIONS.length - 1 && "border-b"}`}>
-                            <SideMenuSection type="button" content={elem.toUpperCase()} />
+                            <SideMenuSection type="link" content={elem.toUpperCase()} href={`/${elem}`} />
                         </div>
                     )
                 })}
