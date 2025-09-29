@@ -59,6 +59,7 @@ export const {
                     await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/register`,{
                         username: user.name,
                         email: user.email,
+                        image: user.image,
                     });
                 }
             }

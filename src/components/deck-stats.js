@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { FaCaretDown, FaCaretUp, FaChartBar, FaPlus, FaSpinner } from "react-icons/fa";
+import { FaCaretDown, FaCaretUp, FaChartBar, FaSpinner } from "react-icons/fa";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, Cell, Pie, PieChart, ResponsiveContainer } from "recharts";
 
 export default function DeckStats({deck}) {
@@ -142,12 +142,10 @@ export default function DeckStats({deck}) {
         
         return (
             <div className="flex flex-col w-full">
-                <p className="font-semibold text-xl">By category</p>
-                <PieChart width={300} height={300}>
+                <p className="font-semibold text-lg">By category</p>
+                <PieChart width={250} height={250}>
                     <Pie
                         data={compositionPieRef.current}
-                        cx="50%"
-                        cy="50%"
                         dataKey="value"
                         isAnimationActive={false}
                         labelLine={false}
@@ -159,14 +157,15 @@ export default function DeckStats({deck}) {
 
                             return (
                                 <text
+                                className="uppercase"
                                     x={x}
                                     y={y}
                                     textAnchor="middle"
                                     dominantBaseline="central"
                                     fill="#fff"
                                 >
-                                    <tspan className="font-semibold" x={x} dy="-0.4em">{value}</tspan>
-                                    <tspan x={x} dy="1.2em">{name}</tspan>
+                                    <tspan className="text-sm font-bold" x={x} dy="-0.4em">{value}</tspan>
+                                    <tspan className="text-sm" x={x} dy="1.2em">{name}</tspan>
                                 </text>
                             );
                         }}>
@@ -196,8 +195,8 @@ export default function DeckStats({deck}) {
 
         return (
             <div className="flex flex-col w-full gap-4">
-                <p className="font-semibold text-xl">By subcategory</p>
-                <ResponsiveContainer width="100%" height={300}>
+                <p className="font-semibold text-lg">By subcategory</p>
+                <ResponsiveContainer width="100%" height={250}>
                     <BarChart data={compositionStackBarRef.current} barGap={4}>
                         <XAxis dataKey="category" tick={{ fill: "#fff" }} axisLine={{stroke: "#fff"}} tickLine={{stroke: "#fff"}} />
                         <YAxis allowDecimals={false} width={30} tick={{ fill: "#fff" }} axisLine={{stroke: "#fff"}} tickLine={{stroke: "#fff"}} />
@@ -227,8 +226,8 @@ export default function DeckStats({deck}) {
     const EnergyCurve = ({dataKey}) => {
         return (
             <div className="flex flex-col w-full gap-4">
-                <p className="font-semibold text-xl">{dataKey === "total" ? "Total attack spread" : "Unique attack spread"}</p>
-                <ResponsiveContainer width="100%" height={300}>
+                <p className="font-semibold text-lg">{dataKey === "total" ? "Total attack spread" : "Unique attack spread"}</p>
+                <ResponsiveContainer width="100%" height={250}>
                     <BarChart data={energyTinyBarRef.current}>
                         <XAxis dataKey="name" tick={{ fill: "#fff" }} axisLine={{stroke: "#fff"}} tickLine={{stroke: "#fff"}} />
                         <YAxis width={30} allowDecimals={false} tick={{ fill: "#fff" }} axisLine={{stroke: "#fff"}} tickLine={{stroke: "#fff"}} />
@@ -249,40 +248,43 @@ export default function DeckStats({deck}) {
             "#e5e5e5"];
 
         return (
-            <div className="relative flex flex-col">
-                <PieChart width={300} height={300}>
-                    <Pie
-                        data={data}
-                        cx="50%"
-                        cy="50%"
-                        dataKey="value"
-                        isAnimationActive={false}
-                        labelLine={false}
-                        innerRadius={70}
-                        stroke="none">
-                        {data.map((entry, index) => (
-                            <Cell key={`cell-${entry.name}`} fill={COLORS[index % COLORS.length]} />
-                        ))}
-                    </Pie>
-                </PieChart>
-                <p className="absolute top-1/2 left-1/2 -translate-1/2 w-fit text-5xl font-bold">
-                    {textValue}%
-                </p>
+            <div className="flex flex-col w-full">
+                <p className="font-semibold text-lg">{first ? "Chance of Basic PKMN" : "Chance of Energy"}</p>
+                <div className="relative self-center w-[250px] aspect-square">
+                    <PieChart width={250} height={250}>
+                        <Pie
+                            data={data}
+                            cx="50%"
+                            cy="50%"
+                            dataKey="value"
+                            isAnimationActive={false}
+                            labelLine={false}
+                            innerRadius={65}
+                            stroke="none">
+                            {data.map((entry, index) => (
+                                <Cell key={`cell-${entry.name}`} fill={COLORS[index % COLORS.length]} />
+                            ))}
+                        </Pie>
+                    </PieChart>
+                    <p className="absolute top-1/2 left-1/2 -translate-1/2 w-fit text-4xl font-bold">
+                        {textValue}%
+                    </p>
+                </div>
             </div>
         )
     }
     
     return (
         <div className="flex flex-col w-full sm:flex-1">
-            <button className="group w-full lg:hidden flex flex-col items-center gap-2 p-4 bg-background-1/90 text-xl cursor-pointer" onClick={() => setShowStats(!showStats)}>
+            <button className="group w-full lg:hidden flex flex-col items-center gap-2 p-4 bg-background-1 text-xl cursor-pointer" onClick={() => setShowStats(!showStats)}>
                 <div className="w-48 h-2 bg-foreground/30 rounded-full group-hover:bg-foreground/60" />
                 <div className="flex opacity-30 group-hover:opacity-60 gap-1">
                     <FaChartBar />
                     <FaCaretUp />
                 </div>
             </button>
-            <div className={`absolute lg:relative bottom-0 left-0 flex flex-col lg:flex-row w-full lg:h-full z-80 bg-background
-                ${showStats ? "h-full" : "h-0 overflow-y-hidden"} transition-all`}>
+            <div className={"absolute lg:relative bottom-0 left-0 flex flex-col lg:flex-row w-full lg:h-full z-80 transition-all " +
+                `${showStats ? "h-full" : "h-0 overflow-y-hidden"}`}>
                 <button className="group w-full lg:hidden flex flex-col items-center gap-2 p-4 bg-background-1 text-xl cursor-pointer" onClick={() => setShowStats(!showStats)}>
                     <div className="w-48 h-2 bg-foreground/30 rounded-full group-hover:bg-foreground/60" />
                     <div className="flex opacity-30 group-hover:opacity-60 gap-1">
@@ -290,7 +292,7 @@ export default function DeckStats({deck}) {
                         <FaCaretDown />
                     </div>
                 </button>
-                <div className="flex flex-col w-full h-full lg:gap-4 overflow-y-auto">
+                <div className="flex flex-col w-full h-full lg:gap-4 overflow-y-auto bg-background">
                     {loading ?
                     <div className="flex flex-col w-full h-full justify-center items-center gap-2">
                         <FaSpinner className="text-2xl animate-spin" />
@@ -300,7 +302,7 @@ export default function DeckStats({deck}) {
                     <div className="w-full">
                         <div className="flex flex-col w-full gap-8">
                             <DataDisplay display={
-                                <div className="w-full flex flex-col sm:flex-row lg:flex-col 2xl:flex-row gap-8">
+                                <div className="w-full flex flex-col sm:flex-row lg:flex-col 2xl:flex-row gap-4">
                                     <DeckComp_PieChart />
                                     <DeckComp_StackBar />
                                 </div>
@@ -309,7 +311,7 @@ export default function DeckStats({deck}) {
 
                         <div className="flex flex-col w-full gap-8">
                             <DataDisplay display={
-                                <div className="w-full flex flex-col sm:flex-row lg:flex-col 2xl:flex-row gap-8">
+                                <div className="w-full flex flex-col sm:flex-row lg:flex-col 2xl:flex-row gap-4">
                                     <EnergyCurve dataKey="total" />
                                     <EnergyCurve dataKey="value" />
                                 </div>
@@ -320,18 +322,12 @@ export default function DeckStats({deck}) {
                         <h1 className={"sticky top-0 w-full text-2xl font-bold bg-background-1/80 p-4 z-10 backdrop-blur-sm"}>
                             Starting hand odds
                         </h1>
-                            <div className="flex flex-col w-full items-center justify-center sm:flex-row lg:flex-col 2xl:flex-row gap-8 p-4">
+                            <div className="flex flex-col w-full items-center justify-center sm:flex-row lg:flex-col 2xl:flex-row gap-4 p-4">
                                 <div className="flex flex-col w-full gap-4">
-                                    <p className="font-semibold text-xl">
-                                        Chance of Basic Pokémon
-                                    </p>
-                                    <DrawGauge data={drawGaugeRef.current.basic} textValue={Math.round(drawGaugeRef.current.basic[0].value)} first />
+                                    <DrawGauge data={drawGaugeRef.current.basic} textValue={Math.round(drawGaugeRef.current.basic[0].value * 10) / 10} first />
                                 </div>
                                 <div className="flex flex-col w-full gap-4">
-                                    <p className="font-semibold text-xl">
-                                        Chance of Energy
-                                    </p>
-                                    <DrawGauge data={drawGaugeRef.current.energy} textValue={Math.round(drawGaugeRef.current.energy[0].value)} />
+                                    <DrawGauge data={drawGaugeRef.current.energy} textValue={Math.round(drawGaugeRef.current.energy[0].value * 10) / 10} />
                                 </div>
                             </div>
                         </div>

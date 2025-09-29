@@ -6,8 +6,7 @@ import { getSession, useSession } from "next-auth/react";
 import HeaderButton from "@/components/header-button";
 import SideMenu from "@/components/side-menu";
 import CompactLogin from "./compact-login";
-import {FaHammer, FaUserCog, FaTimes, FaBars, FaUser, FaStar} from "react-icons/fa";
-import {TbCardsFilled} from "react-icons/tb"
+import {FaHammer, FaUserCog, FaTimes, FaBars, FaUser} from "react-icons/fa";
 import { useRouter } from "next/navigation";
 import Button from "./button";
 import { usePathname } from "next/navigation";

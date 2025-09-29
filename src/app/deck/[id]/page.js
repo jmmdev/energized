@@ -78,10 +78,10 @@ export default function Deck() {
         return date.toLocaleDateString("en-GB");
     }
 
-    if (deck)
+    if (status !== "loading" && deck)
         return (
                 <div className="relative w-full flex flex-col lg:flex-row justify-center flex-1 overflow-y-hidden max-w-[1920px] self-center">
-                    <div className="flex flex-col w-full h-full lg:w-2/3 overflow-y-auto">
+                    <div className="flex flex-col w-full h-full lg:w-3/4 overflow-y-auto">
                         <div className="flex flex-col gap-4 lg:gap-2 p-8">
                             <div className="flex flex-col justify-between gap-4">
                                 <div className="flex flex-col w-full lg:flex-row lg:justify-between lg:items-start gap-4 lg:gap-0">
@@ -141,7 +141,7 @@ export default function Deck() {
                                     <a className="w-fit flex items-center cursor-pointer hover:text-highlight md:text-lg xl:text-xl gap-2 font-light"
                                     href={`/user/${deck.creator.name}`}>
                                         <FaUser />
-                                        <h2>{deck.creator.name}</h2>
+                                        <h2 className="underline">{deck.creator.name}</h2>
                                     </a>
                                     <div className="flex items-center gap-1">
                                         {session && session?.user.id !== deck.creator.id ?

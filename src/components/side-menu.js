@@ -11,7 +11,12 @@ import { useEffect, useRef } from "react";
 
 export default function SideMenu({showMenu, setShowMenu}) {
 
-    const USER_SECTIONS = ["about", "privacy", "copyright"];
+    const USER_SECTIONS = [
+        {text: "about", route: "https://devjosm.vercel.app"}, 
+        {text: "privacy", route: "/privacy"}, 
+        {text: "copyright", route: "/copyright"},
+        {text: "terms of use", route: "/terms-of-use"}
+    ];
 
     const {data: session, status} = useSession();
     const router = useRouter();
@@ -51,8 +56,8 @@ export default function SideMenu({showMenu, setShowMenu}) {
             <div>
                 {USER_SECTIONS.map((elem, index) => {
                     return (
-                        <div key={elem} className={`w-full border-background-1 ${index < USER_SECTIONS.length - 1 && "border-b"}`}>
-                            <SideMenuSection type="link" content={elem.toUpperCase()} href={`/${elem}`} />
+                        <div key={elem.text} className={`w-full border-background-1 ${index < USER_SECTIONS.length - 1 && "border-b"}`}>
+                            <SideMenuSection type="link" content={elem.text.toUpperCase()} href={`${elem.route}`} />
                         </div>
                     )
                 })}
@@ -77,7 +82,7 @@ export default function SideMenu({showMenu, setShowMenu}) {
         }}>
             <div className="relative w-full h-full">
                 <div id="side-menu"
-                className={"w-full md:w-2/5 xl:w-1/4 h-full flex flex-col gap-4 bg-background absolute top-0 left-full text-foreground p-4 transition-transform " +
+                className={"w-full md:w-2/5 xl:w-1/4 max-w-[500px] h-full flex flex-col gap-4 bg-background absolute top-0 left-full text-foreground p-4 transition-transform " +
                     `${showMenu && "-translate-x-full"}`} onClick={(e) => e.stopPropagation()}>
                     {!session &&
                     <div className="w-full lg:hidden">

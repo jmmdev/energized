@@ -7,6 +7,13 @@ export default function Footer(){
     const {data: session, status} = useSession();
 
     const [loaded, setLoaded] = useState(false);
+
+    const FOOTER_SECTIONS = [
+        {text: "about", route: "https://devjosm.vercel.app"}, 
+        {text: "privacy", route: "/privacy"}, 
+        {text: "copyright", route: "/copyright"},
+        {text: "terms of use", route: "/terms-of-use"},
+    ];
     
     useEffect(() => {
         window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
@@ -37,9 +44,9 @@ export default function Footer(){
                     <Logo />
                 </div>
                 <div className="flex gap-4">
-                    <a href="https://devjosm.vercel.app" target="_blank">About</a>
-                    <a href="/" target="_blank">Privacy</a>
-                    <a href="/" target="_blank">Copyright</a>
+                    {
+                        FOOTER_SECTIONS.map(elem => <a className="capitalize" key={elem.text} href={elem.route} target="_blank">{elem.text}</a>)
+                    }
                 </div>
             </div>
         </footer>

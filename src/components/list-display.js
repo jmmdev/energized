@@ -42,9 +42,7 @@ export default function ListDisplay({type, list, name, isOwn, isFav, isHome, per
                 {!isOwn && !isFav && !isHome &&
                     <h1 className="text-4xl font-bold"><span className="capitalize">{type.slice(0, -1)}</span> search results for "{name}"</h1>
                 }
-                {isHome &&
-                    <h1 className="text-4xl font-bold">{name}</h1>
-                }
+                {isHome && <h1 className="text-4xl font-bold">{name}</h1>}
                 <div className={`w-full flex-1 ${type === "users" ? "flex flex-wrap gap-4" : "flex flex-col gap-2"}`}>
                     {
                         subList.map((elem, index) => {
@@ -61,7 +59,7 @@ export default function ListDisplay({type, list, name, isOwn, isFav, isHome, per
                                                     <p>{elem.name}</p>
                                                 </a>
                                                 {!isOwn && 
-                                                    <a className="child flex items-center gap-1 font-light cursor-pointer group-hover:text-foreground hover:text-highlight" 
+                                                    <a className="child flex items-center gap-1 font-light cursor-pointer group-hover:text-foreground hover:text-highlight pr-2" 
                                                     href={`/user/${elem.creator.name}`} onClick={(e) => e.stopPropagation()}>
                                                         <FaUser />
                                                         {elem.creator.name}
@@ -98,6 +96,17 @@ export default function ListDisplay({type, list, name, isOwn, isFav, isHome, per
             </div>
         )
     }
+
+    if (isHome) {
+        return (
+            <div className="flex flex-col flex-1 h-full gap-4">
+                <h1 className="text-4xl font-bold">{name}</h1>
+                <div className="flex flex-1 justify-center items-center bg-background-1 rounded-lg p-4 md:p-12 py-8">
+                    <p className="text-center text-2xl opacity-60">No decks to show</p>
+                </div>
+            </div>
+        )
+    }
     
     if (isOwn) {
         return (
@@ -112,7 +121,9 @@ export default function ListDisplay({type, list, name, isOwn, isFav, isHome, per
     if (isFav) {
         return (
             <div className="bg-background-1 rounded-lg p-4 md:p-12 py-8">
-                <p className="text-center text-lg opacity-60">There are no favorites yet</p>
+                <p className="text-center text-lg opacity-60">
+                    {`${session && session?.user?.name === name ? "You have" : "This user has"} no favorite decks yet`}
+                </p>
             </div>
         )
     }
