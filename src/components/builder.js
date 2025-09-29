@@ -10,13 +10,13 @@ import BuilderImageSelector from "./builder-image-selector";
 import { useDeckContext } from "@/context/deck-context";
 import BuilderDeckInfo from "./builder-deck-info";
 
-export default function Builder({isNew, deckId}) {
+export default function Builder({deckId}) {
     const router = useRouter();
     const {data: session, status} = useSession();
 
     const {
         deckCreatorId, name, cards, cardQuantity, image, legal, visible, hasChanges,
-        setHasChanges, deckError, closeDeckError, createDeck, initializeDeck
+        setHasChanges, deckError, closeDeckError, initializeDeck
     } = useDeckContext();
 
     const [showImgSelector, setShowImgSelector] = useState(false);
@@ -25,22 +25,17 @@ export default function Builder({isNew, deckId}) {
 
     useEffect(() => {
         const initialize = async () => {
-            if (isNew) {
-                const response = await createDeck();
-                router.replace(`/build/${response.data._id}`);
-            }
-            else {
-                try {
-                    await initializeDeck(deckId);
-
-                    if (deckCreatorId.current === session.user.id)
-                        setLoaded(true);
-                    else
-                        router.replace("/");
-                } 
-                catch (e) {
-                    router.replace("/");
+            try {
+                await initializeDeck(deckId);
+                
+                if (deckCreatorId.current === session.user.id) {
+                    setLoaded(true);
                 }
+                else
+                    router.replace("/");
+            } 
+            catch (e) {
+                router.replace("/");
             }
         }
 

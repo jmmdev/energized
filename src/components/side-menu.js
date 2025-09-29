@@ -74,8 +74,8 @@ export default function SideMenu({showMenu, setShowMenu}) {
     }
 
     return (
-        <aside id="side-menu-container" className={"w-dvw flex-auto fixed  left-0 transition-all " + 
-            `${pathname.includes("/build") ? "h-[calc(100dvh_-_48px)] top-12" : "h-[calc(100dvh_-_96px)] top-24"} ${showMenu ? "bg-[#0008] z-90" : "-z-1"}`} 
+        <aside id="side-menu-container" className={"w-dvw flex-auto fixed  left-0 " + 
+            `${pathname.includes("/build") ? "h-[calc(100dvh_-_48px)] top-12" : "h-[calc(100dvh_-_96px)] top-24"} ${showMenu ? "bg-[#0008] z-95" : "-z-1"}`} 
         onClick={(e) => {
             e.preventDefault();
             setShowMenu(false);

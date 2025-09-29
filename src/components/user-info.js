@@ -13,7 +13,7 @@ export default function UserInfo({user}) {
             <div className="relative w-12 xl:w-16 aspect-square">
                 <Image className="w-full h-auto rounded-full" width={2000} height={2000} src={user.image} alt="User's avatar"  />
             </div>
-            <div className="">
+            <div className="flex flex-col gap-1">
                 <h1 className="text-3xl xl:text-5xl">{user.name}</h1>
                 <p className="opacity-70 font-light">Member since {getUserDate()}</p>
             </div>

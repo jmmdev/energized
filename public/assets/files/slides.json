@@ -1,9 +1,9 @@
 [
     {
         "img": "test1.jpg",
-        "title": "welcome to energized!",
-        "subtitle": "build NOW!",
-        "href": "/build/new",
+        "title": "new to energized?",
+        "subtitle": "check out our new user guide",
+        "href": "/",
         "background": "bg-gradient-to-r from-violet-500 via-violet-700 to-violet-500"
     },
     {
@@ -19,12 +19,6 @@
         "subtitle": "storm the board nonstop",
         "href": "/deck/68c1d21a617aea1a22555ff0",
         "background": "bg-gradient-to-r from-teal-500 via-teal-700 to-teal-500"
-    },
-    {
-        "img": "test1.jpg",
-        "title": "new to energized?",
-        "subtitle": "check out our new user guide",
-        "href": "/",
-        "background": "bg-gradient-to-r from-pink-500 via-pink-700 to-pink-500"
     }
+    
 ]

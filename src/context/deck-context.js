@@ -1,14 +1,12 @@
 import React, { createContext, useContext, useEffect, useRef, useState } from 'react';
 import TCGdex from '@tcgdex/sdk';
 import axios from 'axios';
-import { useSession } from 'next-auth/react';
 
 const DeckContext = createContext();
 
 export const useDeckContext = () => useContext(DeckContext);
 
 export const DeckProvider = ({ children }) => {
-    const {data: session, status} = useSession();
     const tcgdex = new TCGdex('en');
 
     const deckCreatorId = useRef(null);
@@ -56,30 +54,6 @@ export const DeckProvider = ({ children }) => {
                 setWaiting(false);
         }
     }, [cards])
-
-    const createDeck = async () => {
-        const response = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/decks`, {
-            data: {
-                creator: {
-                    id: session.user?.id,
-                    name: session.user?.name
-                },
-                name: "Unnamed deck",
-                cards: [],
-                image: "/assets/images/deck-logo-0.png",
-                legal: {
-                    standard: false,
-                    expanded: false,
-                },
-                cardCount: 0,
-                visible: true,
-            },
-        },
-        {
-            withCredentials: true
-        });
-        return response;
-    }
 
     const initializeDeck = async (deckId) => {
         const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/decks?id=${deckId}`,
@@ -209,7 +183,7 @@ export const DeckProvider = ({ children }) => {
 
   return (
     <DeckContext.Provider value={{ 
-        deckCreatorId, name, setName, cards, setCards, image, setImage, legal, setLegal, hasChanges, setHasChanges, createDeck, initializeDeck,
+        deckCreatorId, name, setName, cards, setCards, image, setImage, legal, setLegal, hasChanges, setHasChanges, initializeDeck,
         countCardsWithName, deckHasRadiant, cardHasLimit, addCard, removeCard, cardQuantity, setCardQuantity, deckError, closeDeckError, waiting, 
         setWaiting, visible, setVisible
      }}>

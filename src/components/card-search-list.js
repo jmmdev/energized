@@ -147,7 +147,7 @@ export default function CardSearchList({cardScrollRef}) {
 
         return (
                 <>
-                <div className="relative w-full grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 px-12 lg:px-4 gap-12 lg:gap-4 overflow-auto">
+                <div className="relative w-full grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 px-12 lg:px-4 gap-12 lg:gap-4 overflow-y-auto">
                     {
                         subList.map((elem) => {
                             if (elem.image) {
