@@ -9,15 +9,11 @@ export default function SessionWrapper({ children }) {
   
   const HIDE_HEADER = ["/admin", "/register", "/login"];
   const HIDE_FOOTER = ["/build", "/deck"];
-  const SIMPLE_HEADER = ["/build"];
   const pathname = usePathname();
 
   const getPathType = () => {
     if (searchPathInList(HIDE_HEADER))
       return "restricted";
-
-    if (searchPathInList(SIMPLE_HEADER))
-      return "simplified";
   }
 
   const searchPathInList = (pathList) => {
@@ -28,7 +24,6 @@ export default function SessionWrapper({ children }) {
     while (!pathFound && i < pathList.length) {
       if (!pathname.includes("/search") && pathname.includes(pathList[i]))
         pathFound = true;
-      
       i++;
     }
 

@@ -4,11 +4,13 @@ import { useSession, getSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import { FaPlus, FaSpinner } from "react-icons/fa";
+import { FaChartBar, FaPlus, FaSearch, FaSpinner, FaTools } from "react-icons/fa";
 import BuilderCardSearch from "./builder-card-search";
 import BuilderImageSelector from "./builder-image-selector";
 import { useDeckContext } from "@/context/deck-context";
 import BuilderDeckInfo from "./builder-deck-info";
+import Drawer from "./drawer";
+import DeckStats from "./deck-stats";
 
 export default function Builder({deckId}) {
     const router = useRouter();
@@ -71,7 +73,7 @@ export default function Builder({deckId}) {
 
     useEffect(() => {
         const doSave = async () => {
-            await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/decks`, {
+            await axios.post(`/xapi/decks`, {
                 deckId,
                 data: {
                     name, cards, image, legal, visible, cardCount: cardQuantity
@@ -98,12 +100,14 @@ export default function Builder({deckId}) {
         return <LoginForm onLoginSuccess={refreshSession} />
 
     return (
-        <>
-        <main className="relative flex flex-col lg:flex-row-reverse h-full bg-background overflow-y-hidden">
+        <main className="relative w-full flex flex-col lg:flex-row justify-center flex-1 overflow-y-hidden self-center">
+            <Drawer drawerIcon={<FaTools />} iconList={[<FaSearch />, <FaChartBar />]}>
+                <BuilderCardSearch />
+                <DeckStats deck={cards} />
+            </Drawer>
             {cards && legal &&
                 <BuilderDeckInfo updateDeck={updateDeck} setShowImgSelector={setShowImgSelector} />
             }
-            <BuilderCardSearch />
             {(deckError.show || saving) &&
                 <div className="absolute top-0 left-0 w-full h-full bg-[#000a] flex items-center justify-center z-200">
                     {deckError.show &&
@@ -119,16 +123,15 @@ export default function Builder({deckId}) {
                     </div>
                     }
                     {saving &&
-                    <div className="flex flex-col w-full max-w-[400px] gap-4 items-center justify-center rounded text-xl p-8 bg-background-1">
+                    <div className="flex flex-col w-full gap-4 items-center justify-center rounded text-xl p-8">
                         <FaSpinner className="text-3xl animate-spin" />
                         {"Saving..."}
                     </div>
                     }
                 </div>
             }
+            {showImgSelector && <BuilderImageSelector setShowImgSelector={setShowImgSelector} />}
         </main>
-        {showImgSelector && <BuilderImageSelector setShowImgSelector={setShowImgSelector} />}
-        </>
     )
 }
 

@@ -1,10 +1,12 @@
+import { useTheme } from "@/context/theme-context";
 import { useEffect, useRef, useState } from "react";
-import { FaCaretDown, FaCaretUp, FaChartBar, FaSpinner } from "react-icons/fa";
-import { BarChart, Bar, XAxis, YAxis, Tooltip, Cell, Pie, PieChart, ResponsiveContainer } from "recharts";
+import { FaCaretDown, FaCaretLeft, FaCaretRight, FaCaretUp, FaChartBar, FaSpinner } from "react-icons/fa";
+import { BarChart, Bar, XAxis, YAxis, Tooltip, Cell, Pie, PieChart, ResponsiveContainer, Legend } from "recharts";
 
 export default function DeckStats({deck}) {
+    const {theme, setTheme} = useTheme();
+
     const [loading, setLoading] = useState(true);
-    const [showStats, setShowStats] = useState(false);
 
     const compositionPieRef = useRef();
     const compositionStackBarRef = useRef();
@@ -130,7 +132,7 @@ export default function DeckStats({deck}) {
                 <h1 className={"sticky top-0 w-full text-2xl font-bold bg-background-1/80 p-4 z-10 backdrop-blur-sm"}>
                     {name}
                 </h1>
-                <div className="flex flex-col justify-center items-center w-full p-4 gap-4">
+                <div className="flex flex-col justify-center items-center w-full p-6 gap-4">
                     {display}
                 </div>
             </div>
@@ -138,12 +140,13 @@ export default function DeckStats({deck}) {
     }
 
     const DeckComp_PieChart = () => {
-        const COLORS = ["#00C46F", "#DF5042", "#0088FE"];
+        const COLORS = ["#10D47F", "#EF6052", "#1098FE"];
         
         return (
             <div className="flex flex-col w-full">
                 <p className="font-semibold text-lg">By category</p>
                 <PieChart width={250} height={250}>
+                    <Legend  />
                     <Pie
                         data={compositionPieRef.current}
                         dataKey="value"
@@ -151,7 +154,7 @@ export default function DeckStats({deck}) {
                         labelLine={false}
                         label={({ cx, cy, midAngle, innerRadius, outerRadius, name, value }) => {
                             const RADIAN = Math.PI / 180;
-                            const radius = innerRadius + (outerRadius - innerRadius) * 0.6;
+                            const radius = innerRadius + (outerRadius - innerRadius) * 0.58;
                             const x = cx + radius * Math.cos(-midAngle * RADIAN);
                             const y = cy + radius * Math.sin(-midAngle * RADIAN);
 
@@ -164,8 +167,7 @@ export default function DeckStats({deck}) {
                                     dominantBaseline="central"
                                     fill="#fff"
                                 >
-                                    <tspan className="text-sm font-bold" x={x} dy="-0.4em">{value}</tspan>
-                                    <tspan className="text-sm" x={x} dy="1.2em">{name}</tspan>
+                                    <tspan className="text-xl font-bold" x={x} >{value}</tspan>
                                 </text>
                             );
                         }}>
@@ -180,64 +182,79 @@ export default function DeckStats({deck}) {
 
     
     const DeckComp_StackBar = () => {
+        const accentColor = theme === "dark" ? "#eee" : "#111";
         const COLORS = {
-            "Pokemon:Basic": "#00946F",
-            "Pokemon:Stage1": "#00C46F",
-            "Pokemon:Stage2": "#00F46F",
-            "Trainer:Supporter": "#BF3022",
-            "Trainer:Item": "#DF5042",
-            "Trainer:Stadium": "#FF8072",
-            "Energy:Normal": "#0048BE",
-            "Energy:Special": "#0088FE",
+            "Pokemon:Basic": "#00B46F",
+            "Pokemon:Stage1": "#10D47F",
+            "Pokemon:Stage2": "#20F48F",
+            "Trainer:Supporter": "#DF3022",
+            "Trainer:Item": "#EF6052",
+            "Trainer:Stadium": "#FF9082",
+            "Energy:Normal": "#0078DE",
+            "Energy:Special": "#1098FE",
         };
 
         const hasData = (key) => compositionStackBarRef.current.some(row => row[key] && row[key] > 0);
+        const tickStyle = {fill: accentColor, fontWeight: 600};
+        const lineStyle = {stroke: accentColor, strokeWidth: 2};
 
         return (
             <div className="flex flex-col w-full gap-4">
                 <p className="font-semibold text-lg">By subcategory</p>
-                <ResponsiveContainer width="100%" height={250}>
-                    <BarChart data={compositionStackBarRef.current} barGap={4}>
-                        <XAxis dataKey="category" tick={{ fill: "#fff" }} axisLine={{stroke: "#fff"}} tickLine={{stroke: "#fff"}} />
-                        <YAxis allowDecimals={false} width={30} tick={{ fill: "#fff" }} axisLine={{stroke: "#fff"}} tickLine={{stroke: "#fff"}} />
-                        <Tooltip
-                        formatter={(value, name) => {
-                            if (value > 0)
-                                return [value, name.split(":")[1] ?? name]
-                        }}
-                        />
-                        {POKEMON_KEYS.filter(k => hasData(k)).map(k => (
-                            <Bar key={k} dataKey={k} stackId={1} fill={COLORS[k]} isAnimationActive={false} />
-                        ))}
+                <BarChart width={250} height={250} data={compositionStackBarRef.current} barGap={4}>
+                    <XAxis dataKey="category" tick={tickStyle} 
+                    axisLine={lineStyle} tickLine={lineStyle} />
+                    <YAxis allowDecimals={false} width={30} tick={tickStyle} padding={{bottom: 1}}
+                    axisLine={lineStyle} tickLine={lineStyle} />
+                    <Tooltip
+                    formatter={(value, name) => {
+                        if (value > 0)
+                            return [value, name.split(":")[1] ?? name]
+                    }}
+                    />
+                    {POKEMON_KEYS.filter(k => hasData(k)).map(k => (
+                        <Bar key={k} dataKey={k} stackId={1} fill={COLORS[k]} isAnimationActive={false} />
+                    ))}
 
-                        {TRAINER_KEYS.filter(k => hasData(k)).map(k => (
-                            <Bar key={k} dataKey={k} stackId={1} fill={COLORS[k]} isAnimationActive={false} />
-                        ))}
+                    {TRAINER_KEYS.filter(k => hasData(k)).map(k => (
+                        <Bar key={k} dataKey={k} stackId={1} fill={COLORS[k]} isAnimationActive={false} />
+                    ))}
 
-                        {ENERGY_KEYS.filter(k => hasData(k)).map(k => (
-                            <Bar key={k} dataKey={k} stackId={1} fill={COLORS[k]} isAnimationActive={false} />
-                        ))}
-                    </BarChart>
-                </ResponsiveContainer>
+                    {ENERGY_KEYS.filter(k => hasData(k)).map(k => (
+                        <Bar key={k} dataKey={k} stackId={1} fill={COLORS[k]} isAnimationActive={false} />
+                    ))}
+                </BarChart>
             </div>
         )
     }
 
     const EnergyCurve = ({dataKey}) => {
+        const accentColor = theme === "dark" ? "#eee" : "#111";
+        const tickStyle = {fill: accentColor, fontWeight: 600};
+        const lineStyle = {stroke: accentColor, strokeWidth: 2};
+
         return (
             <div className="flex flex-col w-full gap-4">
                 <p className="font-semibold text-lg">{dataKey === "total" ? "Total attack spread" : "Unique attack spread"}</p>
-                <ResponsiveContainer width="100%" height={250}>
-                    <BarChart data={energyTinyBarRef.current}>
-                        <XAxis dataKey="name" tick={{ fill: "#fff" }} axisLine={{stroke: "#fff"}} tickLine={{stroke: "#fff"}} />
-                        <YAxis width={30} allowDecimals={false} tick={{ fill: "#fff" }} axisLine={{stroke: "#fff"}} tickLine={{stroke: "#fff"}} />
-                        <Bar dataKey={dataKey} fill={dataKey === "total" ? "#f7c950" : "#c4c4d4"} isAnimationActive={false}
-                        label={({ payload, x, y, width, height, value }) => {
-                            if (value > 0)
-                                return <text className="font-medium text-lg" x={x + width / 2} y={y + height / 2} fill="#000" textAnchor="middle">{value}</text>
-                        }} />
-                    </BarChart>
-                </ResponsiveContainer>
+                <BarChart width={250} height={250} data={energyTinyBarRef.current}>
+                    <XAxis dataKey="name" tick={tickStyle} 
+                    axisLine={lineStyle} tickLine={lineStyle} />
+                    <YAxis allowDecimals={false} width={30} tick={tickStyle} padding={{bottom: 1}}
+                    axisLine={lineStyle} tickLine={lineStyle} />
+                    <Bar dataKey={dataKey} fill={dataKey === "total" ? "#f7c950" : "#c4c4d4"} isAnimationActive={false}
+                    label={({ payload, x, y, width, height, value }) => {
+                        const fill = height < 50 
+                        ? accentColor
+                        : "#000"
+                        if (value > 0)
+                            return (
+                                <text className="font-medium text-lg" fill={fill} textAnchor="middle"
+                                x={x + width / 2} y={height < 50 ? (y - 5) : y + height / 2}>
+                                    {value}
+                                </text>
+                            )
+                    }} />
+                </BarChart>
             </div>
         )
     }
@@ -274,67 +291,43 @@ export default function DeckStats({deck}) {
         )
     }
     
+    if (loading)
+        return (
+            <div className="flex flex-col w-full h-full justify-center items-center gap-2 bg-background-2">
+                <FaSpinner className="text-2xl animate-spin" />
+                <p className="text-xl">Loading stats...</p>
+            </div>
+        )
+
     return (
-        <div className="flex flex-col w-full sm:flex-1">
-            <button className="group w-full lg:hidden flex flex-col items-center gap-2 p-4 bg-background-1 text-xl cursor-pointer" onClick={() => setShowStats(!showStats)}>
-                <div className="w-48 h-2 bg-foreground/30 rounded-full group-hover:bg-foreground/60" />
-                <div className="flex opacity-30 group-hover:opacity-60 gap-1">
-                    <FaChartBar />
-                    <FaCaretUp />
+            <div className="w-full overflow-y-auto">
+                <div className="flex flex-col w-full">
+                    <DataDisplay display={
+                        <div className="w-full flex flex-col sm:flex-row lg:flex-col xl:flex-row gap-4">
+                            <DeckComp_PieChart />
+                            <DeckComp_StackBar />
+                        </div>
+                    } name="Deck composition" />
                 </div>
-            </button>
-            <div className={"absolute lg:relative bottom-0 left-0 flex flex-col lg:flex-row w-full lg:h-full z-80 transition-all " +
-                `${showStats ? "h-full" : "h-0 overflow-y-hidden"}`}>
-                <button className="group w-full lg:hidden flex flex-col items-center gap-2 p-4 bg-background-1 text-xl cursor-pointer" onClick={() => setShowStats(!showStats)}>
-                    <div className="w-48 h-2 bg-foreground/30 rounded-full group-hover:bg-foreground/60" />
-                    <div className="flex opacity-30 group-hover:opacity-60 gap-1">
-                        <FaChartBar />
-                        <FaCaretDown />
-                    </div>
-                </button>
-                <div className="flex flex-col w-full h-full lg:gap-4 overflow-y-auto bg-background">
-                    {loading ?
-                    <div className="flex flex-col w-full h-full justify-center items-center gap-2">
-                        <FaSpinner className="text-2xl animate-spin" />
-                        <p className="text-xl">Loading stats...</p>
-                    </div>
-                    :
-                    <div className="w-full">
-                        <div className="flex flex-col w-full gap-8">
-                            <DataDisplay display={
-                                <div className="w-full flex flex-col sm:flex-row lg:flex-col 2xl:flex-row gap-4">
-                                    <DeckComp_PieChart />
-                                    <DeckComp_StackBar />
-                                </div>
-                            } name="Deck composition" />
-                        </div>
 
-                        <div className="flex flex-col w-full gap-8">
-                            <DataDisplay display={
-                                <div className="w-full flex flex-col sm:flex-row lg:flex-col 2xl:flex-row gap-4">
-                                    <EnergyCurve dataKey="total" />
-                                    <EnergyCurve dataKey="value" />
-                                </div>
-                            } name="Energy costs & distribution" />
+                <div className="flex flex-col w-full">
+                    <DataDisplay display={
+                        <div className="w-full flex flex-col sm:flex-row lg:flex-col xl:flex-row gap-4">
+                            <EnergyCurve dataKey="total" />
+                            <EnergyCurve dataKey="value" />
                         </div>
+                    } name="Energy costs & distribution" />
+                </div>
 
-                        <div className="flex flex-col w-full items-center">
-                        <h1 className={"sticky top-0 w-full text-2xl font-bold bg-background-1/80 p-4 z-10 backdrop-blur-sm"}>
-                            Starting hand odds
-                        </h1>
-                            <div className="flex flex-col w-full items-center justify-center sm:flex-row lg:flex-col 2xl:flex-row gap-4 p-4">
-                                <div className="flex flex-col w-full gap-4">
-                                    <DrawGauge data={drawGaugeRef.current.basic} textValue={Math.round(drawGaugeRef.current.basic[0].value * 10) / 10} first />
-                                </div>
-                                <div className="flex flex-col w-full gap-4">
-                                    <DrawGauge data={drawGaugeRef.current.energy} textValue={Math.round(drawGaugeRef.current.energy[0].value * 10) / 10} />
-                                </div>
-                            </div>
-                        </div>
+                <div className="flex flex-col w-full">
+                    <h1 className={"sticky top-0 w-full text-2xl font-bold bg-background-1/80 p-4 z-10 backdrop-blur-sm"}>
+                        Starting hand odds
+                    </h1>
+                    <div className="flex flex-col w-full items-center justify-center sm:flex-row lg:flex-col xl:flex-row gap-4 p-6">
+                        <DrawGauge data={drawGaugeRef.current.basic} textValue={Math.round(drawGaugeRef.current.basic[0].value * 10) / 10} first />
+                        <DrawGauge data={drawGaugeRef.current.energy} textValue={Math.round(drawGaugeRef.current.energy[0].value * 10) / 10} />
                     </div>
-                    }
                 </div>
             </div>
-        </div>
     )
 }

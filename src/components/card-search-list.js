@@ -146,8 +146,8 @@ export default function CardSearchList({cardScrollRef}) {
         const subList = cardList.slice(startIndex, endIndex);
 
         return (
-                <>
-                <div className="relative w-full grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 px-12 lg:px-4 gap-12 lg:gap-4 overflow-y-auto">
+            <div className="w-full flex flex-col gap-4 overflow-y-auto search-scrollbar mb-16">
+                <div className="relative grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 px-12 lg:px-4 gap-12 lg:gap-4">
                     {
                         subList.map((elem) => {
                             if (elem.image) {
@@ -160,8 +160,8 @@ export default function CardSearchList({cardScrollRef}) {
                         })
                     }
                 </div>
-                <Pagination list={cardList} pageNumber={pageNumber} setPageNumber={setPageNumber} perPage={PER_PAGE} />
-            </>
+                {cardList.length > PER_PAGE && <Pagination list={cardList} pageNumber={pageNumber} setPageNumber={setPageNumber} perPage={PER_PAGE} />}
+            </div>
         )
     }
     

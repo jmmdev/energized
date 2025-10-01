@@ -1,4 +1,12 @@
 const nextConfig = {
+    async rewrites() {
+      return [
+        {
+          source: "/xapi/:path*",
+          destination: "http://localhost:3500/api/:path*"
+        }
+      ]
+    },
     images: {
       remotePatterns: [
         {

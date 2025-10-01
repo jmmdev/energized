@@ -33,7 +33,7 @@ export default function BuilderDeckResume() {
         <div>
             <input className="w-full max-w-sm text-2xl bg-background-2 text-foreground rounded border border-transparent font-semibold hover:border-foreground" 
             value={text} onChange={(e) => setText(e.target.value)}/>
-            <div className="flex gap-2 font-medium mt-2">
+            <div className="flex flex-col xs:flex-row gap-2 font-medium mt-2">
                 <p>
                 Standard: <span className={`text-my-white px-2 py-0.5 rounded-sm ${cardQuantity === 60 ? legal.standard ? "bg-emerald-500" : "bg-red-500" : "bg-neutral-500"}`}>
                             {cardQuantity === 60 ? legal.standard ? "Legal" : "Illegal" : "N/A"}

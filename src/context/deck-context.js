@@ -56,7 +56,7 @@ export const DeckProvider = ({ children }) => {
     }, [cards])
 
     const initializeDeck = async (deckId) => {
-        const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/decks?id=${deckId}`,
+        const response = await axios.get(`/xapi/decks?id=${deckId}`,
             {
                 withCredentials: true
             });

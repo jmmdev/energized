@@ -17,9 +17,7 @@ export default function RootLayout({ children }) {
   
   return (
       <html lang="en">
-        <body
-          className={`${outfit.variable} my-scrollbar antialiased`}
-        >
+        <body className={`${outfit.variable} my-scrollbar antialiased`}>
           <ThemeProvider>
             <SessionWrapper>
               {children}

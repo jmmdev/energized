@@ -1,7 +1,7 @@
 "use client";
 import Button from "@/components/button"
 import { useRouter } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { doCredentialsLogin } from "@/controllers/loginController";
 import { FaUser, FaKey } from "react-icons/fa";
 

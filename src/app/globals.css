@@ -24,6 +24,42 @@
 ::-webkit-scrollbar-thumb:hover {
     background: #5b5b5b;
   }
+
+  .builder-scrollbar::-webkit-scrollbar {
+    width: 14px;
+  }
+
+  .builder-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .builder-scrollbar::-webkit-scrollbar-thumb {
+    background: var(--background-2);
+    border: 3px solid var(--background);
+    border-radius: 500px;
+  }
+
+  .builder-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #5b5b5b;
+  }
+
+  .search-scrollbar::-webkit-scrollbar {
+    width: 14px;
+  }
+
+  .search-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .search-scrollbar::-webkit-scrollbar-thumb {
+    background: var(--background-1);
+    border: 3px solid var(--background-2);
+    border-radius: 500px;
+  }
+
+  .search-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #5b5b5b;
+  }
 }
 
 :root {

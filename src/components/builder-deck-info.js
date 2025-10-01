@@ -80,8 +80,8 @@ export default function BuilderDeckInfo({updateDeck, setShowImgSelector}) {
     }
 
     return (
-        <section className="flex-1 overflow-y-auto lg:flex-1 bg-background-1">
-            <div className="w-full flex flex-col min-h-full px-4 md:px-8 gap-4">
+        <section className="w-full flex justify-center overflow-y-auto builder-scrollbar">
+            <div className="w-full flex flex-col min-h-full px-4 md:px-8 gap-4 lg:max-w-[1500px]">
                 <div className="w-full flex flex-col sm:flex-row gap-4 justify-between pt-16 lg:pt-8">
                     <div className="flex flex-col gap-4">
                         <div className="flex items-center gap-6">
@@ -99,8 +99,8 @@ export default function BuilderDeckInfo({updateDeck, setShowImgSelector}) {
                     <Button color="blue" content="Save" style="hidden sm:block h-fit px-5 py-1 rounded-xs font-bold text-my-white" onClick={handleSave} disabled={!hasChanges} />
                 </div>
                 <div className="w-full flex flex-col sm:flex-row sm:items-center gap-4 justify-between">
-                    <div>
-                        <div className="flex gap-4 justify-between items-center">
+                    <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
+                        <div className="flex gap-4 items-center">
                             <div className="flex gap-1 items-center">
                                 <p className="font-bold text-xl">
                                     {`${cardQuantity}/60 cards`}
@@ -121,16 +121,16 @@ export default function BuilderDeckInfo({updateDeck, setShowImgSelector}) {
                                     </div>
                                 </div>
                             </button>
-                            {cardQuantity !== 60 &&
-                            <div className="w-max gap-2 text-red-400">
-                                <p>Decks under 60 cards are <span className="font-bold uppercase">always</span> hidden.</p>
-                            </div>
-                            }
                         </div>
+                        {cardQuantity !== 60 &&
+                        <div className="w-max gap-2 text-red-400">
+                            <p>Decks under 60 cards are <span className="font-bold uppercase">always</span> hidden.</p>
+                        </div>
+                        }
                     </div>
                     <Button color="blue" content="Save" style="sm:hidden w-full h-fit px-5 py-1 rounded-xs font-bold text-my-white" onClick={handleSave} disabled={!hasChanges} />
                     {cardQuantity > 0 &&
-                        <div className="flex gap-2">
+                        <div className="flex gap-2 items-center self-end">
                             <BuilderDeckTopButton content={
                                 <div className="group flex gap-1 items-center">
                                     <FaTrashAlt className="group-hover:hidden text-base" />

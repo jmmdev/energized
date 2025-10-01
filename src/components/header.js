@@ -5,14 +5,12 @@ import { useEffect, useRef, useState } from "react";
 import { getSession, useSession } from "next-auth/react";
 import SideMenu from "@/components/side-menu";
 import CompactLogin from "./compact-login";
-import {FaHammer, FaUserCog, FaTimes, FaBars, FaUser, FaPlus} from "react-icons/fa";
+import {FaHammer, FaUserCog, FaTimes, FaBars, FaUser} from "react-icons/fa";
 import { useRouter } from "next/navigation";
 import Button from "./button";
-import { usePathname } from "next/navigation";
 import axios from "axios";
 
 export default function Header() {
-    const pathname = usePathname();
     const router = useRouter();
     const {data: session, status} = useSession();
 
@@ -36,7 +34,7 @@ export default function Header() {
 
         const createDeck = async () => {
             try {
-                const response = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/decks`, {
+                const response = await axios.post(`/xapi/decks`, {
                     data: {
                         creator: {
                             id: session.user?.id,
@@ -69,7 +67,7 @@ export default function Header() {
                 <div className="absolute z-100 w-screen h-screen overflow-hidden flex justify-center items-center p-4 bg-[#000c]">
                     <div className="flex flex-col w-full max-w-[640px] p-8 bg-background-1 rounded-lg gap-4">
                         <h1 className="text-3xl font-bold">Create a new deck</h1>
-                        <input className="bg-my-white text-my-black text-xl" value={deckName} onChange={(e) => setDeckName(e.target.value)} />
+                        <input className="bg-background-2 text-xl text-foreground rounded" value={deckName} onChange={(e) => setDeckName(e.target.value)} />
                         <p className={`${showErrorMsg ? "visible" : "invisible"} h-fit text-red-400`}>{errorMsg.current}</p>
                         <div className="flex w-full justify-center gap-4 lg:gap-8">
                             <Button color="gray" onClick={() => setShowCreateDeck(false)} content="cancel" style="w-1/2 max-w-[250px] rounded px-4 py-2" />
@@ -131,13 +129,11 @@ export default function Header() {
                         {showMenu ? <FaTimes /> : <FaBars />}
                     </button>
                 </div>
-                {!(pathname.includes("/build/")) &&
                 <div className="flex items-center h-12 bg-background-1">
                     <div className="color-background w-full h-full flex justify-center items-center gap-2 py-2 px-4">
                         <SearchBar />
                     </div>
                 </div>
-                }
             </header>
             <SideMenu showMenu={showMenu} setShowMenu={setShowMenu} />
             <CreateDeckPrompt />

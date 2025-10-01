@@ -12,7 +12,6 @@ export default function BuilderCardSearch() {
         waiting
     } = useDeckContext();
 
-    const [showSearch, setShowSearch] = useState(false);
     const cardScrollRef = useRef();
 
     const MySearch = () => {
@@ -39,30 +38,16 @@ export default function BuilderCardSearch() {
     }
 
     return (
-        <section className={`fixed top-0 lg:relative w-full lg:w-96 ${showSearch ? "h-full" : "h-0"} lg:h-full transition-all z-98`}>
+        <section className={`w-full h-full`}>
             <div className="flex flex-col h-full">
                 <SearchProvider>
-                    <div className={`flex flex-col h-full bg-background-2 overflow-y-auto transition-transform`}>
-                        <div className="lg:hidden w-full flex justify-end items-center p-4 pb-0">
-                            <button className="cursor-pointer opacity-60 hover:opacity-100" onClick={() => setShowSearch(false)}>
-                                <FaPlus className="text-2xl rotate-45" />
-                            </button>
-                        </div>
+                    <div className={`flex flex-col h-full bg-background-2 overflow-y-hidden`}>
                         <MySearch />
-                        <div ref={cardScrollRef} className="flex flex-col flex-1 max-h-full overflow-hidden">
+                        <div ref={cardScrollRef} className="flex flex-col flex-1 max-h-full gap-4 overflow-hidden">
                             <CardSearchFilters />
                             <CardSearchList cardScrollRef={cardScrollRef} />
                         </div>
                     </div>
-                    {!showSearch &&
-                    <div className="group flex lg:hidden bg-background-2 rounded-br-lg rounded-bl-lg justify-center self-center px-4 py-2 cursor-pointer"
-                    onClick={() => setShowSearch(true)}>
-                        <div className="flex gap-1 opacity-70 group-hover:opacity-100">
-                            <FaSearch className="text-lg" />
-                            <FaCaretDown />
-                        </div>
-                    </div>
-                    }
                 </SearchProvider>
             </div>
             {waiting && <div className="absolute top-0 left-0 h-full w-full bg-[#0008] z-20" />}
