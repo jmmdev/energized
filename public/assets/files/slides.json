@@ -1,20 +1,20 @@
 [
     {
-        "img": "test1.jpg",
+        "img": "tutorial",
         "title": "new to energized?",
         "subtitle": "check out our new user guide",
         "href": "/",
-        "background": "bg-gradient-to-r from-violet-500 via-violet-700 to-violet-500"
+        "background": "bg-gradient-to-r from-red-400 via-red-800 to-red-400"
     },
     {
-        "img": "test1.jpg",
+        "img": "featured1",
         "title": "raging bolt ex",
         "subtitle": "release a furious shock at your opponents!",
         "href": "/deck/6894402305057f0bbbfa0679",
         "background": "bg-gradient-to-r from-yellow-600 via-yellow-800 to-yellow-600"
     },
     {
-        "img": "test1.jpg",
+        "img": "featured2",
         "title": "dragapult ex",
         "subtitle": "storm the board nonstop",
         "href": "/deck/68c1d21a617aea1a22555ff0",

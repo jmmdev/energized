@@ -33,14 +33,14 @@ export default function BuilderDeckResume() {
         <div>
             <input className="w-full max-w-sm text-2xl bg-background-2 text-foreground rounded border border-transparent font-semibold hover:border-foreground" 
             value={text} onChange={(e) => setText(e.target.value)}/>
-            <div className="flex flex-col xs:flex-row gap-2 font-medium mt-2">
+            <div className="flex flex-col xs:flex-row gap-2 font-semibold uppercase mt-2">
                 <p>
-                Standard: <span className={`text-my-white px-2 py-0.5 rounded-sm ${cardQuantity === 60 ? legal.standard ? "bg-emerald-500" : "bg-red-500" : "bg-neutral-500"}`}>
+                Standard: <span className={`${cardQuantity === 60 ? legal.standard ? "text-emerald-500" : "text-red-500" : "text-neutral-500"}`}>
                             {cardQuantity === 60 ? legal.standard ? "Legal" : "Illegal" : "N/A"}
                         </span>
                 </p>
                 <p>
-                Expanded: <span className={`text-my-white px-2 py-0.5 rounded-sm ${cardQuantity === 60 ? legal.expanded ? "bg-emerald-500" : "bg-red-500" : "bg-neutral-500"}`}>
+                Expanded: <span className={`${cardQuantity === 60 ? legal.expanded ? "text-emerald-500" : "text-red-500" : "text-neutral-500"}`}>
                             {cardQuantity === 60 ? legal.expanded ? "Legal" : "Illegal" : "N/A"}
                         </span>
                 </p>

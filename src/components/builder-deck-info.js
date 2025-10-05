@@ -106,17 +106,17 @@ export default function BuilderDeckInfo({updateDeck, setShowImgSelector}) {
                                     {`${cardQuantity}/60 cards`}
                                 </p>
                             </div>
-                            <button className={`group font-medium rounded-full bg-background-2 p-1 ${cardQuantity !== 60 ? "opacity-70 cursor-default" : "cursor-pointer"}`}
+                            <button className={`group uppercase rounded-full bg-background-2 p-1 ${cardQuantity !== 60 ? "opacity-70 cursor-default" : "cursor-pointer"}`}
                             onClick={switchVisible} disabled={cardQuantity !== 60}>
-                                <div className="group relative flex">
+                                <div className="group relative flex font-semibold">
                                     <div className="w-1/2 rounded-full px-3 py-1">
                                         Public
                                     </div>
                                     <div className="w-1/2 rounded-full px-3 py-1">
                                         Private
                                     </div>
-                                    <div className={`absolute w-1/2 h-full flex justify-center items-center rounded-full px-3 py-1 bg-background transition-all 
-                                        ${visible ? "translate-x-0" : "translate-x-full"}`}>
+                                    <div className={`absolute w-1/2 h-full flex justify-center items-center rounded-full px-3 py-1 transition-all text-my-white 
+                                        ${visible ? "bg-emerald-500 group-hover:bg-emerald-400 translate-x-0" : "bg-red-500 group-hover:bg-red-400 translate-x-full"}`}>
                                         {visible ? "Public" : "Private"}
                                     </div>
                                 </div>

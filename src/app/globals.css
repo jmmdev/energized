@@ -43,6 +43,24 @@
     background: #5b5b5b;
   }
 
+  .stats-scrollbar::-webkit-scrollbar {
+    width: 14px;
+  }
+
+  .stats-scrollbar::-webkit-scrollbar-track {
+    background: var(--background-1);
+  }
+
+  .stats-scrollbar::-webkit-scrollbar-thumb {
+    background: var(--background-2);
+    border: 3px solid var(--background-1);
+    border-radius: 500px;
+  }
+
+  .stats-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #5b5b5b;
+  }
+
   .search-scrollbar::-webkit-scrollbar {
     width: 14px;
   }

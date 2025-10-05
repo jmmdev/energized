@@ -59,8 +59,8 @@ export default function Hero() {
                                     <p className="uppercase font-bold text-3xl lg:text-5xl">{elem.title}</p>
                                     <p className="capitalize text-xl lg:text-3xl">{elem.subtitle}</p>
                                 </div>
-                                <div className="relative w-24 lg:w-30 h-30 lg:h-48" style={{clipPath: "polygon(0% 0%, 80% 0%, 100% 100%, 20% 100%, 0% 0%)", WebkitClipPath: "polygon(0% 0%, 80% 0%, 100% 100%, 20% 100%, 0% 0%)"}}>
-                                    <Image id="image" alt="Test image" src={`/assets/images/${elem.img}`} fill className="object-contain scale-150" />
+                                <div className="w-auto h-30 lg:h-48">
+                                    <Image className="h-full w-auto object-cover" id="image" alt="Test image" src={`/assets/images/${elem.img}.png`} width={2000} height={2000} />
                                 </div>
                             </div>
                         </a>

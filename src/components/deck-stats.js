@@ -300,7 +300,7 @@ export default function DeckStats({deck}) {
         )
 
     return (
-            <div className="w-full overflow-y-auto">
+            <div className="w-full overflow-y-auto stats-scrollbar">
                 <div className="flex flex-col w-full">
                     <DataDisplay display={
                         <div className="w-full flex flex-col sm:flex-row lg:flex-col xl:flex-row gap-4">

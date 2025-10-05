@@ -1,6 +1,32 @@
 import { FaPlus } from "react-icons/fa";
 
 export default function CardZoomIn({zoomIn, setZoomIn, elem, zoomRef}) {
+
+    const getAttackCost = (attack) => {
+        let costMap = {};
+
+        for (let c of attack.cost) {
+            if (costMap.hasOwnProperty(c)) {
+                costMap[c]++;
+            }
+            else {
+                costMap[c] = 1;
+            }
+        }
+
+        let costString = "";
+
+        const entries = Object.entries(costMap);
+
+        for (const [index, [key, value]] of Object.entries(entries)) {
+            costString += `${value} ${key}`;
+            if (index < entries.length - 1)
+                costString += ", "
+        }
+
+        return costString;
+    }
+
     const GetInfo = ({card}) => {
         let output = [];
 
@@ -24,7 +50,7 @@ export default function CardZoomIn({zoomIn, setZoomIn, elem, zoomRef}) {
             for (let att of card.attacks) {
                 output.push(
                     <div className="flex flex-col gap-2" key={att.name}>
-                        <p>{att.cost ? `(${att.cost.length})` : ""} {att.name} {att.damage}</p>
+                        <p>{att.cost ? `(${getAttackCost(att)})` : ""} <b>{att.name}</b>, <span className="italic">Damage:</span> <b>{att.damage}</b></p>
                         <p>
                             {att.effect}
                         </p>

@@ -39,14 +39,16 @@ export default function Drawer({children, drawerIcon, iconList}) {
     }
 
     return (
-        <div className={`absolute lg:relative bottom-0 left-0 flex flex-col-reverse lg:flex-row w-full ${showDrawer ? "h-full" : "lg:w-auto h-auto"} lg:max-w-[640px] max-h-full z-80 transition-all`}>
-            <div className={`flex flex-col w-full bg-background border-background-1 overflow-hidden ${showDrawer ? "flex-1 lg:border-r-2" : "h-0 lg:w-0"}`}>
+        <div className={`absolute lg:relative bottom-0 left-0 flex flex-col-reverse lg:flex-row w-full ${showDrawer ? "h-full" : "lg:w-auto h-auto"} 
+        lg:max-w-[640px] max-h-full z-80 transition-all`}>
+            <div className={`flex flex-col w-full bg-background overflow-hidden ${showDrawer ? "flex-1" : "h-0 lg:w-0"}`}>
                 <GetChildren />
                 {iconList && iconList.length > 1 &&
                     <GetDrawerButtons />
                 }
             </div>
-            <button className="group w-full lg:w-auto h-fit self-center flex flex-col rounded-r lg:flex-row items-center gap-2 p-4 bg-background-1 text-xl cursor-pointer"
+            <button className={`group w-full lg:w-auto h-fit self-center flex flex-col border-background ${showDrawer ? "border-t-2" : "border-0 rounded-t"} 
+            lg:rounded-none lg:rounded-r lg:flex-row items-center gap-2 p-4 bg-background-1 text-xl cursor-pointer`}
             onClick={() => setShowDrawer(!showDrawer)}>
                 <div className="flex lg:flex-col opacity-30 group-hover:opacity-60 gap-1">
                     {drawerIcon}
