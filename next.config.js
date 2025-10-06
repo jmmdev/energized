@@ -3,7 +3,7 @@ const nextConfig = {
       return [
         {
           source: "/xapi/:path*",
-          destination: "http://localhost:3500/api/:path*"
+          destination: "https://energized.vercel.app/api/:path*"
         }
       ]
     },
