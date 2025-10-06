@@ -4,6 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import { FaUser } from "react-icons/fa";
 import { useSession } from "next-auth/react";
+import Link from "next/link";
 
 export default function ListDisplay({type, list, name, isOwn, isFav, isHome, perPage}) {
     const {data: session, status} = useSession();
@@ -40,7 +41,7 @@ export default function ListDisplay({type, list, name, isOwn, isFav, isHome, per
         return (
             <div className="flex flex-col h-full gap-4">
                 {!isOwn && !isFav && !isHome &&
-                    <h1 className="text-4xl font-bold"><span className="capitalize">{type.slice(0, -1)}</span> search results for "{name}"</h1>
+                    <h1 className="text-4xl font-bold"><span className="capitalize">{type.slice(0, -1)}</span>{` search results for "${name}"`}</h1>
                 }
                 {isHome && <h1 className="text-4xl font-bold">{name}</h1>}
                 <div className={`w-full flex-1 ${type === "users" ? "flex flex-wrap gap-4" : "flex flex-col gap-2"}`}>
@@ -55,15 +56,15 @@ export default function ListDisplay({type, list, name, isOwn, isFav, isHome, per
                                                 <Image width={200} height={200} className="rounded-full" src={elem.image} alt="Deck's image" />
                                             </div>
                                             <div className={`flex items-center gap-4 flex-1 h-full justify-between`}>
-                                                <a className="text-lg sm:text-xl flex items-center font-medium hover:text-highlight" href={`/deck/${elem._id}`}>
+                                                <Link className="text-lg sm:text-xl flex items-center font-medium hover:text-highlight" href={`/deck/${elem._id}`}>
                                                     <p>{elem.name}</p>
-                                                </a>
+                                                </Link>
                                                 {!isOwn && 
-                                                    <a className="child flex items-center gap-1 font-light cursor-pointer group-hover:text-foreground hover:text-highlight pr-2" 
+                                                    <Link className="child flex items-center gap-1 font-light cursor-pointer group-hover:text-foreground hover:text-highlight pr-2" 
                                                     href={`/user/${elem.creator.name}`} onClick={(e) => e.stopPropagation()}>
                                                         <FaUser />
                                                         {elem.creator.name}
-                                                    </a>
+                                                    </Link>
                                                 }
                                             </div>
                                         </div>
@@ -72,14 +73,14 @@ export default function ListDisplay({type, list, name, isOwn, isFav, isHome, per
                             if (type === "users")
                                 return (
                                     <div className="w-full sm:w-fit h-fit" key={elem._id}>
-                                        <a className={`flex w-full items-center cursor-pointer group hover:text-highlight relative has-[.child:hover]:hover:text-foreground p-2 rounded-full
+                                        <Link className={`flex w-full items-center cursor-pointer group hover:text-highlight relative has-[.child:hover]:hover:text-foreground p-2 rounded-full
                                         ${index % 2 === 0 ? "bg-background-1" : "bg-background-2"}`}
                                         href={`/user/${elem.name}`}>
                                             <div className="w-8 aspect-square relative">
                                                 <Image className="rounded-full" width={200} height={200} src={elem.image} alt="User's image" />
                                             </div>
                                             <p className="text-xl font-medium px-2">{elem.name}</p>
-                                        </a>
+                                        </Link>
                                     </div>
                                 )
                         })

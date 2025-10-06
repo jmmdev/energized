@@ -47,7 +47,7 @@ export default function TermsOfUse() {
                     <h2 className="text-xl font-semibold">4. Intellectual Property</h2>
                     <p className="mt-3 leading-7">
                     All Pokémon-related names, images, and card data are the property of
-                    <span className="font-semibold"> The Pokémon Company, Nintendo, Creatures Inc., and Game Freak Inc.</span>
+                    <span className="font-semibold"> The Pokémon Company, Nintendo, Creatures Inc., and Game Freak Inc. </span>
                     No copyright or trademark rights are claimed by the creator of this Service.
                     </p>
                 </section>
@@ -71,10 +71,10 @@ export default function TermsOfUse() {
                 <section>
                     <h2 className="text-xl font-semibold">7. Contact</h2>
                     <p className="mt-3 leading-7">
-                    {"For any questions regarding these Terms, please contact the project creator at: "}
-                    <a href="mailto:devjosm@gmail.com" className="font-medium underline hover:text-highlight">
+                    {"For any questions regarding these Terms, please contact the project creator at "}
+                    <span className="font-semibold">
                         devjosm@gmail.com
-                    </a>
+                    </span>
                     </p>
                 </section>
             </div>

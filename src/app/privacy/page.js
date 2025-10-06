@@ -23,10 +23,10 @@ export default function Privacy() {
                 <section>
                     <h2 className="text-xl font-semibold">1. Information Collected</h2>
                     <ul className="mt-3 list-disc space-y-2 pl-6">
-                    <li><span className="font-medium">Account Information:</span> email address, username, and login credentials</li>
-                    <li><span className="font-medium">Google Authentication Data:</span> if you log in with Google, your basic profile information (such as your email address and display name) will be accessed for authentication purposes</li>
-                    <li><span className="font-medium">User Content:</span> Pokémon decks you create and share</li>
-                    <li><span className="font-medium">Favorites:</span> other users’ decks you choose to mark as favorites</li>
+                    <li><span className="font-semibold">Account Information:</span> email address, username, and login credentials</li>
+                    <li><span className="font-semibold">Google Authentication Data:</span> if you log in with Google, your basic profile information (such as your email address and display name) will be accessed for authentication purposes</li>
+                    <li><span className="font-semibold">User Content:</span> Pokémon decks you create and share</li>
+                    <li><span className="font-semibold">Favorites:</span> other users’ decks you choose to mark as favorites</li>
                     </ul>
                 </section>
 
@@ -39,7 +39,7 @@ export default function Privacy() {
                     <li>Enabling you to favorite decks created by other users</li>
                     </ul>
                     <p className="mt-3 leading-7">
-                    Your information will <span className="font-semibold">not be sold, rented, or used for any commercial purposes</span>.
+                    Your information will <span className="font-semibold">not be sold, rented or used for any commercial purposes</span>.
                     </p>
                 </section>
 

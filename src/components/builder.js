@@ -125,7 +125,7 @@ export default function Builder({deckId}) {
                     {saving &&
                     <div className="flex flex-col w-full gap-4 items-center justify-center rounded text-xl p-8">
                         <FaSpinner className="text-3xl animate-spin" />
-                        {"Saving..."}
+                        "Saving..."
                     </div>
                     }
                 </div>

@@ -2,13 +2,14 @@
 
 import Image from "next/image";
 import { useTheme } from "@/context/theme-context";
+import Link from "next/link";
 
 export default function Logo({isInHeader}) {
 
     const {theme, setTheme} = useTheme();
 
     return (
-        <a className="h-full" href="/">
+        <Link className="h-full" href="/">
             {isInHeader ?
             <>
                 <Image className="sm:hidden h-full w-max object-contain" alt="energized logo" priority width={2000} height={2000} src={`/assets/images/compact-logo-${theme}.png`} />
@@ -17,6 +18,6 @@ export default function Logo({isInHeader}) {
             :
                 <Image className="py-1 h-full w-auto object-contain" alt="energized logo" priority width={2000} height={2000} src={`/assets/images/logo-${theme}.png`} />
             }
-        </a>
+        </Link>
     );
 }

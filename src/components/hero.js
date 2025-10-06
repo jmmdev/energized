@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 
@@ -52,7 +53,7 @@ export default function Hero() {
                 <div ref={scrollerRef} className="w-screen flex snap-none overflow-y-hidden overflow-x-scroll no-scrollbar">
                 {SLIDES.map((elem, index) => {
                     return (
-                        <a key={"sl-" + index} id={"slide-" + index} className={`flex flex-[0_0_100%] justify-center hover:scale-110 transition-transform ${elem.background}`}
+                        <Link key={"sl-" + index} id={"slide-" + index} className={`flex flex-[0_0_100%] justify-center hover:scale-110 transition-transform ${elem.background}`}
                         href={elem.href}>
                             <div className="w-[80%] flex justify-center gap-4 lg:gap-12 items-center">
                                 <div className="flex flex-col text-my-white">
@@ -63,7 +64,7 @@ export default function Hero() {
                                     <Image className="h-full w-auto object-cover" id="image" alt="Test image" src={`/assets/images/${elem.img}.png`} width={2000} height={2000} />
                                 </div>
                             </div>
-                        </a>
+                        </Link>
                     )
                 })}
             </div>

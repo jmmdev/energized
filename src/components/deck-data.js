@@ -11,6 +11,7 @@ import Footer from "@/components/footer";
 import DeckStats from "@/components/deck-stats";
 import Button from "@/components/button";
 import Drawer from "./drawer";
+import Link from "next/link";
 
 export default function DeckData({data}) {
     const {data: session, status} = useSession();
@@ -91,11 +92,11 @@ export default function DeckData({data}) {
                                             <div className="flex flex-col lg:justify-between sm:flex-row sm:items-center gap-2 sm:gap-8">
                                                 <p className="font-light opacity-70">Last modified: {getDeckDate(data)}</p>
                                                 <div className="flex items-center gap-4 lg:hidden">
-                                                    <a className="w-fit flex items-center cursor-pointer hover:text-highlight md:text-lg xl:text-xl gap-2 font-light"
+                                                    <Link className="w-fit flex items-center cursor-pointer hover:text-highlight md:text-lg xl:text-xl gap-2 font-light"
                                                     href={`/user/${data.creator.name}`}>
                                                         <FaUser />
                                                         <h2>{data.creator.name}</h2>
-                                                    </a>
+                                                    </Link>
                                                     <div className="flex items-center gap-1">
                                                         {session && session?.user.id !== data.creator.id ?
                                                         <button onClick={modifyFavorite} className="group text-2xl cursor-pointer hover:opacity-70 active:opacity-100">
@@ -121,11 +122,11 @@ export default function DeckData({data}) {
                                         </div>
                                         {session && session?.user.id === data.creator.id &&
                                             <div className="hidden 2xl:flex gap-4 ">
-                                                <a className="flex items-center gap-1 uppercase px-4 py-1 rounded bg-blue-500 hover:bg-blue-400 active:bg-blue-600 text-my-white"
+                                                <Link className="flex items-center gap-1 uppercase px-4 py-1 rounded bg-blue-500 hover:bg-blue-400 active:bg-blue-600 text-my-white"
                                                 href={`/build/${data._id}`}>
                                                     <FaEdit />
                                                     Edit
-                                                </a>
+                                                </Link>
                                                 <Button color="none" onClick={() => doDelete()} content={
                                                     <div className="flex items-center gap-1">
                                                         <FaTrashAlt />
@@ -137,11 +138,11 @@ export default function DeckData({data}) {
                                         }
                                     </div>
                                     <div className="hidden lg:flex items-center gap-4">
-                                        <a className="w-fit flex items-center cursor-pointer hover:text-highlight md:text-lg xl:text-xl gap-2 font-light"
+                                        <Link className="w-fit flex items-center cursor-pointer hover:text-highlight md:text-lg xl:text-xl gap-2 font-light"
                                         href={`/user/${data.creator.name}`}>
                                             <FaUser />
                                             <h2 className="underline">{data.creator.name}</h2>
-                                        </a>
+                                        </Link>
                                         <div className="flex items-center gap-1">
                                             {session && session?.user.id !== data.creator.id ?
                                             <button onClick={modifyFavorite} className="group text-2xl cursor-pointer hover:opacity-70 active:opacity-85">
@@ -167,11 +168,11 @@ export default function DeckData({data}) {
                                 <div className="flex justify-between 2xl:justify-end gap-4 items-center mb-4">
                                     {session && session?.user.id === data.creator.id &&
                                         <div className="flex 2xl:hidden gap-4">
-                                            <a className="flex items-center gap-1 uppercase px-2 py-0.5 text-sm rounded bg-blue-500 hover:bg-blue-400 active:bg-blue-600 text-my-white"
+                                            <Link className="flex items-center gap-1 uppercase px-2 py-0.5 text-sm rounded bg-blue-500 hover:bg-blue-400 active:bg-blue-600 text-my-white"
                                             href={`/build/${data._id}`}>
                                                 <FaEdit />
                                                 Edit
-                                            </a>
+                                            </Link>
                                             <Button color="none" onClick={() => doDelete()} content={
                                                     <div className="flex items-center gap-1">
                                                         <FaTrashAlt />

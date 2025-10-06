@@ -129,7 +129,7 @@ export default function DeckStats({deck}) {
     const DataDisplay = ({display, name}) => {
         return (
             <div className="flex flex-col w-full items-center">
-                <h1 className={"sticky top-0 w-full text-2xl font-bold bg-background-1/80 p-4 z-10 backdrop-blur-sm"}>
+                <h1 className="sticky top-0 w-full text-2xl font-bold bg-background-2/80 p-4 z-10 backdrop-blur-sm">
                     {name}
                 </h1>
                 <div className="flex flex-col justify-center items-center w-full p-6 gap-4">
@@ -320,13 +320,12 @@ export default function DeckStats({deck}) {
                 </div>
 
                 <div className="flex flex-col w-full">
-                    <h1 className={"sticky top-0 w-full text-2xl font-bold bg-background-1/80 p-4 z-10 backdrop-blur-sm"}>
-                        Starting hand odds
-                    </h1>
-                    <div className="flex flex-col w-full items-center justify-center sm:flex-row lg:flex-col xl:flex-row gap-4 p-6">
-                        <DrawGauge data={drawGaugeRef.current.basic} textValue={Math.round(drawGaugeRef.current.basic[0].value * 10) / 10} first />
-                        <DrawGauge data={drawGaugeRef.current.energy} textValue={Math.round(drawGaugeRef.current.energy[0].value * 10) / 10} />
-                    </div>
+                    <DataDisplay display={
+                        <div className="flex flex-col w-full items-center justify-center sm:flex-row lg:flex-col xl:flex-row gap-4 p-6">
+                            <DrawGauge data={drawGaugeRef.current.basic} textValue={Math.round(drawGaugeRef.current.basic[0].value * 10) / 10} first />
+                            <DrawGauge data={drawGaugeRef.current.energy} textValue={Math.round(drawGaugeRef.current.energy[0].value * 10) / 10} />
+                        </div>
+                    } name="Starting hand odds" />
                 </div>
             </div>
     )

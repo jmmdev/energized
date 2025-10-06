@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import axios from "axios";
 import Button from "@/components/button";
 import { getSession, signIn, useSession } from "next-auth/react";
+import Link from "next/link";
 
 const USER_REGEX = /^[a-zA-Z][a-zA-Z0-9-_]{3,23}$/;
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%&]).{8,24}$/;
@@ -222,7 +223,7 @@ export default function Register() {
                     
                     <div>
                         <p>Already registered?</p>
-                        <a className="hover:text-highlight-hover underline" href="/login">Sign in</a>
+                        <Link className="hover:text-highlight-hover underline" href="/login">Sign in</Link>
                     </div>
 
                     {submitting &&

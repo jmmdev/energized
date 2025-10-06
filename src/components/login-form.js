@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { doCredentialsLogin } from "@/controllers/loginController";
 import Button from "./button";
 import { signIn } from "next-auth/react";
+import Link from "next/link";
 
 export default function LoginForm({onLoginSuccess}) {
     const [user, setUser] = useState('');
@@ -70,7 +71,7 @@ export default function LoginForm({onLoginSuccess}) {
 
             <div>
                 <p>Need an account?</p>
-                <a className="underline hover:text-highlight-hover" href="/register">Sign up</a>
+                <Link className="underline hover:text-highlight-hover" href="/register">Sign up</Link>
             </div>
             {errMsg.length > 0 && <p className="text-red-500">{errMsg}</p>}
         </section>

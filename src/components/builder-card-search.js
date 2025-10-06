@@ -41,7 +41,7 @@ export default function BuilderCardSearch() {
         <section className={`w-full h-full`}>
             <div className="flex flex-col h-full">
                 <SearchProvider>
-                    <div className={`flex flex-col h-full bg-background-2 overflow-y-hidden`}>
+                    <div className={`flex flex-col h-full overflow-y-hidden`}>
                         <MySearch />
                         <div ref={cardScrollRef} className="flex flex-col flex-1 max-h-full gap-4 overflow-hidden">
                             <CardSearchFilters />

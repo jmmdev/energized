@@ -1,4 +1,5 @@
 import LegalTextDisplay from "@/components/legal-text-display";
+import Link from "next/link";
 
 export default function Copyright() {
     return (
@@ -13,12 +14,12 @@ export default function Copyright() {
             <div className="space-y-5 leading-7">
                 <p>
                     This website and its contents have been developed as part of a Master’s degree course. The project is intended
-                    <span className="font-semibold">solely for educational and non-commercial purposes</span>.
+                    <span className="font-semibold"> solely for educational and non-commercial purposes</span>.
                 </p>
 
                 <p>
                     All Pokémon names, images, card data, and related intellectual property are the exclusive property of
-                    <span className="font-semibold">The Pokémon Company, Nintendo, Creatures Inc., and Game Freak Inc.</span>
+                    <span className="font-semibold"> The Pokémon Company, Nintendo, Creatures Inc., and Game Freak Inc.</span>
                 </p>
 
                 <p>
@@ -27,9 +28,11 @@ export default function Copyright() {
                 </p>
 
                 <p>
-                    Pokémon-related content displayed on this site is retrieved from the
-                    <a href="https://pokemontcg.io/" target="_blank" className="font-medium underline decoration-slate-300 underline-offset-4 hover:decoration-slate-400 dark:decoration-slate-700 dark:hover:decoration-slate-600">Pokémon TCG API</a>
-                    and is used strictly for academic demonstration and learning purposes.
+                    Pokémon-related content displayed on this site is retrieved from the&nbsp;
+                    <Link href="https://tcgdex.dev/" target="_blank" className="font-medium underline decoration-slate-300 underline-offset-4 hover:decoration-slate-400 dark:decoration-slate-700 dark:hover:decoration-slate-600">
+                        TCGdex API
+                    </Link>
+                    &nbsp;and is used strictly for academic demonstration and learning purposes.
                 </p>
 
                 <p>No copyright or trademark infringement is intended.</p>

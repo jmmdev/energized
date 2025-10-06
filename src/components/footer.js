@@ -1,6 +1,7 @@
 "use client";
 import Logo from "@/components/logo";
 import { useSession } from "next-auth/react";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
 export default function Footer(){
@@ -45,7 +46,7 @@ export default function Footer(){
                 </div>
                 <div className="flex gap-4">
                     {
-                        FOOTER_SECTIONS.map(elem => <a className="capitalize" key={elem.text} href={elem.route} target="_blank">{elem.text}</a>)
+                        FOOTER_SECTIONS.map(elem => <Link className="capitalize" key={elem.text} href={elem.route} target="_blank">{elem.text}</Link>)
                     }
                 </div>
             </div>
