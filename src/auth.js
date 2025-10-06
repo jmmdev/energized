@@ -40,7 +40,7 @@ export const {
                         password: credentials?.password
                     });
                     const output = { 
-                        id: response.data.id, 
+                        id: String(response.data.id), 
                         name: response.data.name, 
                         email: response.data.email, 
                         role: response.data.role 
@@ -48,29 +48,43 @@ export const {
                     return output;
                 }
                 catch (err) {
-                    throw new Error(err.response.data.message);
+                    const message =
+                        err?.response?.data?.message ||
+                        err?.message ||
+                        "Login failed. Please try again.";
+
+                    if (/invalid|wrong|unauthorized|password/i.test(message))
+                        return null;
+
+                    throw new Error(message);
                 }
             }
         })
     ],
     callbacks: {
-        async signIn({ user, account, profile }) {
-            let existingUser;
+        async signIn({ user, account }) {
             try {
-                existingUser = await axios.get(`${process.env.SERVER_URL}/users/find/${user.email}`);
-            }
-            catch (e) {
-                if (!existingUser?.data) {
-                    await axios.post(`${process.env.SERVER_URL}/register`,{
+                const res = await axios.get(`${process.env.SERVER_URL}/users/find/${user.email}`);
+                if (!res.data) {
+                    await axios.post(`${process.env.SERVER_URL}/register`, {
                         username: user.name,
                         email: user.email,
                         image: user.image,
                     });
                 }
+            } catch (err) {
+                if (err.response?.status === 404) {
+                    await axios.post(`${process.env.SERVER_URL}/register`, {
+                        username: user.name,
+                        email: user.email,
+                        image: user.image,
+                    });
+                } 
+                else {
+                    return false;
+                }
             }
-            finally {
-                return true;
-            }
+            return true;
         },
 
         async jwt({token, account, user}) {
