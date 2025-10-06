@@ -80,7 +80,7 @@ export default function DeckData({data}) {
                         <DeckStats deck={data.cards} />
                     </Drawer> 
                     }
-                    <div className="w-full flex justify-center overflow-y-auto builder-scrollbar">
+                    <div className="w-full flex justify-center overflow-y-auto builder-scrollbar mb-13 lg:mb-0">
                         <div className="flex flex-col w-full lg:max-w-[1500px] h-full">
                             <div className="flex flex-col gap-4 lg:gap-2 p-8">
                                 <div className="flex flex-col justify-between gap-4">

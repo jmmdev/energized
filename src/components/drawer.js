@@ -40,7 +40,7 @@ export default function Drawer({children, drawerIcon, iconList}) {
 
     return (
         <div className={`absolute lg:relative bottom-0 left-0 flex flex-col-reverse lg:flex-row w-full ${showDrawer ? "h-full" : "lg:w-auto h-auto"} 
-        lg:max-w-[640px] max-h-full z-80 transition-all`}>
+        lg:max-w-[640px] max-h-full z-90 transition-all`}>
             <div className={`flex flex-col w-full bg-background-1 overflow-hidden ${showDrawer ? "flex-1" : "h-0 lg:w-0"}`}>
                 <GetChildren />
                 {iconList && iconList.length > 1 &&

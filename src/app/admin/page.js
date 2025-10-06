@@ -13,19 +13,17 @@ export default function Admin() {
             router.push("/");
     }, [session])
     
-        if (status === "loading")
-            return null;
-    
-        if (!session)
-            return <LoginForm onLoginSuccess={refreshSession} />
-        
-        if (session?.user.role === "admin")
-            return (
-                <p>{JSON.stringify(session.user)}</p>
-            )
+    if (status === "loading")
+        return null;
 
-        
-    }
+    if (!session)
+        return <LoginForm onLoginSuccess={refreshSession} />
+    
+    if (session?.user.role === "admin")
+        return (
+            <p>{JSON.stringify(session.user)}</p>
+        )
+}
     
 async function refreshSession() {
     await getSession({ triggerEvent: true });

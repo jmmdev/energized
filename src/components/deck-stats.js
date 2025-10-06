@@ -1,7 +1,7 @@
 import { useTheme } from "@/context/theme-context";
 import { useEffect, useRef, useState } from "react";
-import { FaCaretDown, FaCaretLeft, FaCaretRight, FaCaretUp, FaChartBar, FaSpinner } from "react-icons/fa";
-import { BarChart, Bar, XAxis, YAxis, Tooltip, Cell, Pie, PieChart, ResponsiveContainer, Legend } from "recharts";
+import { FaSpinner } from "react-icons/fa";
+import { BarChart, Bar, XAxis, YAxis, Tooltip, Cell, Pie, PieChart, Legend } from "recharts";
 
 export default function DeckStats({deck}) {
     const {theme, setTheme} = useTheme();

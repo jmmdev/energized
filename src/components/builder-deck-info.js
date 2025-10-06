@@ -80,7 +80,7 @@ export default function BuilderDeckInfo({updateDeck, setShowImgSelector}) {
     }
 
     return (
-        <section className="w-full flex justify-center overflow-y-auto builder-scrollbar">
+        <section className="w-full flex justify-center overflow-y-auto builder-scrollbar mb-13 lg:mb-0">
             <div className="w-full flex flex-col min-h-full px-4 md:px-8 gap-4 lg:max-w-[1500px]">
                 <div className="w-full flex flex-col sm:flex-row gap-4 justify-between pt-16 lg:pt-8">
                     <div className="flex flex-col gap-4">
@@ -99,7 +99,7 @@ export default function BuilderDeckInfo({updateDeck, setShowImgSelector}) {
                     <Button color="blue" content="Save" style="hidden sm:block h-fit px-5 py-1 rounded-xs font-bold text-my-white" onClick={handleSave} disabled={!hasChanges} />
                 </div>
                 <div className="w-full flex flex-col sm:flex-row sm:items-center gap-4 justify-between">
-                    <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
+                    <div className="flex flex-col 2xl:flex-row 2xl:items-center gap-2 sm:gap-4">
                         <div className="flex gap-4 items-center">
                             <div className="flex gap-1 items-center">
                                 <p className="font-bold text-xl">
