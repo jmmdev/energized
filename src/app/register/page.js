@@ -98,7 +98,7 @@ export default function Register() {
                     const email = formData.get("email");
                     const password = formData.get("password");
 
-                    await axios.post(`/xapi/register`,{
+                    await axios.post(`/api/xapi/register`,{
                         username: username,
                         email: email,
                         password: password

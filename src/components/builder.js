@@ -73,7 +73,7 @@ export default function Builder({deckId}) {
 
     useEffect(() => {
         const doSave = async () => {
-            await axios.post(`/xapi/decks`, {
+            await axios.post(`/api/xapi/decks`, {
                 deckId,
                 data: {
                     name, cards, image, legal, visible, cardCount: cardQuantity

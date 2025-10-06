@@ -23,7 +23,7 @@ export default function DeckData({data}) {
     useEffect(() => {
         const initialize = async () => {
             if (status === "authenticated") {
-                const favResponse = await axios.get(`/xapi/users/favorites`,
+                const favResponse = await axios.get(`/api/xapi/users/favorites`,
                 {
                     withCredentials: true
                 });
@@ -38,7 +38,7 @@ export default function DeckData({data}) {
     }, [status])
 
     const modifyFavorite = async () => {
-        await axios.post(`/xapi/users/favorites`, {
+        await axios.post(`/api/xapi/users/favorites`, {
             deckId: data._id
         },
         {
@@ -51,7 +51,7 @@ export default function DeckData({data}) {
     const doDelete = async () => {
         if (confirm(`WARNING: You will delete this deck. This action cannot be undone. Are you sure?`)) {
             try {
-                await axios.delete(`/xapi/decks`,
+                await axios.delete(`/api/xapi/decks`,
                 {
                     withCredentials: true,
                     data: {

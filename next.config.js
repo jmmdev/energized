@@ -1,12 +1,4 @@
 const nextConfig = {
-    async rewrites() {
-      return [
-        {
-          source: "/xapi/:path*",
-          destination: `${process.env.SERVER_URL}/:path*`
-        }
-      ]
-    },
     images: {
       remotePatterns: [
         {

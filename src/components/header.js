@@ -35,7 +35,7 @@ export default function Header() {
 
         const createDeck = async () => {
             try {
-                const response = await axios.post(`/xapi/decks`, {
+                const response = await axios.post(`/api/xapi/decks`, {
                     data: {
                         creator: {
                             id: session.user?.id,
