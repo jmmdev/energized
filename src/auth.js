@@ -29,7 +29,9 @@ export const {
         CredentialsProvider({
             async authorize(credentials) {
                 try {
-                    const existingUser = await axios.get(`${process.env.SERVER_URL}/users/find/${credentials?.user}`);
+                    const existingUser = await axios.get(`${process.env.SERVER_URL}/users/find`, {
+                        params: { user: credentials?.user}
+                    });
 
                     if (!(existingUser?.data?.hasPassword)) {
                         throw new Error("Your email was used for a Google account login. Please, use that option instead");
@@ -51,7 +53,9 @@ export const {
         async signIn({ user, account, profile }) {
             let existingUser;
             try {
-                existingUser = await axios.get(`${process.env.SERVER_URL}/users/find/${user.email}`);
+                existingUser = await axios.get(`${process.env.SERVER_URL}/users/find`, {
+                    params: {user: user.email}
+                });
             }
             catch (e) {
                 if (!existingUser?.data) {
