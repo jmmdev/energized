@@ -3,7 +3,7 @@ const nextConfig = {
       return [
         {
           source: "/xapi/:path*",
-          destination: "https://energized.vercel.app/api/:path*"
+          destination: `${process.env.NEXT_PUBLIC_SERVER_URL}/api/:path*`
         }
       ]
     },
