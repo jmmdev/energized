@@ -30,13 +30,14 @@ export default function ViewDeckGridCard({elem, setZoomIn, zoomRef}) {
                     <FaSpinner className="text-3xl animate-spin" />
                 </div>
                 }
-                <div className="absolute text-xl -top-2 -right-2 p-2 bg-background-2 rounded-full border-3 border-background group-hover:bg-highlight group-hover:text-my-white transition-all">
+                <div className="absolute text-xl -top-2 -right-2 p-2 bg-background-2 rounded-full border-3 border-background 
+                group-hover:bg-highlight-hover group-hover:text-my-white group-active:bg-highlight-active group-active:text-my-white transition-all">
                     <FaSearchPlus />
                 </div>
                 {loaded &&
-                <div className="absolute flex items-center text-my-white bottom-2 right-2 bg-[#000b] rounded px-6 py-2">
-                    <p className="text-2xl text-foreground font-bold">
-                        x{elem.quantity} 
+                <div className="absolute flex items-center text-my-white bottom-2 right-2 bg-[#000c] rounded px-6 py-2">
+                    <p className="text-3xl text-foreground font-bold">
+                        x {elem.quantity} 
                     </p>
                 </div> 
                 }

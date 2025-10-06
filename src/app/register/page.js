@@ -107,7 +107,6 @@ export default function Register() {
                     router.replace("/login");
                 }
                 catch (err) {
-                    console.log(err);
                     setErrMsg(err.response.data.message);
                     setSubmitting(false);
                 }
@@ -221,10 +220,12 @@ export default function Register() {
                     
                     <Button color="red" content="Sign in with Google" style="w-fit rounded p-2" onClick={() => signIn("google")} />
                     
-                    <div>
-                        <p>Already registered?</p>
-                        <Link className="hover:text-highlight-hover underline" href="/login">Sign in</Link>
-                    </div>
+                    <p>
+                        <span className="font-light">Already registered? </span>
+                        <Link className="hover:decoration-highlight-hover active:decoration-highlight-active underline" href="/login">
+                            Sign in
+                        </Link>
+                    </p>
 
                     {submitting &&
                         <div className="w-full h-full absolute top-0 left-0 z-10 bg-background/80 flex flex-col justify-center items-center gap-2 text-3xl">

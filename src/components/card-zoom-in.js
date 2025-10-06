@@ -50,7 +50,12 @@ export default function CardZoomIn({zoomIn, setZoomIn, elem, zoomRef}) {
             for (let att of card.attacks) {
                 output.push(
                     <div className="flex flex-col gap-2" key={att.name}>
-                        <p>{att.cost ? `(${getAttackCost(att)})` : ""} <b>{att.name}</b>, <span className="italic">Damage:</span> <b>{att.damage}</b></p>
+                        <div>
+                            <b>{att.name}</b>
+                            <p className="text-lg">
+                                {att.cost ? <span>Cost: <b>{getAttackCost(att)}</b></span> : ""}{att.damage && att.damage > 0 ? <span>, Damage: <b>{att.damage}</b></span> : ""}
+                            </p>
+                        </div>
                         <p>
                             {att.effect}
                         </p>
@@ -70,7 +75,7 @@ export default function CardZoomIn({zoomIn, setZoomIn, elem, zoomRef}) {
                         <FaPlus className="text-3xl rotate-45" />
                     </button>
                     <div className="flex flex-1 justify-center">
-                        <div className="flex flex-col lg:flex-row lg:items-center text-xl gap-8">
+                        <div className="flex flex-col lg:flex-row lg:items-center text-2xl gap-8">
                             <div className="w-full max-w-md">
                                 <img className="block max-w-full" src={elem.card.image + "/high.webp"} alt={`${elem.card.name}#${elem.card.id}`} />
                             </div>

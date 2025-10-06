@@ -57,15 +57,16 @@ export default function BuildDeckGridCard({elem, setZoomIn, zoomRef}) {
                     <FaSpinner className="text-3xl animate-spin" />
                 </div>
                 }
-                <div className="absolute text-xl -top-2 -right-2 p-2 bg-background-2 rounded-full border-3 border-background group-hover:bg-highlight group-hover:text-my-white transition-all">
+                <div className="absolute text-xl -top-2 -right-2 p-2 bg-background-2 rounded-full border-3 border-background 
+                group-hover:bg-highlight-hover group-hover:text-my-white group-active:bg-highlight-active group-active:text-my-white transition-all">
                     <FaSearchPlus />
                 </div>
             </div>
             {loaded &&
             <div className="flex items-center gap-3 text-my-white">
                 <Button color="red" content={<FaMinus />} style="p-2 rounded" onClick={doRemove} />
-                <p className="text-2xl text-foreground font-bold">
-                    x{elem.quantity} 
+                <p className="text-4xl text-foreground font-bold">
+                    x {elem.quantity}  
                 </p>
                 <Button color="green" content={<FaPlus />} style="p-2 rounded" onClick={doAdd} disabled={disableAdd} />
             </div> 

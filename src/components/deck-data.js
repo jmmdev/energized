@@ -197,7 +197,7 @@ export default function DeckData({data}) {
                                 ?
                                     <CardGrid cards={data.cards} />
                                 :
-                                    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-1">
+                                    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-2">
                                     {
                                         data.cards.map((elem) => {
                                             return <ViewDeckListCard key={"list"+elem.card.id} elem={elem} />

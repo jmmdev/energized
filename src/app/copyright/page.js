@@ -28,11 +28,12 @@ export default function Copyright() {
                 </p>
 
                 <p>
-                    Pokémon-related content displayed on this site is retrieved from the&nbsp;
-                    <Link href="https://tcgdex.dev/" target="_blank" className="font-medium underline decoration-slate-300 underline-offset-4 hover:decoration-slate-400 dark:decoration-slate-700 dark:hover:decoration-slate-600">
+                    {"Pokémon-related content displayed on this site is retrieved from the "}
+                    <Link href="https://tcgdex.dev/" target="_blank"
+                    className="font-medium underline underline-offset-4 decoration-highlight hover:decoration-highlight-hover active:decoration-highlight-active">
                         TCGdex API
                     </Link>
-                    &nbsp;and is used strictly for academic demonstration and learning purposes.
+                    {" and is used strictly for academic demonstration and learning purposes."}
                 </p>
 
                 <p>No copyright or trademark infringement is intended.</p>

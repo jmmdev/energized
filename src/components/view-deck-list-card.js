@@ -1,7 +1,20 @@
+import { useEffect, useRef, useState } from "react";
+import CardZoomIn from "./card-zoom-in";
+
 export default function BuildDeckListCard({elem}) {
+    const [zoomIn, setZoomIn] = useState(false);
+    
+    const zoomRef = useRef();
 
     const TYPES = require("public/assets/files/energy-types.json");
     const COLORS = require("public/assets/files/list-colors.json");
+
+    useEffect(() => {
+        if (zoomIn)
+            document.body.style.overflow = "hidden";
+        else
+            document.body.style.overflow = "auto";
+    }, [zoomIn])
 
     const getBg = () => {
         const category = elem.card.category;
@@ -9,13 +22,13 @@ export default function BuildDeckListCard({elem}) {
         
 
         if (category === "Trainer")
-            return "bg-[#bfbfbf]";
+            return "bg-[#404040]";
 
         if ((category === "Pokemon" || category === "Energy") && types) {
             const typeIndex = TYPES.findIndex((obj) => obj.toLowerCase() === types[0]?.toLowerCase());
-            const bgColor = COLORS[typeIndex];
+            const textColor = COLORS[typeIndex];
             
-            return bgColor;
+            return textColor;
         }
         return null;
     }
@@ -32,7 +45,11 @@ export default function BuildDeckListCard({elem}) {
                 return `Stage ${stage_number} ${elem.card.types && elem.card.types[0]} Pokémon`;
             }
             
-            return `${elem.card.stage} ${elem.card.types && elem.card.types[0]} Pokémon`;
+            return (
+                <p className="w-fit text-lg">
+                    {elem.card.stage} {elem.card.types && elem.card.types[0]} Pokémon
+                </p>
+            )
         }
 
         if (category === "Trainer")
@@ -43,18 +60,26 @@ export default function BuildDeckListCard({elem}) {
     }
  
     return (
-        <div className={`group w-full flex justify-between items-center gap-4 px-4 py-2 text-my-black rounded ${getBg() || "bg-[#5b5b5b]"}`}>
-            <div>
-                <p className="w-fit text-left text-lg font-bold">
-                    {elem.card.name}
-                </p>
-                <p className="w-fit text-left text-light">
-                    {getCardInfo()}
-                </p>
-           </div> 
-            <div className="flex items-center text-sm">
-                <p className="text-xl w-12 font-bold">x{elem.quantity}</p>
+        <div key={"list"+elem.card.id}>
+            <div className={`group w-full cursor-pointer rounded-lg ${getBg()}`} 
+            onClick={() => {
+                zoomRef.current = elem.card.id;
+                setZoomIn(true);
+            }}>
+                <div className="px-8 py-4 text-my-white border-2 border-foreground rounded-lg hover:bg-my-white/30">
+                    <div className="flex justify-between items-center gap-4 drop-shadow-[1px_1px_0_#000]
+                    text-shadow-[1px_1px_0_#000,_-1px_-1px_0_#000,_-1px_1px_0_#000,_1px_-1px_0_#000,_2px_2px_0_#000]">
+                        <div>
+                            <p className="w-fit text-left text-2xl font-medium">
+                                {elem.card.name}
+                            </p>
+                            {getCardInfo()}
+                        </div> 
+                        <p className="text-4xl font-bold drop-shadow-[2px_2px_0_#000]">x {elem.quantity}</p>
+                    </div>
+                </div>
             </div>
+            <CardZoomIn zoomIn={zoomIn} setZoomIn={setZoomIn} elem={elem} zoomRef={zoomRef} />
         </div>
     )
 }
