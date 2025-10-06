@@ -1,6 +1,3 @@
-export const runtime = 'nodejs';
-export const dynamic = 'force-dynamic';
-
 import { NextResponse } from "next/server";
 import { auth } from "@/auth";
 
@@ -23,7 +20,7 @@ async function proxy(req, { params }) {
     ...(req.headers.get("content-type")
       ? { "content-type": req.headers.get("content-type") }
       : {}),
-    cookie: req.headers.get("cookie") || ""
+    ...(session?.accessToken ? { Authorization: `Bearer ${session.accessToken}` } : {}),
   };
 
   const method = req.method;

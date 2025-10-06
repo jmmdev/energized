@@ -20,8 +20,9 @@ export default function Header() {
     const [loaded, setLoaded] = useState(false);
 
     useEffect(() => {
-        if (status !== "loading")
+        if (status !== "loading") {
             setLoaded(true);
+        }
     }, [session])
 
     useEffect(() => {
