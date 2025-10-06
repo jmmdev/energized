@@ -36,7 +36,7 @@ export default function LoginForm({onLoginSuccess}) {
     <main className="w-screen relative flex flex-col items-center p-16 z-10">
         <section className="w-full max-w-[720px] flex flex-col gap-8">
             <h1 className="text-2xl font-medium border-b-2">Log in</h1>
-            <form className="flex flex-col gap-8" onSubmit={handleFormSubmit}>
+            <form className="flex flex-col gap-8" action="/api/auth/callback/credentials" onSubmit={handleFormSubmit}>
                 <div className="flex flex-col">
                     <label className="font-semibold">
                         Username or email

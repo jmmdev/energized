@@ -39,7 +39,7 @@ export default function CompactLogin({onLoginSuccess, vertical}) {
     }
     
     return (
-        <form onSubmit={handleFormSubmit} className={`flex ${vertical && "w-full flex-col"} gap-4 items-center text-container`}>
+        <form onSubmit={handleFormSubmit} action="/api/auth/callback/credentials" className={`flex ${vertical && "w-full flex-col"} gap-4 items-center text-container`}>
             <div className={`${vertical && "w-full"} flex gap-2 items-center`}>
                 <FaUser className="text-xl text-neutral-400" />
                 <input className={`${vertical && "w-full"} bg-my-white text-my-black rounded-xs border border-container`}
