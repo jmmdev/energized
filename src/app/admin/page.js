@@ -10,9 +10,7 @@ export default function Admin() {
 
     useEffect(() => {
         if (session && session.user?.role !== "admin")
-            setTimeout(() => {
-                router.push("/");
-            }, 3000);
+            router.push("/");
     }, [session])
     
         if (status === "loading")
@@ -21,16 +19,12 @@ export default function Admin() {
         if (!session)
             return <LoginForm onLoginSuccess={refreshSession} />
         
-        if (session?.user.role !== "admin")
+        if (session?.user.role === "admin")
             return (
-                <div className="w-full h-[calc(100vh-240px)] flex justify-center items-center p-12">
-                    <p className="text-5xl text-center font-bold">{"You're not authorized, redirecting..."}</p>
-                </div>
+                <p>{JSON.stringify(session.user)}</p>
             )
 
-        return (
-            <p>{JSON.stringify(session.user)}</p>
-        )
+        
     }
     
 async function refreshSession() {
