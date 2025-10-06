@@ -39,8 +39,13 @@ export const {
                         user: credentials?.user,
                         password: credentials?.password
                     });
-
-                    return response.data;
+                    const output = { 
+                        id: response.data.id, 
+                        name: response.data.name, 
+                        email: response.data.email, 
+                        role: response.data.role 
+                    };
+                    return output;
                 }
                 catch (err) {
                     throw new Error(err.response.data.message);
