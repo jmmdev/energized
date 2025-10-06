@@ -44,8 +44,8 @@ export default function LoginForm({onLoginSuccess}) {
                     <input
                         className="border border-my-black bg-my-white text-my-black rounded-sm px-2 py-1 mb-1"
                         type="text"
-                        id="user"
-                        name="user"
+                        id="identifier"
+                        name="identifier"
                         maxLength={24}
                         onChange={(e) => setUser(e.target.value)}
                     />

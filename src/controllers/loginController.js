@@ -9,7 +9,7 @@ export async function doLogout() {
 export async function doCredentialsLogin(formData) {
     try {
         const response = await signIn("credentials", {
-            user: formData.get("user"),
+            user: formData.get("identifier"),
             password: formData.get("password"),
             redirect: false,
         });

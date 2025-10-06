@@ -45,7 +45,7 @@ export default function CompactLogin({onLoginSuccess, vertical}) {
                 <input className={`${vertical && "w-full"} bg-my-white text-my-black rounded-xs border border-container`}
                     placeholder="Username or email"
                     type="text"
-                    name="user"
+                    name="identifier"
                     maxLength={24}
                     onChange={(e) => setUser(e.target.value)}/>
             </div>
