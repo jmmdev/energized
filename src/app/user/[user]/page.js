@@ -7,7 +7,7 @@ export default async function User({params}) {
     let userData;
     
     try {
-        const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/users/user/${user}`);
+        const response = await axios.get(`${process.env.SERVER_URL}/users/user/${user}`);
         userData = response.data;
     } 
     catch (e) {

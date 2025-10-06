@@ -29,13 +29,13 @@ export const {
         CredentialsProvider({
             async authorize(credentials) {
                 try {
-                    const existingUser = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/users/find/${credentials?.user}`);
+                    const existingUser = await axios.get(`${process.env.SERVER_URL}/users/find/${credentials?.user}`);
 
                     if (!(existingUser?.data?.hasPassword)) {
                         throw new Error("Your email was used for a Google account login. Please, use that option instead");
                     }
 
-                    const response = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}/login`, {
+                    const response = await axios.post(`${process.env.SERVER_URL}/login`, {
                         user: credentials?.user,
                         password: credentials?.password
                     });
@@ -52,11 +52,11 @@ export const {
         async signIn({ user, account, profile }) {
             let existingUser;
             try {
-                existingUser = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/users/find/${user.email}`);
+                existingUser = await axios.get(`${process.env.SERVER_URL}/users/find/${user.email}`);
             }
             catch (e) {
                 if (!existingUser?.data) {
-                    await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}/register`,{
+                    await axios.post(`${process.env.SERVER_URL}/register`,{
                         username: user.name,
                         email: user.email,
                         image: user.image,
@@ -70,7 +70,7 @@ export const {
 
         async jwt({token, account, user}) {
             if (user) {
-                const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/users/find/${user.email}`);
+                const response = await axios.get(`${process.env.SERVER_URL}/users/find/${user.email}`);
 
                 const dbUser = response.data.user;
 
