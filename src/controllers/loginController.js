@@ -7,16 +7,16 @@ export async function doLogout() {
 }
 
 export async function doCredentialsLogin(formData) {
-    const result = await signIn("credentials", {
-        user: formData.get("user"),
-        password: formData.get("password"),
-        redirect: false,
-    });
-
-    if (result?.error) {
-        alert(result.error || "Email or password are invalid.");
-    } 
-    else if (result?.ok) {
-        return result;
+    try {
+        const response = await signIn("credentials", {
+            user: formData.get("user"),
+            password: formData.get("password"),
+            redirect: false,
+        });
+        return response;
+    }
+    catch (err) {
+        if (err.type === "CallbackRouteError")
+            throw new Error("Email or password are invalid, or your email was used for a Google account login");
     }
 }

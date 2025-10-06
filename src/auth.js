@@ -39,53 +39,32 @@ export const {
                         user: credentials?.user,
                         password: credentials?.password
                     });
-                    const output = { 
-                        id: String(response.data.id), 
-                        name: response.data.name, 
-                        email: response.data.email, 
-                        role: response.data.role 
-                    };
-                    return output;
+                    return response.data;
                 }
                 catch (err) {
-                    const message =
-                        err?.response?.data?.message ||
-                        err?.message ||
-                        "Login failed. Please try again.";
-
-                    if (/invalid|wrong|unauthorized|password/i.test(message))
-                        return null;
-
-                    throw new Error(message);
+                    throw new Error(err.response.data.message);
                 }
             }
         })
     ],
     callbacks: {
-        async signIn({ user, account }) {
+        async signIn({ user, account, profile }) {
+            let existingUser;
             try {
-                const res = await axios.get(`${process.env.SERVER_URL}/users/find/${user.email}`);
-                if (!res.data) {
-                    await axios.post(`${process.env.SERVER_URL}/register`, {
+                existingUser = await axios.get(`${process.env.SERVER_URL}/users/find/${user.email}`);
+            }
+            catch (e) {
+                if (!existingUser?.data) {
+                    await axios.post(`${process.env.SERVER_URL}/register`,{
                         username: user.name,
                         email: user.email,
                         image: user.image,
                     });
-                }
-            } catch (err) {
-                if (err.response?.status === 404) {
-                    await axios.post(`${process.env.SERVER_URL}/register`, {
-                        username: user.name,
-                        email: user.email,
-                        image: user.image,
-                    });
-                } 
-                else {
-                    console.log(err.response.status);
-                    return false;
                 }
             }
-            return true;
+            finally {
+                return true;
+            }
         },
 
         async jwt({token, account, user}) {
