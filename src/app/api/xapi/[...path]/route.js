@@ -19,9 +19,7 @@ async function proxy(req, { params }) {
     ...(req.headers.get("content-type")
       ? { "content-type": req.headers.get("content-type") }
       : {}),
-    ...(session.accessToken
-      ? { Authorization: `Bearer ${session.accessToken}` }
-      : {}),
+    cookie: req.headers.get("cookie") || ""
   };
 
   const method = req.method;
