@@ -44,7 +44,6 @@ export default function LoginForm({onLoginSuccess}) {
                     <input
                         className="border border-my-black bg-my-white text-my-black rounded-sm px-2 py-1 mb-1"
                         type="text"
-                        id="identifier"
                         name="identifier"
                         maxLength={24}
                         onChange={(e) => setUser(e.target.value)}
@@ -57,7 +56,6 @@ export default function LoginForm({onLoginSuccess}) {
                     <input
                         className="border border-my-black bg-my-white text-my-black rounded-sm pl-2 pr-8 py-1 mb-1"
                         type={showPwd ? "text" : "password"}
-                        id="password"
                         name="password"
                         autoComplete="off"
                         maxLength={24}
