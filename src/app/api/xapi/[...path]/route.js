@@ -1,10 +1,14 @@
+export const runtime = 'nodejs';
+export const dynamic = 'force-dynamic';
+
 import { NextResponse } from "next/server";
 import { auth } from "@/auth";
 
 const API_BASE = process.env.SERVER_URL;
 
 async function proxy(req, { params }) {
-  const segs = params?.path || [];
+  const myParams = await params;
+  const segs = myParams?.path || [];
   const search = new URL(req.url).search;
   const target = `${API_BASE}/${segs.join("/")}${search}`;
 
