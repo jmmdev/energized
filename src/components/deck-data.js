@@ -23,7 +23,7 @@ export default function DeckData({data}) {
     useEffect(() => {
         const initialize = async () => {
             if (status === "authenticated") {
-                const favResponse = await axios.get(`${process.env.SERVER_URL}/users/favorites`,
+                const favResponse = await axios.get(`/xapi/users/favorites`,
                 {
                     withCredentials: true
                 });
