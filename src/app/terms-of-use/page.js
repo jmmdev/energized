@@ -56,7 +56,7 @@ export default function TermsOfUse() {
                     <h2 className="text-xl font-semibold">5. Limitation of Liability</h2>
                     <div className="mt-3 rounded-lg bg-background-1 border border-background-2 p-4">
                     <p className="leading-7">
-                        This Service is provided on an <span className="font-semibold">"as is"</span> and <span className="font-semibold">"as available"</span> basis, without warranties of any kind. No guarantee is made regarding the accuracy, reliability, or availability of the Service. The creator of the Service shall not be held liable for any damages arising from the use or inability to use the Service.
+                        This Service is provided on an <span className="font-semibold">{'"as is"'}</span> and <span className="font-semibold">{'"as available"'}</span> basis, without warranties of any kind. No guarantee is made regarding the accuracy, reliability, or availability of the Service. The creator of the Service shall not be held liable for any damages arising from the use or inability to use the Service.
                     </p>
                     </div>
                 </section>

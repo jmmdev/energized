@@ -24,7 +24,7 @@ export default function Admin() {
         if (session?.user.role !== "admin")
             return (
                 <div className="w-full h-[calc(100vh-240px)] flex justify-center items-center p-12">
-                    <p className="text-5xl text-center font-bold">You're not authorized, redirecting...</p>
+                    <p className="text-5xl text-center font-bold">{"You're not authorized, redirecting..."}</p>
                 </div>
             )
 

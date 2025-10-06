@@ -101,7 +101,7 @@ export default function Builder({deckId}) {
 
     return (
         <main className="relative w-full flex flex-col lg:flex-row justify-center flex-1 overflow-y-hidden self-center">
-            <Drawer drawerIcon={<FaTools />} iconList={[<FaSearch />, <FaChartBar />]}>
+            <Drawer drawerIcon={<FaTools />} iconList={[<FaSearch key="search" />, <FaChartBar key="stats" />]}>
                 <BuilderCardSearch />
                 <DeckStats deck={cards} />
             </Drawer>
@@ -125,7 +125,7 @@ export default function Builder({deckId}) {
                     {saving &&
                     <div className="flex flex-col w-full gap-4 items-center justify-center rounded text-xl p-8">
                         <FaSpinner className="text-3xl animate-spin" />
-                        "Saving..."
+                        {"Saving..."}
                     </div>
                     }
                 </div>
