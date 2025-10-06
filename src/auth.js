@@ -52,6 +52,7 @@ export const {
     callbacks: {
         async signIn({ user, account, profile }) {
             let existingUser;
+
             try {
                 existingUser = await axios.get(`${process.env.SERVER_URL}/users/find`, {
                     params: {user: user.email}
@@ -73,7 +74,9 @@ export const {
 
         async jwt({token, account, user}) {
             if (user) {
-                const response = await axios.get(`${process.env.SERVER_URL}/users/find/${user.email}`);
+                const response = await axios.get(`${process.env.SERVER_URL}/users/find`, {
+                    params: {user: user.email}
+                });
 
                 const dbUser = response.data.user;
 
