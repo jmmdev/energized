@@ -18,7 +18,7 @@ export default function CardDisplay({cards, editable, display}) {
             for (let entry of entries) {
                 const width = entry.contentRect.width;
                 const threshold = (display === "grid" ? 210 : 550);
-                const minColumns = display === "grid" ? 2 : 1;
+                const minColumns = (display === "grid" ? 2 : 1);
 
                 const numColumns = Math.max(minColumns, Math.floor(width / threshold));
         
