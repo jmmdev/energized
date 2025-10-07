@@ -3,14 +3,10 @@ import { useRef, useState } from "react";
 import CardSearchList from "./card-search-list";
 import Button from "./button";
 import CardSearchFilters from "./card-search-filters";
-import { FaCaretDown, FaPlus, FaSearch } from "react-icons/fa";
+import { FaSearch } from "react-icons/fa";
 import { SearchProvider, useSearch } from "@/context/search-context";
-import { useDeckContext } from "@/context/deck-context";
 
-export default function BuilderCardSearch() {
-     const {
-        waiting
-    } = useDeckContext();
+export default function BuilderCardSearch({waiting}) {
 
     const cardScrollRef = useRef();
 

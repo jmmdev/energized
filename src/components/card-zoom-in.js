@@ -34,11 +34,11 @@ export default function CardZoomIn({zoomIn, setZoomIn, elem, zoomRef}) {
             for (let abi of card.abilities) {
                 output.push(
                     <div className="flex flex-col gap-2" key={abi.name}>
-                        <p className="flex items-center gap-2">
+                        <p className="flex items-center gap-2 text-2xl">
                             <span className="py-0.5 px-2 rounded-sm bg-red-500">{abi.type}</span>
                             <span className="font-semibold text-red-500">{abi.name}</span>
                         </p>
-                        <p>
+                        <p className="text-xl">
                             {abi.effect}
                         </p>
                     </div>
@@ -51,12 +51,15 @@ export default function CardZoomIn({zoomIn, setZoomIn, elem, zoomRef}) {
                 output.push(
                     <div className="flex flex-col gap-2" key={att.name}>
                         <div>
-                            <b>{att.name}</b>
+                            <b className="text-2xl">{att.name}</b>
+                            <p className="font-light text-lg">
+                                {att.cost && <>Cost: <span className="font-bold">{getAttackCost(att)}</span></>}
+                            </p>
                             <p className="text-lg">
-                                {att.cost ? <span>Cost: <b>{getAttackCost(att)}</b></span> : ""}{att.damage && att.damage > 0 ? <span>, Damage: <b>{att.damage}</b></span> : ""}
+                                {(att.damage && att.damage > 0) && <>Damage: <span className="font-bold">{att.damage}</span></>}
                             </p>
                         </div>
-                        <p>
+                        <p className="text-xl">
                             {att.effect}
                         </p>
                     </div>
@@ -69,28 +72,31 @@ export default function CardZoomIn({zoomIn, setZoomIn, elem, zoomRef}) {
 
     if (zoomIn && zoomRef.current && (zoomRef.current === elem.card.id))
         return (
-            <div className="fixed flex flex-col w-full h-full bg-[#000d] text-my-white z-100 p-8 top-0 left-0 overflow-y-auto">
-                <div className="w-full flex-1 flex flex-col gap-4">
-                    <button className="self-end opacity-70 hover:opacity-100 cursor-pointer text-my-white" onClick={() => setZoomIn(false)}>
-                        <FaPlus className="text-3xl rotate-45" />
-                    </button>
+            <div className="fixed flex flex-col w-screen h-screen bg-[#000d] text-my-white z-100 p-4 top-0 left-0 overflow-y-auto" onClick={() => setZoomIn(false)}>
+                <div className="w-full flex-1 flex flex-col items-center gap-12">
+                    <p className="text-my-white/80 font-light text-sm">
+                        Click anywhere to close
+                    </p>
                     <div className="flex flex-1 justify-center">
-                        <div className="flex flex-col lg:flex-row lg:items-center text-2xl gap-8">
-                            <div className="w-full max-w-md">
+                        <div className="flex flex-col lg:flex-row lg:items-center gap-8">
+                            <div className="w-full flex flex-col items-center gap-2 max-w-sm">
                                 <img className="block max-w-full" src={elem.card.image + "/high.webp"} alt={`${elem.card.name}#${elem.card.id}`} />
                             </div>
-                            <div className="flex flex-col gap-8 max-w-md text-left">
+                            <div className="flex flex-col gap-8 max-w-sm text-left">
                                 <div>
-                                    <p className="font-bold uppercase">{elem.card.name}</p>
-                                    <p>{elem.card.stage || elem.card.trainerType || elem.card.energyType} {elem.card.types && elem.card.types[0]} {elem.card.category}</p>
-                                    {elem.card.hp && <p>HP: {elem.card.hp}</p>}
+                                    <p className="font-bold uppercase text-2xl">{elem.card.name}</p>
+                                    <p className="text-xl">{elem.card.stage || elem.card.trainerType || elem.card.energyType} {elem.card.types && elem.card.types[0]} {elem.card.category}</p>
+                                    {elem.card.hp && <p className="text-xl">HP: <b>{elem.card.hp}</b></p>}
                                 </div>
                                 <GetInfo card={elem.card} />
-                                {elem.card.effect && <p> {elem.card.effect}</p>}
-                                {elem.card.retreat > 0 && <p>Retreat cost: {elem.card.retreat}</p>}
+                                {elem.card.effect && <p className="text-xl"> {elem.card.effect}</p>}
+                                {elem.card.retreat > 0 && <p className="text-xl">Retreat cost: <b>{elem.card.retreat}</b></p>}
                             </div>
                         </div>
                     </div>
+                    <p className="lg:hidden text-my-white/80 font-light text-sm">
+                        Click anywhere to close
+                    </p>
                 </div>
             </div>
         )

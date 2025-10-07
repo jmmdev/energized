@@ -2,12 +2,11 @@ import Image from "next/image";
 import { FaArrowAltCircleLeft, FaArrowAltCircleUp, FaGripHorizontal, FaInfoCircle, FaList, FaPen, FaRegTrashAlt, FaSpinner, FaTrashAlt } from "react-icons/fa";
 import BuilderDeckResume from "./builder-deck-resume";
 import Button from "./button";
-import BuildDeckListCard from "./build-deck-list-card";
 import Footer from "./footer";
 import { useDeckContext } from "@/context/deck-context";
 import BuilderDeckTopButton from "./builder-deck-top-button";
 import { useEffect, useRef, useState } from "react";
-import CardGrid from "./card-grid";
+import CardDisplay from "./card-display";
 
 export default function BuilderDeckInfo({updateDeck, setShowImgSelector}) {
     
@@ -147,28 +146,7 @@ export default function BuilderDeckInfo({updateDeck, setShowImgSelector}) {
                     {
                     cardQuantity > 0
                     ?
-                        <>
-                        {
-                        display === "grid"
-                        ?
-                            <CardGrid cards={cards} editable />
-                        :
-                            <>
-                            <div className="grid grid-cols-1 xl:grid-cols-2 gap-1">
-                            {
-                                cards.map((elem) => {
-                                    return <BuildDeckListCard key={"list"+elem.card.id} elem={elem} />
-                                })
-                            }
-                            </div>
-                            {waiting && 
-                                <div className="flex justify-center p-4">
-                                    <FaSpinner className="text-3xl lg:text-2xl animate-spin" />
-                                </div>
-                            }
-                            </>
-                        }
-                        </>
+                        <CardDisplay cards={cards} display={display} editable />
                     :
                         <div className="flex flex-col lg:flex-row flex-1 items-center justify-center opacity-40 gap-2">
                             <FaArrowAltCircleUp className="animate-bounce lg:hidden text-3xl lg:text-4xl xl:text-5xl" />

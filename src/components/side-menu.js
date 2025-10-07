@@ -9,7 +9,7 @@ import CompactLogin from "./compact-login";
 import { getSession } from "next-auth/react";
 import { useEffect, useRef } from "react";
 
-export default function SideMenu({showMenu, setShowMenu}) {
+export default function SideMenu({orientation, showMenu, setShowMenu}) {
 
     const USER_SECTIONS = [
         {text: "about", route: "https://devjosm.vercel.app"}, 
@@ -75,15 +75,16 @@ export default function SideMenu({showMenu, setShowMenu}) {
 
     return (
         <aside id="side-menu-container" className={"w-dvw flex-auto fixed left-0 " + 
-            `${pathname.includes("/build") ? "h-[calc(100dvh_-_48px)] top-12" : "h-[calc(100dvh_-_96px)] top-24"} ${showMenu ? "z-95" : "-z-1"}`} 
+            `${pathname.includes("/build") ? "h-[calc(100dvh_-_48px)] top-12" : "h-[calc(100dvh_-_96px)] top-24"} ${showMenu ? "bg-[#0008] z-95" : "-z-1"}`} 
         onClick={(e) => {
             e.preventDefault();
             setShowMenu(false);
         }}>
             <div className="relative w-full h-full">
                 <div id="side-menu"
-                className={"w-full md:w-2/5 xl:w-1/4 max-w-[500px] h-full flex flex-col gap-4 bg-background absolute top-0 left-full text-foreground p-4 transition-transform " +
-                    `${showMenu && "-translate-x-full"}`} onClick={(e) => e.stopPropagation()}>
+                className={"w-full md:w-2/5 xl:w-1/4 max-w-[500px] h-full flex flex-col gap-4 bg-background absolute top-0 text-foreground p-4 transition-transform " +
+                    `${orientation === "to-right" ? "right-full" : "left-full"}
+                    ${showMenu && (orientation === "to-right" ? "translate-x-full" : "-translate-x-full")}`} onClick={(e) => e.stopPropagation()}>
                     {!session &&
                     <div className="w-full lg:hidden">
                         <CompactLogin onLoginSuccess={refreshSession} vertical />

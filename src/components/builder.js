@@ -11,6 +11,7 @@ import { useDeckContext } from "@/context/deck-context";
 import BuilderDeckInfo from "./builder-deck-info";
 import Drawer from "./drawer";
 import DeckStats from "./deck-stats";
+import {getSimpleStats} from "@/utils/simple-stats";
 
 export default function Builder({deckId}) {
     const router = useRouter();
@@ -18,18 +19,19 @@ export default function Builder({deckId}) {
 
     const {
         deckCreatorId, name, cards, cardQuantity, image, legal, visible, hasChanges,
-        setHasChanges, deckError, closeDeckError, initializeDeck
+        setHasChanges, deckError, closeDeckError, initializeDeck, waiting
     } = useDeckContext();
 
     const [showImgSelector, setShowImgSelector] = useState(false);
     const [saving, setSaving] = useState(false);
     const [loaded, setLoaded] = useState(false);
+    const [stats, setStats] = useState(null);
 
     useEffect(() => {
         const initialize = async () => {
             try {
                 await initializeDeck(deckId);
-                
+
                 if (deckCreatorId.current === session.user.id) {
                     setLoaded(true);
                 }
@@ -73,7 +75,7 @@ export default function Builder({deckId}) {
 
     useEffect(() => {
         const doSave = async () => {
-            await axios.post(`/xapi/decks`, {
+            await axios.post(`/api/xapi/decks`, {
                 deckId,
                 data: {
                     name, cards, image, legal, visible, cardCount: cardQuantity
@@ -89,6 +91,11 @@ export default function Builder({deckId}) {
             doSave();
     }, [saving])
 
+    useEffect(() => {
+        if (cards)
+            setStats(getSimpleStats(cards)); 
+    }, [cards])
+
     const updateDeck = async () => {
         setSaving(true);
     }
@@ -102,8 +109,8 @@ export default function Builder({deckId}) {
     return (
         <main className="relative w-full flex flex-col lg:flex-row justify-center flex-1 overflow-y-hidden self-center">
             <Drawer drawerIcon={<FaTools />} iconList={[<FaSearch key="search" />, <FaChartBar key="stats" />]}>
-                <BuilderCardSearch />
-                <DeckStats deck={cards} />
+                <BuilderCardSearch waiting={waiting} />
+                <DeckStats stats={stats} />
             </Drawer>
             {cards && legal &&
                 <BuilderDeckInfo updateDeck={updateDeck} setShowImgSelector={setShowImgSelector} />
