@@ -11,27 +11,20 @@ import CardDisplay from "./card-display";
 export default function BuilderDeckInfo({updateDeck, setShowImgSelector}) {
     
     const {
-        name, cards, setCards, image, hasChanges, setHasChanges, cardQuantity, waiting, visible, setVisible
+        name, cards, setCards, image, hasChanges, setHasChanges, cardQuantity, visible, setVisible
     } = useDeckContext();
 
     const [display, setDisplay] = useState("grid");
-    const [sorted, setSorted] = useState(true);
 
-    const firstSort = useRef(true);
-    const lastCardsLength = useRef();
+    const lastCardsLength = useRef(cards.length);
 
     useEffect(() => {
-        if (firstSort.current) {
+        if (cards.length > lastCardsLength.current) {
             sortCards();
-            firstSort.current = false;
         }
-    }, [cards])
-
-    useEffect(() => {
-        if (sorted && cards.length > lastCardsLength.current)
-            setSorted(false);
-        
-        lastCardsLength.current = cards.length;
+        else {
+            lastCardsLength.current = cards.length;
+        }
     }, [cards.length])
 
     const sortCards = () => {
@@ -59,8 +52,8 @@ export default function BuilderDeckInfo({updateDeck, setShowImgSelector}) {
                 return 1;
         });
 
+        lastCardsLength.current = cards.length;
         setCards(sorted);
-        setSorted(true);
     }
 
     const handleSave = () => {
