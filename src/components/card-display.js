@@ -28,7 +28,7 @@ export default function CardDisplay({cards, editable, display}) {
             }
         })
         resizeObserver.observe(element);
-    }, [])
+    }, [display])
     
     useEffect(() => {
         if (zoomIn)
@@ -38,7 +38,7 @@ export default function CardDisplay({cards, editable, display}) {
     }, [zoomIn])
 
     return (
-        <div ref={containerRef} className="grid gap-4">
+        <div ref={containerRef} className={`grid gap-x-8 ${display === "grid" ? "gap-x-8 gap-y-12" : "gap-x-12 gap-y-8"}`}>
             {
                 cards.map((elem) => {
                     return (

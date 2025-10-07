@@ -142,7 +142,7 @@ export default function BuilderDeckInfo({updateDeck, setShowImgSelector}) {
                         </div>
                     }
                 </div>
-                <div className={`${cards.length <= 0 ? "flex" : ""} flex-1 text-center my-4`}>
+                <div className={`flex ${cards.length <= 0 ? "flex-row" : "flex-col"} flex-1 text-center my-4`}>
                     {
                     cardQuantity > 0
                     ?
