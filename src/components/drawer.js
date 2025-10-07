@@ -27,7 +27,7 @@ export default function Drawer({children, drawerIcon, iconList}) {
         }
 
         return (
-            <div className="sticky bottom-0 w-full flex items-center gap-[1px] shadow-[0_-1px_16px_#000c] bg-background-1 z-20">
+            <div className="sticky bottom-0 w-full flex items-center gap-[1px] shadow-[0_-1px_16px_#0008] bg-background-1 z-20">
                 {output}
             </div>
         )
@@ -43,7 +43,7 @@ export default function Drawer({children, drawerIcon, iconList}) {
                 }
             </div>
             <button className={`group w-full lg:w-auto h-fit self-center flex flex-col border-background ${showDrawer ? "border-t-2" : "border-0 rounded-t"} 
-            lg:rounded-none lg:rounded-r lg:flex-row items-center gap-2 p-4 bg-background-1 text-xl cursor-pointer`}
+            lg:rounded-none lg:rounded-r lg:flex-row items-center gap-2 p-4 bg-background-1 text-xl cursor-pointer shadow-[0_-1px_16px_#0008] lg:shadow-none`}
             onClick={() => setShowDrawer(!showDrawer)}>
                 <div className="flex lg:flex-col opacity-30 group-hover:opacity-60 gap-1">
                     {drawerIcon}
