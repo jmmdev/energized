@@ -38,7 +38,7 @@ export default function CardDisplay({cards, editable, display}) {
     }, [zoomIn])
 
     return (
-        <div ref={containerRef} className={`grid ${display === "grid" ? "gap-6 rounded-3xl xs:rounded-xl sm:rounded-lg" : "gap-4"}`}>
+        <div ref={containerRef} className={`grid ${display === "grid" ? "gap-6 rounded-3xl" : "gap-4"}`}>
             {
                 cards.map((elem) => {
                     return (

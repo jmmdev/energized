@@ -28,7 +28,7 @@ export default function ListCardImage({elem, zoomRef, setZoomIn, children}) {
 
     return (
         <div key={"list"+elem.card.id} 
-        className="relative w-full flex justify-between items-center gap-8 p-4 cursor-pointer rounded-lg bg-background-1 hover:bg-background-2 overflow-hidden" 
+        className="group relative w-full flex justify-between items-center gap-8 cursor-pointer rounded-lg overflow-hidden" 
         onClick={() => {
             zoomRef.current = elem.card.id;
             setZoomIn(true);
@@ -38,7 +38,9 @@ export default function ListCardImage({elem, zoomRef, setZoomIn, children}) {
                     <Image src={elem.card.image + "/low.webp"} className="h-full w-auto" width={2000} height={2000} alt={`${elem.card.name} card image`}/>
                 </div>
                 <div className="flex-1 text-start">
-                    <p className="text-2xl font-bold">{elem.card.name}</p>
+                    <p className="underline text-2xl font-bold lg:no-underline lg:group-hover:underline">
+                        {elem.card.name}
+                    </p>
                     <p className="font-light">{cardInfo}</p>
                 </div>
             </div>
