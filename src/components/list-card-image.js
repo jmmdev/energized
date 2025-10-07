@@ -33,7 +33,7 @@ export default function ListCardImage({elem, zoomRef, setZoomIn, children}) {
             zoomRef.current = elem.card.id;
             setZoomIn(true);
         }}>
-            <div className="flex flex-1 items-center gap-8">
+            <div className="flex flex-1 items-center gap-4">
                 <div className="w-16">
                     <Image src={elem.card.image + "/low.webp"} className="h-full w-auto" width={2000} height={2000} alt={`${elem.card.name} card image`}/>
                 </div>
