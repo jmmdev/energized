@@ -20,32 +20,31 @@ export default function Hero() {
                 scrollerRef.current.scrollTo({left: window.innerWidth * slideRef.current});
         }
 
-        const handleScrollEnd = (e) => {
-            console.log("SCROLL ENDED", currentSlide);
-            if (currentSlide === 0)
-                setCurrentSlide(SLIDES.length);
-            else if (currentSlide === SLIDES.length+1)
-                setCurrentSlide(1);
-        }
-
         window.addEventListener("resize", handleResize);
-        if (scrollerRef) {
-            addEventListener("scrollend", handleScrollEnd)
-        }
 
         return () => {
             window.removeEventListener('resize', handleResize);
-            scrollerRef.removeEventListener('scrollend', handleScrollEnd);
         };
     }, [])
 
     useEffect(() => {
+        let timeout;
+        clearTimeout(timeout);
+        
         const behavior = 
         ((currentSlide === 1 && slideRef.current === SLIDES.length + 1) || (currentSlide === SLIDES.length && slideRef.current === 0)) ? "instant" : "smooth";
 
         if (scrollerRef && scrollerRef.current){
             scrollerRef.current.scrollTo({left: window.innerWidth * currentSlide, behavior});
             slideRef.current = currentSlide;
+
+            setTimeout(() => {
+                if (currentSlide === 0)
+                    setCurrentSlide(SLIDES.length);
+                else if (currentSlide === SLIDES.length+1)
+                setCurrentSlide(1);
+            }, 700);
+
         }
     }, [currentSlide]);
 
