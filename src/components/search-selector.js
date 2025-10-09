@@ -7,23 +7,22 @@ export default function SearchSelector({options, target, setTarget}) {
 
     return (
         <div className="relative">
-            <div id="selection"
+            <button id="selection"
             className={`w-32 hidden sm:flex justify-between items-center h-full px-2 cursor-pointer text-my-white bg-highlight hover:bg-highlight-hover rounded-tl-sm ` + 
                 `${showOptions ? "" : "rounded-bl-sm"}`}
-            onClick={() => setShowOptions(!showOptions)} 
-            tabIndex={0}>
+            onClick={() => setShowOptions(!showOptions)}>
                 <p id="selection-text" className="capitalize">{target}</p>
                 <div id="arrow" className= 
                 {`border-l-transparent border-r-transparent border-l-6 border-r-6 ${showOptions ? "border-b-6" : "border-t-6"}`} />
-            </div>
-            <div id="options" className={`${!showOptions && "invisible"} w-full absolute z-99 top-full left-0 bg-highlight text-my-white cursor-default`}>
+            </button>
+            <div id="options" className={`${!showOptions && "invisible"} w-full flex flex-col absolute z-99 top-full left-0 bg-highlight text-my-white cursor-default`}>
                 {options.map(element => {
                     return (
-                        <p className={`capitalize px-2 py-1 text-foregorund ${element === target && "hover:bg-highlight-hover"} hover:bg-highlight-hover`}
+                        <button className={`text-start capitalize px-2 py-1 text-foregorund ${element === target && "hover:bg-highlight-hover"} hover:bg-highlight-hover`}
                         key={element} onClick={(e) => {
                             setTarget(element.toLowerCase());
                             setShowOptions(false);
-                        }}>{element}</p>
+                        }}>{element}</button>
                     )
                 })}
             </div>

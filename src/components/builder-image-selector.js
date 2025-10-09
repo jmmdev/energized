@@ -29,13 +29,13 @@ export default function BuilderImageSelector({setShowImgSelector}) {
         
         for (let i=0; i<ENERGY_NUMBER; i++) {
             output.push(
-                <div key={i} className="group w-1/4 sm:w-1/5 p-3 relative cursor-pointer" onClick={() => setImage(`/assets/images/deck-logo-${i}.png`)}>
+                <button key={i} className="group w-1/4 sm:w-1/5 p-3 relative cursor-pointer" onClick={() => setImage(`/assets/images/deck-logo-${i}.png`)}>
                     <div className="relative w-full aspect-square">
                         <Image className="object-contain" priority src={`/assets/images/deck-logo-${i}.png`}
                         width={500} height={500} alt={`Energy logo #${i}`} />
                         <div className="hidden group-hover:block absolute top-0 w-full h-full bg-foreground opacity-50 z-101" />
                     </div>
-                </div>
+                </button>
             )
         }
 

@@ -15,7 +15,7 @@ export default function GridCardImage({elem, loaded, setLoaded, zoomRef, setZoom
     }
 
     return (
-        <div className={`group relative flex flex-col select-none cursor-pointer`} onClick={() => {
+        <button className={`group relative flex flex-col select-none cursor-pointer`} onClick={() => {
             zoomRef.current = elem.card.id;
             setZoomIn(true);
         }}>
@@ -31,6 +31,6 @@ export default function GridCardImage({elem, loaded, setLoaded, zoomRef, setZoom
                 <FaSearchPlus />
             </div>
             {children}
-        </div>
+        </button>
     )
 }

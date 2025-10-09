@@ -27,7 +27,7 @@ export default function ListCardImage({elem, zoomRef, setZoomIn, children}) {
     const cardInfo = getCardInfo();
 
     return (
-        <div key={"list"+elem.card.id} 
+        <button key={"list"+elem.card.id} 
         className="group relative w-full flex justify-between items-center gap-8 bg-background-1 hover:bg-background-2 p-4 cursor-pointer rounded-lg overflow-hidden" 
         onClick={() => {
             zoomRef.current = elem.card.id;
@@ -45,6 +45,6 @@ export default function ListCardImage({elem, zoomRef, setZoomIn, children}) {
                 </div>
             </div>
             {children}
-        </div>
+        </button>
     )
 }

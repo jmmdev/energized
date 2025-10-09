@@ -39,10 +39,11 @@ export default function ListDisplay({type, list, name, isOwn, isFav, isHome, per
         }
 
         return (
-            <div className="flex flex-col h-full gap-4">
+            <div className="flex flex-col h-full gap-2">
                 {!isOwn && !isFav && !isHome &&
                     <h1 className="text-4xl font-bold"><span className="capitalize">{type.slice(0, -1)}</span>{` search results for "${name}"`}</h1>
                 }
+                {!isHome && <p className="font-light italic">{listToShow.length} result{listToShow.length > 1 ? "s" : ""}</p>}
                 {isHome && <h1 className="text-4xl font-bold">{name}</h1>}
                 <div className={`w-full flex-1 ${type === "users" ? "flex flex-wrap gap-4" : "flex flex-col gap-2"}`}>
                     {
@@ -50,30 +51,31 @@ export default function ListDisplay({type, list, name, isOwn, isFav, isHome, per
                             if (type === "decks" || isHome)
                                 return (
                                     <div key={elem._id}>
-                                        <div className={`flex w-full items-center group relative has-[.child:hover]:hover:text-foreground rounded-full px-4 sm:px-2 py-2 gap-2
+                                        <div className={`flex w-full items-center group relative rounded-full
                                             ${index % 2 === 0 ? "bg-background-1" : "bg-background-2"}`}>
-                                            <div className="hidden sm:block h-10 aspect-square relative">
-                                                <Image width={200} height={200} className="rounded-full" src={elem.image} alt="Deck's image" />
-                                            </div>
-                                            <div className={`flex items-center gap-4 flex-1 h-full justify-between`}>
-                                                <Link className="text-lg sm:text-xl flex items-center font-medium hover:text-highlight" href={`/deck/${elem._id}`}>
-                                                    <p>{elem.name}</p>
-                                                </Link>
-                                                {!isOwn && 
-                                                    <Link className="child flex items-center gap-1 font-light cursor-pointer group-hover:text-foreground hover:text-highlight pr-2" 
+                                            <Link className="flex-1 text-lg sm:text-xl flex items-center font-medium hover:text-highlight px-4 sm:px-2 py-2 gap-4"
+                                            href={`/deck/${elem._id}`}>
+                                                <div className="hidden sm:block h-10 aspect-square relative">
+                                                    <Image width={200} height={200} className="rounded-full" src={elem.image} alt="Deck's image" />
+                                                </div>
+                                                <p>{elem.name}</p>
+                                            </Link>
+                                            {!isOwn && 
+                                                <div className="flex items-center self-stretch">
+                                                    <Link className="flex items-center gap-1 font-light cursor-pointer group-hover:text-foreground hover:text-highlight pr-4" 
                                                     href={`/user/${elem.creator.name}`} onClick={(e) => e.stopPropagation()}>
                                                         <FaUser />
                                                         {elem.creator.name}
                                                     </Link>
-                                                }
-                                            </div>
+                                                </div>
+                                            }
                                         </div>
                                     </div>
                                 )
                             if (type === "users")
                                 return (
                                     <div className="w-full sm:w-fit h-fit" key={elem._id}>
-                                        <Link className={`flex w-full items-center cursor-pointer group hover:text-highlight relative has-[.child:hover]:hover:text-foreground p-2 rounded-full
+                                        <Link className={`flex w-full items-center cursor-pointer group hover:text-highlight relative p-2 rounded-full
                                         ${index % 2 === 0 ? "bg-background-1" : "bg-background-2"}`}
                                         href={`/user/${elem.name}`}>
                                             <div className="w-8 aspect-square relative">
@@ -88,10 +90,7 @@ export default function ListDisplay({type, list, name, isOwn, isFav, isHome, per
                 </div>
                  {!isHome &&
                     <>
-                    <p className="text-center p-2 font-light italic">{listToShow.length} result{listToShow.length > 1 ? "s" : ""}</p>
-                        <>
                         {listToShow.length > perPage && <Pagination list={listToShow} pageNumber={pageNumber} setPageNumber={setPageNumber} perPage={perPage} />}
-                        </>
                     </>
                 }
             </div>

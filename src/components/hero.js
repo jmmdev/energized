@@ -37,16 +37,16 @@ export default function Hero() {
     return (
         <section id="hero" className="relative w-screen min-h-28 hidden sm:flex overflow-hidden z-5">
             {currentSlide > 0 ?
-            <div className="w-[5%] max-w-16 h-full absolute left-0 flex justify-center items-center px-2 lg:px-4 cursor-pointer opacity-60 hover:opacity-100 hover:bg-[#fff2] z-10" onClick={() => setCurrentSlide(currentSlide-1)}>
+            <button className="w-[5%] max-w-16 h-full absolute left-0 flex justify-center items-center px-2 lg:px-4 cursor-pointer opacity-60 hover:opacity-100 hover:bg-[#fff2] z-10" onClick={() => setCurrentSlide(currentSlide-1)}>
                 <FaChevronLeft className="text-2xl lg:text-3xl text-my-white" />
-            </div>
+            </button>
             :
             <div className="w-[5%] max-w-16 h-full absolute left-0 z-10" />
             }
             {currentSlide < SLIDES.length - 1 ?
-            <div className="w-[5%] max-w-16 h-full absolute right-0 flex justify-center items-center px-2 lg:px-4 cursor-pointer opacity-60 hover:opacity-100 hover:bg-[#fff2] z-10" onClick={() => setCurrentSlide(currentSlide+1)}>
+            <button className="w-[5%] max-w-16 h-full absolute right-0 flex justify-center items-center px-2 lg:px-4 cursor-pointer opacity-60 hover:opacity-100 hover:bg-[#fff2] z-10" onClick={() => setCurrentSlide(currentSlide+1)}>
                 <FaChevronRight className="text-2xl lg:text-3xl text-my-white" />
-            </div>
+            </button>
             :
             <div className="w-[5%] max-w-16 h-full absolute right-0 z-10" />
             }

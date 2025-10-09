@@ -77,12 +77,12 @@ export default function BuilderDeckInfo({updateDeck, setShowImgSelector}) {
                 <div className="w-full flex flex-col sm:flex-row gap-4 justify-between pt-16 lg:pt-8">
                     <div className="flex flex-col gap-4">
                         <div className="flex items-center gap-6">
-                            <div className="group w-16 flex relative justify-center h-full rounded-lg aspect-square cursor-pointer" onClick={() => setShowImgSelector(true)}>
+                            <button className="group w-16 flex relative justify-center h-full rounded-lg aspect-square cursor-pointer" onClick={() => setShowImgSelector(true)}>
                                 <Image className="w-full h-auto rounded-lg object-cover" width={2000} height={2000} alt="Deck image" src={image || `/assets/images/deck-logo-0.png`} />
                                 <div className="rounded-full flex items-center justify-center absolute right-0 top-0 p-1.5 -translate-y-1/2 translate-x-1/2 bg-foreground group-hover:bg-blue-500">
                                     <FaPen className="text-xs text-background group-hover:text-my-white"/>
                                 </div>
-                            </div>
+                            </button>
                             <div>
                                 <BuilderDeckResume />
                             </div>

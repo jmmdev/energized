@@ -41,10 +41,10 @@ export default function CardSearchFilters() {
 
         return (
             <div className="flex flex-col gap-2">
-                <div className={`flex items-center gap-1 capitalize font-bold ${isSearching ? "cursor-default" : "cursor-pointer hover:text-highlight"}`} onClick={isSearching ? () => {} : doShowOptions}>
+                <button className={`flex items-center gap-1 capitalize font-bold ${isSearching ? "cursor-default" : "cursor-pointer hover:text-highlight"}`} onClick={isSearching ? () => {} : doShowOptions}>
                     {showOptions ? <FaCaretDown /> : <FaCaretRight />}
                     {field.field_name}
-                </div>
+                </button>
                 {showOptions &&
                     <div className={`flex flex-wrap gap-x-4 gap-y-2 transition-all pl-8 lg:pl-4`}>
                     {
@@ -132,13 +132,13 @@ export default function CardSearchFilters() {
         if (appliedFilters.length > 0) {
             for (const ap of appliedFilters) {
                 output.push(
-                    <div key={ap.field + ap.value} className={`group bg-background-1 px-2 py-1 text-sm rounded-full ${isSearching ? "cursor-default" : "cursor-pointer"}`}
+                    <button key={ap.field + ap.value} className={`group bg-background-1 px-2 py-1 text-sm rounded-full ${isSearching ? "cursor-default" : "cursor-pointer"}`}
                     onClick={isSearching ? () => {} : () => removeFilter(ap.field, ap.value)}>
                         <div className={`flex items-center gap-1 opacity-70 ${!isSearching && "group-hover:opacity-100"}`}>
                             <p>{ap.field}: {ap.value}</p>
                             <FaPlus className="rotate-45" />
                         </div>
-                    </div>
+                    </button>
                 )
             }
 
@@ -166,18 +166,18 @@ export default function CardSearchFilters() {
                 `lg:relative lg:h-auto lg:bg-transparent lg:z-0 lg:overflow-y-auto lg:translate-x-0 lg:p-0`}>
                     <div className="flex justify-between items-center text-xl font-bold mb-4 lg:hidden">
                         Search filters
-                        <div className={`opacity-60 ${!isSearching ? "cursor-default" : "cursor-pointer hover:opacity-100"}`}
+                        <button className={`opacity-60 ${!isSearching ? "cursor-default" : "cursor-pointer hover:opacity-100"}`}
                         onClick={isSearching ? () => {} : () => setShowFilters(false)}>
                             <FaPlus className="text-xl rotate-45" />
-                        </div>
+                        </button>
                     </div>
                     <GetAppliedFilterPills />
                     <div id="filter-list" className="mb-2">
-                        <div className={`flex items-center gap-1 ${isSearching ? "cursor-default" : "cursor-pointer hover:text-highlight"}`}
+                        <button className={`flex items-center gap-1 ${isSearching ? "cursor-default" : "cursor-pointer hover:text-highlight"}`}
                         onClick={isSearching ? () => {} : () => setShowFields(!showFields)}>
                             {showFields ? <FaCaretDown /> : <FaCaretRight />}
                             Filter
-                        </div>
+                        </button>
                         {showFields &&
                         <div className="h-full flex flex-col gap-2 px-4 py-2 lg:bg-background-2 lg:rounded">
                             {
