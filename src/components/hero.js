@@ -70,9 +70,9 @@ export default function Hero() {
         
         const handleLoad = () => {
             let timeout;
-            clearTimeout();
+            clearTimeout(timeout);
 
-            setTimeout(() => {
+            timeout = setTimeout(() => {
                 setLoaded(true);
             }, 300);
         }
