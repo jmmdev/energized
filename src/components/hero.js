@@ -20,10 +20,21 @@ export default function Hero() {
                 scrollerRef.current.scrollTo({left: window.innerWidth * slideRef.current});
         }
 
+        const handleScrollEnd = () => {
+            if (currentSlide === 0)
+                    setCurrentSlide(SLIDES.length);
+                else if (currentSlide === SLIDES.length+1)
+                    setCurrentSlide(1);
+        }
+
         window.addEventListener("resize", handleResize);
+        if (scrollerRef) {
+            addEventListener("scrollend", handleScrollEnd)
+        }
 
         return () => {
             window.removeEventListener('resize', handleResize);
+            scrollerRef.removeEventListener('scrollend', handleScrollEnd);
         };
     }, [])
 
@@ -37,14 +48,6 @@ export default function Hero() {
         if (scrollerRef && scrollerRef.current){
             scrollerRef.current.scrollTo({left: window.innerWidth * currentSlide, behavior});
             slideRef.current = currentSlide;
-
-            setTimeout(() => {
-                if (currentSlide === 0)
-                    setCurrentSlide(SLIDES.length);
-                else if (currentSlide === SLIDES.length+1)
-                    setCurrentSlide(1);
-            }, 2000);
-
         }
     }, [currentSlide]);
 
