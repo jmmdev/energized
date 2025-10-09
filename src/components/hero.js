@@ -41,17 +41,17 @@ export default function Hero() {
             scrollerRef.current.scrollTo({left: window.innerWidth * currentSlide, behavior});
             slideRef.current = currentSlide;
 
-            if (currentSlide === 0 || currentSlide === SLIDES.length+1) {
+           
                 setTimeout(() => {
                     scrollingRef.current = false;
-                    if (currentSlide === 0)
-                        setCurrentSlide(SLIDES.length);
-                    else if (currentSlide === SLIDES.length+1)
-                    setCurrentSlide(1);
+                    
+                    if (currentSlide === 0 || currentSlide === SLIDES.length+1) {
+                        if (currentSlide === 0)
+                            setCurrentSlide(SLIDES.length);
+                        else if (currentSlide === SLIDES.length+1)
+                        setCurrentSlide(1);
+                    }
                 }, 700);
-            } else {
-                scrollingRef.current = false;
-            }
 
         }
     }, [currentSlide]);
