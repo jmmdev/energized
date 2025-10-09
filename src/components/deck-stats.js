@@ -146,7 +146,7 @@ export default function DeckStats({stats}) {
     const DrawGauge = ({data, first, textValue}) => {
         const COLORS = [
             first ? "#ef4444" : "#3b82f6", 
-            "#e5e5e5"];
+            theme === "dark" ? "#e5e5e5" : "#1a1a1a"];
 
         return (
             <div className="flex flex-col w-full">
