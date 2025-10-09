@@ -33,15 +33,19 @@ export default function Hero() {
 
         let timeout;
         clearTimeout(timeout);
+
+        const doInstant = ((currentSlide === 1 && slideRef.current === SLIDES.length + 1) || (currentSlide === SLIDES.length && slideRef.current === 0));
         
-        const behavior = 
-        ((currentSlide === 1 && slideRef.current === SLIDES.length + 1) || (currentSlide === SLIDES.length && slideRef.current === 0)) ? "instant" : "smooth";
+        const behavior = doInstant ? "instant" : "smooth";
 
         if (scrollerRef && scrollerRef.current){
             scrollerRef.current.scrollTo({left: window.innerWidth * currentSlide, behavior});
             slideRef.current = currentSlide;
 
-           
+            if (doInstant)
+                scrollingRef.current = false;
+
+            else {
                 setTimeout(() => {
                     scrollingRef.current = false;
                     
@@ -52,6 +56,7 @@ export default function Hero() {
                         setCurrentSlide(1);
                     }
                 }, 700);
+            }
 
         }
     }, [currentSlide]);
