@@ -20,7 +20,7 @@ export default function Hero() {
                 scrollerRef.current.scrollTo({left: window.innerWidth * slideRef.current});
         }
 
-        const handleScrollEnd = () => {
+        const handleScrollEnd = (e) => {
             console.log("SCROLL ENDED", currentSlide);
             if (currentSlide === 0)
                 setCurrentSlide(SLIDES.length);
@@ -40,9 +40,6 @@ export default function Hero() {
     }, [])
 
     useEffect(() => {
-        let timeout;
-        clearTimeout(timeout);
-        
         const behavior = 
         ((currentSlide === 1 && slideRef.current === SLIDES.length + 1) || (currentSlide === SLIDES.length && slideRef.current === 0)) ? "instant" : "smooth";
 
