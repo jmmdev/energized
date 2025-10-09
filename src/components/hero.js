@@ -65,7 +65,18 @@ export default function Hero() {
         }
     }, [currentSlide]);
 
-    const GetSlide = ({index, elem, loaded, handleLoad}) => {
+    const GetSlide = ({index, elem}) => {
+        const [loaded, setLoaded] = useState(false);
+        
+        const handleLoad = () => {
+            let timeout;
+            clearTimeout(timeout);
+
+            timeout = setTimeout(() => {
+                setLoaded(true);
+            }, 300);
+        }
+
         return (
             <Link key={"sl-" + index} className={`flex flex-[0_0_100%] justify-center hover:scale-110 transition-transform ${elem.background}`}
             href={elem.href}>
@@ -83,40 +94,22 @@ export default function Hero() {
         )
     }
 
-    const loadList = [];
-
-    for (let i=0; i<=SLIDES.length+1; i++) {
-        loadList.push(false);
-    }
 
     const GetSlides = () => {
-        const [loads, setLoads] = useState(loadList);   
-
-        const handleLoad = (index) => {
-            let timeout;
-            clearTimeout(timeout);
-
-            timeout = setTimeout(() => {
-                const newLoads = [...loads];
-                newLoads[index] = true;
-                setLoads(newLoads);
-            }, 300);
-        }
-
         let output =  [];
 
         output.push(
-            <GetSlide elem={SLIDES[SLIDES.length-1]} index={0} loaded={loads[0]} handleLoad={handleLoad(0)} />
+            <GetSlide elem={SLIDES[SLIDES.length-1]} index={0} />
         )
 
         for (const [index, elem] of SLIDES.entries()) {
             output.push (
-                <GetSlide elem={elem} index={index+1} loaded={loads[index+1]} handleLoad={handleLoad(index+1)} /> 
+                <GetSlide elem={elem} index={index + 1} /> 
             )
         }
 
         output.push(
-            <GetSlide elem={SLIDES[0]} index={SLIDES.length+1} loaded={loads[SLIDES.length+1]} handleLoad={handleLoad(SLIDES.length+1)} />
+            <GetSlide elem={SLIDES[0]} index={SLIDES.length+1} />
         )
 
         return output;
