@@ -66,16 +66,28 @@ export default function Hero() {
     }, [currentSlide]);
 
     const GetSlide = ({index, elem}) => {
+        const [loaded, setLoaded] = useState(false);
+        
+        const handleLoad = () => {
+            let timeout;
+            clearTimeout();
+
+            setTimeout(() => {
+                setLoaded(true);
+            }, 300);
+        }
+
         return (
-            <Link key={"sl-" + index} id={"slide-" + index} className={`flex flex-[0_0_100%] justify-center hover:scale-110 transition-transform ${elem.background}`}
+            <Link key={"sl-" + index} className={`flex flex-[0_0_100%] justify-center hover:scale-110 transition-transform ${elem.background}`}
             href={elem.href}>
                 <div className="w-[80%] flex justify-center gap-8 xl:gap-12 items-center">
-                    <div className="flex flex-col text-my-white">
+                    <div className="flex-1 flex flex-col text-my-white">
                         <p className="uppercase font-bold text-3xl lg:text-5xl">{elem.title}</p>
                         <p className="capitalize text-xl lg:text-3xl">{elem.subtitle}</p>
                     </div>
-                    <div className="hidden lg:block w-auto h-40 xl:h-48">
-                        <Image className="h-full w-auto object-cover" id="image" alt="Test image" src={`/assets/images/${elem.img}.png`} width={2000} height={2000} />
+                    <div className={`hidden lg:block w-auto h-40 xl:h-48 ${!loaded && "opacity-0"}`}>
+                        <Image className="h-full w-auto object-cover" alt="Test image" src={`/assets/images/${elem.img}.png`} 
+                        onLoad={handleLoad} width={2000} height={2000} />
                     </div>
                 </div>
             </Link>
