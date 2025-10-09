@@ -48,7 +48,7 @@ export default function Hero() {
                         setCurrentSlide(SLIDES.length);
                     else if (currentSlide === SLIDES.length+1)
                     setCurrentSlide(1);
-                }, 600);
+                }, 700);
             } else {
                 scrollingRef.current = false;
             }
