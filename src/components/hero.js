@@ -28,6 +28,9 @@ export default function Hero() {
     }, [])
 
     useEffect(() => {
+        let timeout;
+        clearTimeout(timeout);
+        
         const behavior = 
         ((currentSlide === 1 && slideRef.current === SLIDES.length + 1) || (currentSlide === SLIDES.length && slideRef.current === 0)) ? "instant" : "smooth";
 
@@ -35,10 +38,12 @@ export default function Hero() {
             scrollerRef.current.scrollTo({left: window.innerWidth * currentSlide, behavior});
             slideRef.current = currentSlide;
 
-            if (currentSlide === 0)
-                setCurrentSlide(SLIDES.length);
-            else if (currentSlide === SLIDES.length+1)
-                setCurrentSlide(1);
+            setTimeout(() => {
+                if (currentSlide === 0)
+                    setCurrentSlide(SLIDES.length);
+                else if (currentSlide === SLIDES.length+1)
+                    setCurrentSlide(1);
+            }, 2000);
 
         }
     }, [currentSlide]);
