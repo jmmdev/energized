@@ -13,6 +13,7 @@ export default function Hero() {
     
     const slideRef = useRef(currentSlide);
     const scrollerRef = useRef(null);
+    const scrollingRef = useRef(false);
 
     useEffect(() => {
         const handleResize = () => {
@@ -28,6 +29,8 @@ export default function Hero() {
     }, [])
 
     useEffect(() => {
+        scrollingRef.current = true;
+
         let timeout;
         clearTimeout(timeout);
         
@@ -38,12 +41,17 @@ export default function Hero() {
             scrollerRef.current.scrollTo({left: window.innerWidth * currentSlide, behavior});
             slideRef.current = currentSlide;
 
-            setTimeout(() => {
-                if (currentSlide === 0)
-                    setCurrentSlide(SLIDES.length);
-                else if (currentSlide === SLIDES.length+1)
-                setCurrentSlide(1);
-            }, 700);
+            if (currentSlide === 0 || currentSlide === SLIDES.length+1) {
+                setTimeout(() => {
+                    scrollingRef.current = false;
+                    if (currentSlide === 0)
+                        setCurrentSlide(SLIDES.length);
+                    else if (currentSlide === SLIDES.length+1)
+                    setCurrentSlide(1);
+                }, 700);
+            } else {
+                scrollingRef.current = false;
+            }
 
         }
     }, [currentSlide]);
@@ -89,11 +97,17 @@ export default function Hero() {
     return (
         <section id="hero" className="relative w-screen min-h-28 hidden sm:flex overflow-hidden z-5">
             <button className="w-[5%] max-w-16 h-full absolute left-0 flex justify-center items-center px-2 lg:px-4 cursor-pointer opacity-60 hover:opacity-100 hover:bg-[#fff2] z-10"
-            onClick={() => setCurrentSlide(currentSlide-1)}>
+            onClick={() => {
+                if (scrollingRef.current === false)
+                    setCurrentSlide(currentSlide-1)
+            }}>
                 <FaChevronLeft className="text-2xl lg:text-3xl text-my-white" />
             </button>
             <button className="w-[5%] max-w-16 h-full absolute right-0 flex justify-center items-center px-2 lg:px-4 cursor-pointer opacity-60 hover:opacity-100 hover:bg-[#fff2] z-10"
-            onClick={() => setCurrentSlide(currentSlide+1)}>
+            onClick={() => {
+                if (scrollingRef.current === false)
+                    setCurrentSlide(currentSlide+1)
+            }}>
                 <FaChevronRight className="text-2xl lg:text-3xl text-my-white" />
             </button>
             <div ref={scrollerRef} className="w-screen flex snap-none overflow-y-hidden overflow-x-scroll no-scrollbar">
