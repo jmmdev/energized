@@ -81,7 +81,7 @@ export default function Hero() {
             <Link key={"sl-" + index} className={`flex flex-[0_0_100%] justify-center hover:scale-110 transition-transform ${elem.background}`}
             href={elem.href}>
                 <div className="w-[80%] flex justify-center gap-8 xl:gap-12 items-center">
-                    <div className="flex-1 flex flex-col text-my-white">
+                    <div className="flex flex-col text-my-white">
                         <p className="uppercase font-bold text-3xl lg:text-5xl">{elem.title}</p>
                         <p className="capitalize text-xl lg:text-3xl">{elem.subtitle}</p>
                     </div>
