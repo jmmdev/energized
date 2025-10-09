@@ -22,13 +22,14 @@ export default function Hero() {
 
         const handleScrollEnd = () => {
             if (currentSlide === 0)
-                    setCurrentSlide(SLIDES.length);
-                else if (currentSlide === SLIDES.length+1)
-                    setCurrentSlide(1);
+                setCurrentSlide(SLIDES.length);
+            else if (currentSlide === SLIDES.length+1)
+                setCurrentSlide(1);
         }
 
         window.addEventListener("resize", handleResize);
         if (scrollerRef) {
+            console.log("EXISTE");
             addEventListener("scrollend", handleScrollEnd)
         }
 
