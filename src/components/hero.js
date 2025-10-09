@@ -21,6 +21,7 @@ export default function Hero() {
         }
 
         const handleScrollEnd = () => {
+            console.log("SCROLL ENDED", currentSlide);
             if (currentSlide === 0)
                 setCurrentSlide(SLIDES.length);
             else if (currentSlide === SLIDES.length+1)
@@ -29,7 +30,6 @@ export default function Hero() {
 
         window.addEventListener("resize", handleResize);
         if (scrollerRef) {
-            console.log("EXISTE");
             addEventListener("scrollend", handleScrollEnd)
         }
 
