@@ -14,6 +14,7 @@ export default function Hero() {
     const slideRef = useRef(currentSlide);
     const scrollerRef = useRef(null);
     const scrollingRef = useRef(false);
+    const firstScrollRef = useRef(true);
 
     useEffect(() => {
         const handleResize = () => {
@@ -36,7 +37,10 @@ export default function Hero() {
 
         const doInstant = ((currentSlide === 1 && slideRef.current === SLIDES.length + 1) || (currentSlide === SLIDES.length && slideRef.current === 0));
         
-        const behavior = doInstant ? "instant" : "smooth";
+        const behavior = (firstScrollRef.current || doInstant) ? "instant" : "smooth";
+
+        if (firstScrollRef.current)
+            firstScrollRef.current = false;
 
         if (scrollerRef && scrollerRef.current){
             scrollerRef.current.scrollTo({left: window.innerWidth * currentSlide, behavior});
