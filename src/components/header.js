@@ -9,7 +9,7 @@ import {FaHammer, FaUserCog, FaTimes, FaBars, FaUser} from "react-icons/fa";
 import { usePathname, useRouter } from "next/navigation";
 import Button from "./button";
 import axios from "axios";
-import ConfirmingLink from "./confirming-link";
+import Link from "next/link";
 
 export default function Header() {
     const router = useRouter();
@@ -94,11 +94,11 @@ export default function Header() {
                 </div>
                 :
                 <div className="flex justify-center gap-4 w-full">
-                        <ConfirmingLink className="flex flex-col md:flex-row gap-1 md:gap-2 justify-center items-center text-2xl hover:text-highlight cursor-pointer"
+                        <Link className="flex flex-col md:flex-row gap-1 md:gap-2 justify-center items-center text-2xl hover:text-highlight cursor-pointer"
                         href={`/user/${session?.user?.name}`}>
                             <FaUser />
                             <p className="hidden uppercase md:block text-sm">{session?.user?.name}</p>
-                        </ConfirmingLink>
+                        </Link>
                         {!pathname.includes("/build/") &&
                         <button className="flex flex-col md:flex-row gap-1 md:gap-2 justify-center items-center text-2xl hover:text-highlight cursor-pointer"
                         onClick={() => setShowCreateDeck(true)}>
@@ -121,11 +121,11 @@ export default function Header() {
                 <div className="flex bg-background justify-between items-center h-12 px-4 gap-4">
                     <Logo isInHeader />
                     {session?.user?.role === "admin" && 
-                        <ConfirmingLink className="flex flex-col md:flex-row gap-1 md:gap-2 justify-center items-center text-2xl hover:text-highlight cursor-pointer"
+                        <Link className="flex flex-col md:flex-row gap-1 md:gap-2 justify-center items-center text-2xl hover:text-highlight cursor-pointer"
                         href="/admin">
                             <FaUserCog />
                             <p className="hidden uppercase md:block text-sm">admin</p>
-                        </ConfirmingLink>
+                        </Link>
                     }
                     <div className="w-full h-full flex items-center justify-between gap-4">
                         <GetHeaderElements />
