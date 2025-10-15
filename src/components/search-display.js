@@ -8,7 +8,7 @@ export default function SearchDisplay({target, data, name}) {
     if (status !== "loading")
         return (
             <div className="w-full flex h-full justify-center">
-                <div className="w-full flex flex-col max-w-[1440px] justify-center p-8 xl:p-12 gap-4">
+                <div className="w-full flex flex-col max-w-[1300px] justify-center p-8 xl:p-12 gap-4">
                     <ListDisplay type={target} list={data} name={name} perPage={12} />
                 </div>
             </div>

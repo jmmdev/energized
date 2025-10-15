@@ -17,15 +17,15 @@ export default function SearchBar() {
 
     return (
         <div className="w-full flex justify-center color-background p-2">
+            <SearchSelector options={OPTIONS} target={target} setTarget={setTarget} />
             <form onSubmit={(e) => {
-                e.preventDefault();
-                
-                const content = searchText.trim();
+            e.preventDefault();
+            
+            const content = searchText.trim();
 
-                if (content.length >= 3)
-                    router.push(`/search/${target}?name=${content}`);
-            }} className="w-full max-w-[1200px] flex justify-center rounded-sm">
-                <SearchSelector options={OPTIONS} target={target} setTarget={setTarget} />
+            if (content.length >= 3)
+                router.push(`/search/${target}?name=${content}`);
+        }} className="w-full max-w-[1200px] flex justify-center rounded-sm">
                 <input placeholder="Search..." name="search-text" value={searchText} onChange={(e) => setSearchText(e.target.value)} className="w-full h-8 bg-my-white text-my-black outline-none" />
                 <Button color="blue" style="px-2 rounded-tr-sm rounded-br-sm text-lg text-my-white" content={<FaSearch />} />
             </form>

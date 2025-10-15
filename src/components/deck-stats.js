@@ -1,6 +1,4 @@
 import { useTheme } from "@/context/theme-context";
-import { useEffect, useRef, useState } from "react";
-import { FaSpinner } from "react-icons/fa";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, Cell, Pie, PieChart, Legend } from "recharts";
 
 export default function DeckStats({stats}) {
@@ -146,7 +144,7 @@ export default function DeckStats({stats}) {
     const DrawGauge = ({data, first, textValue}) => {
         const COLORS = [
             first ? "#ef4444" : "#3b82f6", 
-            "#e5e5e5"];
+            theme === "dark" ? "#e5e5e5" : "#1a1a1a"];
 
         return (
             <div className="flex flex-col w-full">
