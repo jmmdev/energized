@@ -6,14 +6,13 @@ import { getSession, useSession } from "next-auth/react";
 import SideMenu from "@/components/side-menu";
 import CompactLogin from "./compact-login";
 import {FaHammer, FaUserCog, FaTimes, FaBars, FaUser} from "react-icons/fa";
-import { usePathname, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import Button from "./button";
 import axios from "axios";
 import Link from "next/link";
 
 export default function Header() {
     const router = useRouter();
-    const pathname = usePathname();
     const {data: session, status} = useSession();
 
     const [showCreateDeck, setShowCreateDeck] = useState(false);
@@ -99,13 +98,11 @@ export default function Header() {
                             <FaUser />
                             <p className="hidden uppercase md:block text-sm">{session?.user?.name}</p>
                         </Link>
-                        {!pathname.includes("/build/") &&
                         <button className="flex flex-col md:flex-row gap-1 md:gap-2 justify-center items-center text-2xl hover:text-highlight cursor-pointer"
                         onClick={() => setShowCreateDeck(true)}>
                             <FaHammer />
                             <p className="hidden uppercase md:block text-sm">build</p>
                         </button>
-                        }
                 </div>
                 }
             </>
