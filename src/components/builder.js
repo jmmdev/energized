@@ -60,7 +60,7 @@ export default function Builder({deckId}) {
         return () => {
             window.removeEventListener('beforeunload', handleBeforeUnload);
         };
-    }, [hasChanges]);
+    }, []);
 
     useEffect(() => {
         if (!hasChanges && saving) {
