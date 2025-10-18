@@ -7,7 +7,7 @@ import { usePathname } from "next/navigation";
 
 export default function SessionWrapper({ children }) {
   
-  const HIDE_HEADER = ["/admin", "/register", "/login"];
+  const HIDE_HEADER = ["/admin", "/build", "/register", "/login"];
   const HIDE_FOOTER = ["/build", "/deck"];
   const pathname = usePathname();
 
@@ -37,6 +37,17 @@ export default function SessionWrapper({ children }) {
     return <Header />
   }
 
+  const GetFooter = () => {
+    if (searchPathInList(HIDE_FOOTER))
+      return null;
+
+    return (
+      <div className="mt-auto">
+        <Footer />
+      </div>
+    )
+  }
+
   const getContentMargin = () => {
     switch (getPathType()) {
       case "restricted":
@@ -54,11 +65,7 @@ export default function SessionWrapper({ children }) {
         <GetHeader />
         <div className={`flex flex-col ${getContentMargin()}`}>
           {children}
-          {!searchPathInList(HIDE_FOOTER) &&
-          <div className="mt-auto">
-             <Footer />
-          </div>
-          }
+          <GetFooter />
         </div>
       </div>
     </SessionProvider>

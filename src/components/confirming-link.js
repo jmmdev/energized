@@ -10,14 +10,14 @@ export default function ConfirmingLink({className, href, children}) {
   const { hasChanges } = useDeckContext();
 
   const handleClick = (e) => {
-    if (pathname.includes("/build/")) {
-        if (hasChanges) {
-            const confirmLeave = window.confirm('You have unsaved changes. Continue?');
-            if (!confirmLeave) {
-                e.preventDefault();
-                return;
-            }
-        }
+    if (pathname.includes("/build/") && hasChanges) {
+      
+      const confirmLeave = window.confirm('You have unsaved changes. Continue?');
+      
+      if (!confirmLeave) {
+          e.preventDefault();
+          return;
+      }
     }
 
     if (href !== pathname) {
