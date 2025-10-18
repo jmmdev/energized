@@ -33,7 +33,7 @@ export default function SessionWrapper({ children }) {
   return (
     <SessionProvider>
         {showHeader && <Header />}
-        <div className={`flex flex-col ${isBuild && "mt-24"}`}>
+        <div className={`flex flex-col ${(showHeader || isBuild) && "mt-24"}`}>
           {children}
           {showFooter &&
             <div className="mt-auto">
