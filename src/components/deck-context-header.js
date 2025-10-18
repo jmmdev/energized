@@ -116,7 +116,7 @@ export default function DeckContextHeader() {
         <>
             <header className="w-full fixed top-0 z-99">
                 <div className="flex bg-background justify-between items-center h-12 px-4 gap-4">
-                    <Logo isInHeader />
+                    <Logo isInHeader needsConfirm />
                     {session?.user?.role === "admin" && 
                         <ConfirmingLink className="flex flex-col md:flex-row gap-1 md:gap-2 justify-center items-center text-2xl hover:text-highlight cursor-pointer"
                         href="/admin">
