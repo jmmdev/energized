@@ -11,11 +11,6 @@ export default function SessionWrapper({ children }) {
   const HIDE_FOOTER = ["/build", "/deck"];
   const pathname = usePathname();
 
-  const getPathType = () => {
-    if (searchPathInList(HIDE_HEADER))
-      return "restricted";
-  }
-
   const searchPathInList = (pathList) => {
     let pathFound = false;
     
@@ -30,44 +25,22 @@ export default function SessionWrapper({ children }) {
     return pathFound;
   }
 
-  const GetHeader = () => {
-    if (getPathType() === "restricted")
-      return null;
-    
-    return <Header />
-  }
+  const isBuild = pathname.includes("/build");
 
-  const GetFooter = () => {
-    if (searchPathInList(HIDE_FOOTER))
-      return null;
-
-    return (
-      <div className="mt-auto">
-        <Footer />
-      </div>
-    )
-  }
-
-  const getContentMargin = () => {
-    switch (getPathType()) {
-      case "restricted":
-        return "h-[100dvh]"
-      case "simplified":
-        return "h-[calc(100dvh_-_48px)] mt-12";
-      default:
-        return "h-[calc(100dvh_-_96px)] mt-24";
-    }
-  }
+  const showHeader = !isBuild && !searchPathInList(HIDE_HEADER);
+  const showFooter = !searchPathInList(HIDE_FOOTER);
 
   return (
     <SessionProvider>
-      <div className="flex flex-col justify-between">
-        {!pathname.includes("/build") && <GetHeader />}
-        <div className={`flex flex-col ${getContentMargin()}`}>
+        {showHeader && <Header />}
+        <div className={`flex flex-col ${isBuild && "mt-24"}`}>
           {children}
-          <GetFooter />
+          {showFooter &&
+            <div className="mt-auto">
+              <Footer />
+            </div>
+          }
         </div>
-      </div>
     </SessionProvider>
   );
 }
