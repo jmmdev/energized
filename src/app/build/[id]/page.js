@@ -4,7 +4,7 @@ import { useParams, useRouter } from "next/navigation";
 import {DeckProvider} from "@/context/deck-context";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
-import Header from "@/components/header";
+import DeckContextHeader from "@/components/deck-context-header";
 
 export default function BuildEdit() {
     const router = useRouter();
@@ -26,7 +26,7 @@ export default function BuildEdit() {
     if (!isLoading && session?.user)
         return (
             <DeckProvider>
-                <Header />
+                <DeckContextHeader />
                 <Builder deckId={params.id} />
             </DeckProvider>
         );
