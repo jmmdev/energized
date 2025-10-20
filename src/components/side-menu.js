@@ -90,12 +90,16 @@ export default function SideMenu({orientation, showMenu, setShowMenu}) {
                     `${orientation === "to-right" ? "right-full" : "left-full"}
                     ${showMenu && (orientation === "to-right" ? "translate-x-full" : "-translate-x-full")}`} onClick={(e) => e.stopPropagation()}>
                     {!session &&
-                    <div className="w-full lg:hidden">
-                        <CompactLogin onLoginSuccess={refreshSession} vertical />
-                    </div>
+                        <div className="w-full lg:hidden">
+                            <CompactLogin onLoginSuccess={refreshSession} vertical />
+                        </div>
                     }
                     <GetSections />
-                    {session && session.user && <Button color="gray" content="LOG OUT" onClick={handleLogout} className="text-my-white py-1 w-full rounded" />}
+                    {session && session.user && 
+                        <Button color="gray" onClick={handleLogout} className="text-my-white py-1 w-full rounded">
+                            LOG OUT 
+                        </Button>
+                    }
                 </div>
             </div>
         </aside>
