@@ -1,7 +1,7 @@
 "use client";
 import Button from "@/components/button"
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { doCredentialsLogin } from "@/controllers/loginController";
 import { FaUser, FaKey } from "react-icons/fa";
 
@@ -13,6 +13,8 @@ export default function CompactLogin({onLoginSuccess, vertical}) {
     const [errMsg, setErrMsg] = useState('');
     const [isLogging, setIsLogging] = useState(false);
 
+    const targetElement = useRef();
+
     useEffect(() => {
         setErrMsg('');
     }, [user, pwd])
@@ -22,26 +24,40 @@ export default function CompactLogin({onLoginSuccess, vertical}) {
         errMsg.length > 0 && alert(errMsg);
     }, [errMsg])
 
-    const handleFormSubmit = async (event) => {
-        event.preventDefault();
+    useEffect(() => {
+        if (targetElement.current)
+            setIsLogging(true);
+    }, [targetElement.current])
+    
+    useEffect(() => {
+        const handleFormSubmit = async () => {
+            try {
+                const formData = new FormData(targetElement.current);
+                const response = await doCredentialsLogin(formData);
 
-        try {
-            const formData = new FormData(event.currentTarget);
-            const response = await doCredentialsLogin(formData);
-
-            if (!!response.error) {
-                setErrMsg(response.error.message);
-            } else {
-                await onLoginSuccess();
+                if (!!response.error) {
+                    setErrMsg(response.error.message);
+                } else {
+                    await onLoginSuccess();
+                }
+            }
+            catch (err) {
+                setErrMsg(err.message);
             }
         }
-        catch (err) {
-            setErrMsg(err.message);
+
+        if (isLogging) {
+            handleFormSubmit();
         }
-    }
+    }, [isLogging])
+
+    
     
     return (
-        <form onSubmit={handleFormSubmit} action="/api/auth/callback/credentials"
+        <form onSubmit={(e) => {
+            e.preventDefault();
+            targetElement.current = e.currentTarget;
+        }} action="/api/auth/callback/credentials"
         className={`flex ${vertical && "w-full flex-col"} gap-4 items-center text-container ${isLogging && "opacity-60"}`}>
             <div className={`${vertical && "w-full"} flex gap-2 items-center`}>
                 <FaUser className="text-xl text-neutral-400" />
