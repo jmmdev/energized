@@ -18,7 +18,7 @@ export default function BuildDeckGridCard({elem, setZoomIn, zoomRef}) {
         const newDisableValue = 
         (cardHasLimit(elem.card.name) && countCardsWithName(elem.card.name) >= 4) || 
         name_lower.includes("radiant") && deckHasRadiant() || 
-        cardQuantity >= 60;
+        cardQuantity >= 60; 
         
         if (newDisableValue !== disableAdd)
             setDisableAdd(newDisableValue);
