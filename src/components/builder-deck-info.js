@@ -88,7 +88,7 @@ export default function BuilderDeckInfo({updateDeck, setShowImgSelector}) {
                             </div>
                         </div>
                     </div>
-                    <Button color="blue" content="Save" style="hidden sm:block h-fit px-5 py-1 rounded-xs font-bold text-my-white" onClick={handleSave} disabled={!hasChanges} />
+                    <Button color="blue" content="Save" className="hidden sm:block h-fit px-5 py-1 rounded-xs font-bold text-my-white" onClick={handleSave} disabled={!hasChanges} />
                 </div>
                 <div className="w-full flex flex-col sm:flex-row sm:items-center gap-4 justify-between">
                     <div className="flex flex-col 2xl:flex-row 2xl:items-center gap-2 sm:gap-4">
@@ -120,18 +120,24 @@ export default function BuilderDeckInfo({updateDeck, setShowImgSelector}) {
                         </div>
                         }
                     </div>
-                    <Button color="blue" content="Save" style="sm:hidden w-full h-fit px-5 py-1 rounded-xs font-bold text-my-white" onClick={handleSave} disabled={!hasChanges} />
+                    <Button color="blue" content="Save" className="sm:hidden w-full h-fit px-5 py-1 rounded-xs font-bold text-my-white" onClick={handleSave} disabled={!hasChanges} />
                     {cardQuantity > 0 &&
                         <div className="flex gap-2 items-center self-end">
-                            <BuilderDeckTopButton content={
+                            <BuilderDeckTopButton selected className="hover:text-red-400" onClick={() => doClear()}>
                                 <div className="group flex gap-1 items-center">
                                     <FaTrashAlt className="group-hover:hidden text-base" />
                                     <FaRegTrashAlt className="hidden group-hover:block text-base" />
                                     <p className="text-base underline">Clear</p>
                                 </div>
-                            } selected style="hover:text-red-400" onClick={() => doClear()} />
-                            <BuilderDeckTopButton content={<FaGripHorizontal />} onClick={() => setDisplay("grid")} selected={display === "grid"} />
-                            <BuilderDeckTopButton content={<FaList />} onClick={() => setDisplay("list")} selected={display === "list"} />
+                            </BuilderDeckTopButton>
+
+                            <BuilderDeckTopButton onClick={() => setDisplay("grid")} selected={display === "grid"}>
+                                <FaGripHorizontal />
+                            </BuilderDeckTopButton>
+
+                            <BuilderDeckTopButton onClick={() => setDisplay("list")} selected={display === "list"}>
+                                <FaList />
+                            </BuilderDeckTopButton>
                         </div>
                     }
                 </div>

@@ -31,11 +31,15 @@ export default function CardSearchListElement({elem, quantity}) {
                 width={500} height={500}alt={`${elem.name}#${elem.id}`} />
             </div>
             <div className="w-full flex justify-center lg:justify-between gap-4 px-1 lg:gap-0">
-                <Button color="none" content={<FaMinus />} style="rounded-full bg-[var(--background)_!important] lg:bg-[transparent_!important] p-2 lg:p-0 lg:text-xs"
-                disabled={quantity < 1} onClick={() => removeCard(elem)} />
+                <Button color="none" className="rounded-full bg-[var(--background)_!important] lg:bg-[transparent_!important] p-2 lg:p-0 lg:text-xs"
+                disabled={quantity < 1} onClick={() => removeCard(elem)}>
+                    <FaMinus />
+                </Button>
                 <p className="text-lg lg:text-base text-center">{quantity}</p>
-                <Button color="none" content={<FaPlus />} style="rounded-full bg-[var(--background)_!important] lg:bg-[transparent_!important] p-2 lg:p-0 lg:text-xs"
-                disabled={disableAdd} onClick={() => addCard(elem)} />
+                <Button color="none" className="rounded-full bg-[var(--background)_!important] lg:bg-[transparent_!important] p-2 lg:p-0 lg:text-xs"
+                disabled={disableAdd} onClick={() => addCard(elem)}>
+                    <FaPlus />
+                </Button>
             </div>
         </div>
     )

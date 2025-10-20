@@ -215,10 +215,10 @@ export default function Register() {
                             </div>
                         </div>
                         {errMsg.length > 0 && <p className="text-red-400">{errMsg}</p>}
-                        <Button color="blue" disabled={!validName || !validPwd || !validMatch} style="w-fit rounded px-4 py-2 self-center" content="sign up" />
+                        <Button color="blue" disabled={!validName || !validPwd || !validMatch} className="w-fit rounded px-4 py-2 self-center" content="sign up" />
                     </form>
                     
-                    <Button color="red" content="Sign in with Google" style="w-fit rounded p-2" onClick={() => signIn("google")} />
+                    <Button color="red" content="Sign in with Google" className="w-fit rounded p-2" onClick={() => signIn("google")} />
                     
                     <p>
                         <span className="font-light">Already registered? </span>

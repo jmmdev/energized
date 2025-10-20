@@ -27,7 +27,9 @@ export default function SearchBar() {
                 router.push(`/search/${target}?name=${content}`);
         }} className="w-full max-w-[1200px] flex justify-center rounded-sm">
                 <input placeholder="Search..." name="search-text" value={searchText} onChange={(e) => setSearchText(e.target.value)} className="w-full h-8 bg-my-white text-my-black outline-none" />
-                <Button color="blue" style="px-2 rounded-tr-sm rounded-br-sm text-lg text-my-white" content={<FaSearch />} />
+                <Button color="blue" className="px-2 rounded-tr-sm rounded-br-sm text-lg text-my-white">
+                    <FaSearch />
+                </Button>
             </form>
         </div>
     )

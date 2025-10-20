@@ -72,8 +72,8 @@ export default function Header() {
                         <input className="bg-background-2 text-xl text-foreground rounded" value={deckName} onChange={(e) => setDeckName(e.target.value)} />
                         <p className={`${showErrorMsg ? "visible" : "invisible"} h-fit text-red-400`}>{errorMsg.current}</p>
                         <div className="flex w-full justify-center gap-4 lg:gap-8">
-                            <Button color="gray" onClick={() => setShowCreateDeck(false)} content="cancel" style="w-1/2 max-w-[250px] rounded px-4 py-2" />
-                            <Button color="blue" onClick={createDeck} content="save & build" style="w-1/2 max-w-[250px] rounded px-4 py-2 font-bold" />
+                            <Button color="gray" onClick={() => setShowCreateDeck(false)} content="cancel" className="w-1/2 max-w-[250px] rounded px-4 py-2" />
+                            <Button color="blue" onClick={createDeck} content="save & build" className="w-1/2 max-w-[250px] rounded px-4 py-2 font-bold" />
                         </div>
                     </div>
                 </div>
@@ -89,7 +89,7 @@ export default function Header() {
                         <CompactLogin onLoginSuccess={refreshSession} />
                     </div>
                     <Button color="blue" content="Log in"
-                    style="block lg:hidden rounded-xs px-2 text-my-white" onClick={() => setShowMenu(true)} />
+                    className="block lg:hidden rounded-xs px-2 text-my-white" onClick={() => setShowMenu(true)} />
                 </div>
                 :
                 <div className="flex justify-center gap-4 w-full">

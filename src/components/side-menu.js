@@ -57,11 +57,15 @@ export default function SideMenu({orientation, showMenu, setShowMenu}) {
                 {USER_SECTIONS.map((elem, index) => {
                     return (
                         <div key={elem.text} className={`w-full border-background-1 ${index < USER_SECTIONS.length - 1 && "border-b"}`}>
-                            <SideMenuSection type="link" content={elem.text.toUpperCase()} href={`${elem.route}`} />
+                            <SideMenuSection type="link" href={`${elem.route}`}>
+                                {elem.text.toUpperCase()}
+                            </SideMenuSection>
                         </div>
                     )
                 })}
-                <SideMenuSection content={<ThemeToggle />} />
+                <SideMenuSection>
+                    <ThemeToggle />
+                </SideMenuSection>
             </div>
         )
     }
@@ -91,7 +95,7 @@ export default function SideMenu({orientation, showMenu, setShowMenu}) {
                     </div>
                     }
                     <GetSections />
-                    {session && session.user && <Button color="gray" content="LOG OUT" onClick={handleLogout} style="text-my-white py-1 w-full rounded" />}
+                    {session && session.user && <Button color="gray" content="LOG OUT" onClick={handleLogout} className="text-my-white py-1 w-full rounded" />}
                 </div>
             </div>
         </aside>

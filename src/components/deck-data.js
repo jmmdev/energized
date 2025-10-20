@@ -97,13 +97,14 @@ export default function DeckData({data}) {
                                                             <FaEdit />
                                                             Edit
                                                         </Link>
-                                                        <Button color="none" onClick={() => doDelete()} content={
+                                                        <Button color="none" onClick={() => doDelete()}
+                                                        className="font-medium text-red-400 px-4 py-1 border-2 border-red-400 rounded hover:bg-red-400 hover:text-my-white
+                                                        active:bg-red-500 active:text-my-white active:border-red-500">
                                                             <div className="flex items-center gap-1">
                                                                 <FaTrashAlt />
                                                                 Delete
-                                                            </div>}
-                                                        style="font-medium text-red-400 px-4 py-1 border-2 border-red-400 rounded hover:bg-red-400 hover:text-my-white
-                                                        active:bg-red-500 active:text-my-white active:border-red-500" />
+                                                            </div>    
+                                                        </Button>
                                                     </div>
                                                 }
                                             </div>
@@ -175,19 +176,24 @@ export default function DeckData({data}) {
                                                 <FaEdit />
                                                 Edit
                                             </Link>
-                                            <Button color="none" onClick={() => doDelete()} content={
-                                                    <div className="flex items-center gap-1">
-                                                        <FaTrashAlt />
-                                                        Delete
-                                                    </div>}
-                                                style="font-medium text-red-400 px-2 py-0.5 border-2 border-red-400 rounded hover:bg-red-400 hover:text-my-white
-                                                active:bg-red-500 active:text-my-white active:border-red-500" />
+                                            <Button color="none" onClick={() => doDelete()}
+                                            className="font-medium text-red-400 px-2 py-0.5 border-2 border-red-400 rounded hover:bg-red-400 hover:text-my-white
+                                            active:bg-red-500 active:text-my-white active:border-red-500">
+                                                <div className="flex items-center gap-1">
+                                                    <FaTrashAlt />
+                                                    Delete
+                                                </div>
+                                            </Button>
                                         </div>
                                     }
                                     {data.cards.length > 0 &&
                                         <div className="flex gap-2">
-                                            <BuilderDeckTopButton content={<FaGripHorizontal />} onClick={() => setDisplay("grid")} selected={display === "grid"} />
-                                            <BuilderDeckTopButton content={<FaList />} onClick={() => setDisplay("list")} selected={display === "list"} />
+                                            <BuilderDeckTopButton onClick={() => setDisplay("grid")} selected={display === "grid"}>
+                                                <FaGripHorizontal />
+                                            </BuilderDeckTopButton>
+                                            <BuilderDeckTopButton onClick={() => setDisplay("list")} selected={display === "list"}>
+                                                <FaList />    
+                                            </BuilderDeckTopButton>
                                         </div>
                                     }
                                 </div>

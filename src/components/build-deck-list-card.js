@@ -35,9 +35,13 @@ export default function BuildDeckListCard({elem, setZoomIn, zoomRef}) {
     return (
         <ListCardImage elem={elem} setZoomIn={setZoomIn} zoomRef={zoomRef}>
             <button className="flex items-center gap-0.5 text-sm cursor-default" onClick={(e) => e.stopPropagation()}>
-                <Button color="dark" style="text-foreground p-1.5 rounded-full border-2" onClick={doRemove} content={<FaMinus />} />
+                <Button color="dark" className="text-foreground p-1.5 rounded-full border-2" onClick={doRemove}>
+                    <FaMinus />
+                </Button>
                 <p className="text-3xl w-12 font-bold">{elem.quantity}</p>
-                <Button color="dark" style="text-foreground p-1.5 rounded-full border-2" onClick={doAdd} content={<FaPlus />} disabled={disableAdd} />
+                <Button color="dark" className="text-foreground p-1.5 rounded-full border-2" onClick={doAdd} disabled={disableAdd}>
+                    <FaPlus />
+                </Button>
             </button>
         </ListCardImage>
     )

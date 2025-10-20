@@ -154,14 +154,12 @@ export default function CardSearchFilters() {
     if (filters.length > 0)
         return (
             <div className={`px-4 py-2 lg:py-0 ${isSearching && "opacity-60"}`}>
-                <Button style="lg:hidden w-full rounded p-1 text-my-white" color="blue" onClick={isSearching ? () => {} : () => setShowFilters(!showFilters)}
-                content={   
+                <Button className="lg:hidden w-full rounded p-1 text-my-white" color="blue" onClick={isSearching ? () => {} : () => setShowFilters(!showFilters)}>
                     <div className="flex justify-center items-center gap-2">
-                    <FaFilter />
-                    <p className="text-lg">Show filters</p>
+                        <FaFilter />
+                        <p className="text-lg">Show filters</p>
                     </div>
-                }
-                />
+                </Button>
                 <div className={`fixed top-0 left-0 ${showFilters ? "" : "translate-x-full"} w-full h-full bg-background-1 transition-all z-100 overflow-y-hidden p-4 `+
                 `lg:relative lg:h-auto lg:bg-transparent lg:z-0 lg:overflow-y-auto lg:translate-x-0 lg:p-0`}>
                     <div className="flex justify-between items-center text-xl font-bold mb-4 lg:hidden">
