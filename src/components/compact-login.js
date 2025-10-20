@@ -11,9 +11,8 @@ export default function CompactLogin({onLoginSuccess, vertical}) {
     const [user, setUser] = useState('');
     const [pwd, setPwd] = useState('');
     const [errMsg, setErrMsg] = useState('');
+    const [targetElement, setTargetElement] = useState(null);
     const [isLogging, setIsLogging] = useState(false);
-
-    const targetElement = useRef();
 
     useEffect(() => {
         setErrMsg('');
@@ -25,14 +24,14 @@ export default function CompactLogin({onLoginSuccess, vertical}) {
     }, [errMsg])
 
     useEffect(() => {
-        if (targetElement.current)
+        if (targetElement)
             setIsLogging(true);
-    }, [targetElement.current])
+    }, [targetElement])
     
     useEffect(() => {
         const handleFormSubmit = async () => {
             try {
-                const formData = new FormData(targetElement.current);
+                const formData = new FormData(targetElement);
                 const response = await doCredentialsLogin(formData);
 
                 if (!!response.error) {
@@ -56,9 +55,9 @@ export default function CompactLogin({onLoginSuccess, vertical}) {
     return (
         <form onSubmit={(e) => {
             e.preventDefault();
-            targetElement.current = e.currentTarget;
+            setTargetElement(e.currentTarget);
         }} action="/api/auth/callback/credentials"
-        className={`flex ${vertical && "w-full flex-col"} gap-4 items-center text-container ${isLogging && "opacity-60"}`}>
+        className={`flex ${vertical ? "w-full flex-col" : ""} gap-4 items-center text-container ${isLogging && "opacity-60"}`}>
             <div className={`${vertical && "w-full"} flex gap-2 items-center`}>
                 <FaUser className="text-xl text-neutral-400" />
                 <input className={`${vertical && "w-full"} bg-my-white text-my-black rounded-xs border border-container`}
