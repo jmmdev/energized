@@ -36,13 +36,13 @@ export default function CompactLogin({onLoginSuccess, vertical}) {
                 const response = await doCredentialsLogin(formData);
 
                 if (!!response.error) {
-                    setErrMsg(response.error.message);
+                    setErrMsg("Login failed. Please check your credentials and try again.");
                 } else {
                     await onLoginSuccess();
                 }
             }
             catch (err) {
-                setErrMsg(err.message);
+                setErrMsg("Login failed. Please check your credentials and try again.");
             }
         }
 
