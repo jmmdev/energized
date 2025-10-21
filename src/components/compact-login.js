@@ -21,6 +21,8 @@ export default function CompactLogin({onLoginSuccess, vertical}) {
     }, [errMsg])
 
     const handleFormSubmit = async (event) => {
+        event.preventDefault();
+        
         try {
             const formData = new FormData(event.currentTarget);
             const response = await doCredentialsLogin(formData);

@@ -15,7 +15,7 @@ export default function LoginForm({onLoginSuccess}) {
         setErrMsg('');
     }, [user, pwd])
 
-    async function handleFormSubmit(event) {
+    const handleFormSubmit = async (event) => {
         event.preventDefault();
 
         try {
