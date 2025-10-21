@@ -87,17 +87,17 @@ export default function Hero() {
         let output =  [];
 
         output.push(
-            <GetSlide elem={SLIDES[SLIDES.length-1]} index={0} />
+            <GetSlide key="first" elem={SLIDES[SLIDES.length-1]} index={0} />
         )
 
         for (const [index, elem] of SLIDES.entries()) {
             output.push (
-                <GetSlide elem={elem} index={index + 1} /> 
+                <GetSlide key={"img-key-" + SLIDES[index].img} elem={elem} index={index + 1} /> 
             )
         }
 
         output.push(
-            <GetSlide elem={SLIDES[0]} index={SLIDES.length+1} />
+            <GetSlide key="last" elem={SLIDES[0]} index={SLIDES.length+1} />
         )
 
         return output;

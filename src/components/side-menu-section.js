@@ -13,7 +13,7 @@ export default function SideMenuSection({children, type, href}) {
 
     return (
         <div className="w-full text-left text-foreground border-l-5 border-transparent p-2">
-            {content}
+            {children}
         </div>
     );
 }
