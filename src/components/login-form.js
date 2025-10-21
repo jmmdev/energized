@@ -17,18 +17,19 @@ export default function LoginForm({onLoginSuccess}) {
 
     const handleFormSubmit = async (event) => {
         event.preventDefault();
-
+        
         try {
             const formData = new FormData(event.currentTarget);
             const response = await doCredentialsLogin(formData);
 
             if (!!response.error) {
-                setErrMsg(response.error.message);
+                setErrMsg("Login failed. Please check your credentials and try again.");
+            } else {
+                await onLoginSuccess();
             }
-            await onLoginSuccess();
         }
         catch (err) {
-            setErrMsg(err.message);
+            setErrMsg("Login failed. Please check your credentials and try again.");
         }
     }
 
