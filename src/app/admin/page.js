@@ -3,6 +3,7 @@ import LoginForm from "@/components/login-form";
 import { useSession, getSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+import AdminPanel from "@/components/admin-panel";
 
 export default function Admin() {
     const router = useRouter();
@@ -21,7 +22,7 @@ export default function Admin() {
     
     if (session?.user.role === "admin")
         return (
-            <p>{JSON.stringify(session.user)}</p>
+            <AdminPanel />
         )
 }
     
