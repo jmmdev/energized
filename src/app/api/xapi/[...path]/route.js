@@ -10,7 +10,7 @@ async function proxy(req, { params }) {
   const target = `${API_BASE}/${segs.join("/")}${search}`;
 
   const session = await auth();
-  
+
   if (!session) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }

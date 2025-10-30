@@ -6,10 +6,9 @@ import { SignJWT } from "jose";
 
 const SECRET = new TextEncoder().encode(process.env.AUTH_SECRET);
 
-// helper to mint a 1h JWT
 async function mintAccessToken({ id, email, role, name }) {
   const now = Math.floor(Date.now() / 1000);
-  const exp = now + 60 * 60; // 1h
+  const exp = now + 60 * 60;
   const jwt = await new SignJWT({ id, email, role, name })
     .setProtectedHeader({ alg: "HS256" })
     .setIssuedAt(now)
@@ -112,7 +111,6 @@ export const {
                     }
                 }
 
-                 // Refresh token if <5 minutes left
                 const now = Math.floor(Date.now() / 1000);
                 
                 if (token.accessToken && typeof token.accessTokenExp === "number" && token.accessTokenExp - now < 300) {
