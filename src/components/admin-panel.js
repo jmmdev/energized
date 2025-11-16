@@ -82,6 +82,70 @@ export default function AdminPanel({user}) {
         )
     }
 
+    const AdminCreate = () => {
+        const [name, setName] = useState("");
+        const [email, setEmail] = useState("");
+        const [password, setPassword] = useState("");
+        
+        const createEntity = async () => {
+            let body; 
+            
+            if (tab === "users")
+                body = {
+                    name, email, password
+                }
+
+            if (tab === "decks")
+                body = {
+                    name
+                }
+
+            const response = await axios.post(`/api/xapi/admin/${tab}`, body,
+            {
+                withCredentials: true,
+            });
+
+            const createdEntity = response.data;
+
+            const newContent = [...content];
+
+            newContent.unshift(createdEntity);
+
+            setContent(newContent);
+        }
+
+        return (
+            <div className="flex flex-col gap-2 mb-8 2xl:gap-4">
+                <h2 className="uppercase opacity-60">create a new {tab.slice(0, -1)}</h2>
+                <div className="flex flex-col gap-2 2xl:gap-4">
+                    <div className="flex items-center gap-4">
+                        <div className="flex items-center gap-1">
+                            <span className="opacity-60">{tab === "users" ? "Username" : "Name"}:</span>
+                            <input className="bg-background-1" value={name} onChange={(e) => setName(e.target.value)} />
+                        </div>
+                    {tab === "users" &&
+                        <>
+                            <div className="flex items-center gap-1">
+                                <span className="opacity-60">Email:</span>
+                                <input className="bg-background-1" value={email} onChange={(e) => setEmail(e.target.value)} />
+                            </div>
+                            <div className="flex items-center gap-1">
+                                <span className="opacity-60">Password:</span>
+                                <input type="password" className="bg-background-1" value={password} onChange={(e) => setPassword(e.target.value)} />
+                            </div>
+                        </>
+                    }
+                    <Button color="blue" className="rounded px-2" onClick={() => createEntity()} disabled={
+                        name.trim().length <= 0 || (tab === "users" && (email.trim().length <= 0 || password.trim().length <= 0))
+                    }>
+                        create
+                    </Button>
+                    </div>
+                </div>
+            </div>
+        )
+    }
+
     const GetContent = ({entityToDelete, setShowConfirmDelete, entityToRename, setShowRename}) => {
         switch (tab) {
             case "overview":
@@ -184,9 +248,10 @@ export default function AdminPanel({user}) {
                             <div className="flex flex-col flex-1 gap-4 lg:gap-8 max-w-[1500px]">
                                 <h1 className="font-bold text-3xl lg:text-4xl uppercase">{tab}</h1>
                                 {tab !== "overview" && 
-                                    <div>
-                                        <AdminFilters tab={tab} filters={filters} setFilters={setFilters} />
+                                    <div className="flex flex-col gap-4 ">
+                                        <AdminCreate tab={tab} />
                                         <h2 className="font-light italic 2xl:mt-4">{content.length} result{content.length === 1 ? "" : "s"}</h2>
+                                        <AdminFilters tab={tab} filters={filters} setFilters={setFilters} />
                                     </div>
                                 }
                                 <GetContent entityToDelete={entityToDelete} setShowConfirmDelete={setShowConfirmDelete} 
