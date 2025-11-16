@@ -119,7 +119,11 @@ export default function Header() {
 
     return (
         <>
-            <header className="w-full fixed top-0 z-99">
+            <header className="w-full fixed top-0 z-99"
+            onClick={(e) => {
+                e.stopPropagation();
+                setShowMenu(false);
+            }}>
                 <div className="flex bg-background justify-between items-center h-12 px-4 gap-4">
                     <Logo isInHeader />
                     {(session?.user?.role === "admin" || session?.user?.role === "owner") && 
@@ -132,7 +136,11 @@ export default function Header() {
                     <div className="flex-1 h-full flex items-center justify-between gap-4">
                         <GetHeaderElements />
                     </div>
-                    <button className="text-foreground text-3xl font-bold cursor-pointer hover:text-highlight transition-all" onClick={() => setShowMenu(!showMenu)}>
+                    <button className="text-foreground text-3xl font-bold cursor-pointer hover:text-highlight transition-all" 
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        setShowMenu(false);
+                    }}>
                         {showMenu ? <FaTimes /> : <FaBars />}
                     </button>
                 </div>
