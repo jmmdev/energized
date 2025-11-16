@@ -19,7 +19,7 @@ export default function GridCardImage({elem, loaded, setLoaded, zoomRef, setZoom
             zoomRef.current = elem.card.id;
             setZoomIn(true);
         }}>
-            <Image className={`object-contain ${!loaded && "opacity-0"}`} priority src={elem.card.image + "/high.webp"}
+            <Image className={`object-contain ${!loaded ? "opacity-0" : ""}`} priority src={elem.card.image + "/high.webp"}
             width={2000} height={2000} alt={`${elem.card.name}#${elem.card.id}`} onLoad={handleLoad} />
             {!loaded &&
             <div className="absolute top-0 w-full h-full rounded-lg border-4 flex items-center justify-center">

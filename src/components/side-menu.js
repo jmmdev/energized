@@ -56,7 +56,7 @@ export default function SideMenu({orientation, showMenu, setShowMenu}) {
             <div>
                 {USER_SECTIONS.map((elem, index) => {
                     return (
-                        <div key={elem.text} className={`w-full border-background-1 ${index < USER_SECTIONS.length - 1 && "border-b"}`}>
+                        <div key={elem.text} className={`w-full border-background-1 ${index < USER_SECTIONS.length - 1 ? "border-b" : ""}`}>
                             <SideMenuSection type="link" href={`${elem.route}`}>
                                 {elem.text.toUpperCase()}
                             </SideMenuSection>

@@ -30,10 +30,10 @@ export default function SearchSelector({options, target, setTarget}) {
                 <div id="arrow" className= 
                 {`border-l-transparent border-r-transparent border-l-6 border-r-6 ${showOptions ? "border-b-6" : "border-t-6"}`} />
             </button>
-            <div id="options" className={`${!showOptions && "invisible"} w-full flex flex-col absolute z-99 top-full left-0 bg-highlight text-my-white cursor-default`}>
+            <div id="options" className={`${!showOptions ? "invisible" : ""} w-full flex flex-col absolute z-99 top-full left-0 bg-highlight text-my-white cursor-default`}>
                 {options.map(element => {
                     return (
-                        <button className={`text-start capitalize px-2 py-1 text-foregorund ${element === target && "hover:bg-highlight-hover"} hover:bg-highlight-hover`}
+                        <button className={`text-start capitalize px-2 py-1 text-foregorund ${element === target ? "hover:bg-highlight-hover" : ""} hover:bg-highlight-hover`}
                         key={element} onClick={(e) => {
                             setTarget(element.toLowerCase());
                             setShowOptions(false);

@@ -134,7 +134,7 @@ export default function CardSearchFilters() {
                 output.push(
                     <button key={ap.field + ap.value} className={`group bg-background-2 px-2 py-1 text-sm rounded-full ${isSearching ? "cursor-default" : "cursor-pointer"}`}
                     onClick={isSearching ? () => {} : () => removeFilter(ap.field, ap.value)}>
-                        <div className={`flex items-center gap-1 opacity-70 ${!isSearching && "group-hover:opacity-100"}`}>
+                        <div className={`flex items-center gap-1 opacity-70 ${!isSearching ? "group-hover:opacity-100" : ""}`}>
                             <p>{ap.field}: {ap.value}</p>
                             <FaPlus className="rotate-45" />
                         </div>
@@ -153,7 +153,7 @@ export default function CardSearchFilters() {
 
     if (filters.length > 0)
         return (
-            <div className={`px-4 py-2 lg:py-0 ${isSearching && "opacity-60"}`}>
+            <div className={`px-4 py-2 lg:py-0 ${isSearching ? "opacity-60" : ""}`}>
                 <Button className="lg:hidden w-full rounded p-1 text-my-white" color="blue" onClick={isSearching ? () => {} : () => setShowFilters(!showFilters)}>
                     <div className="flex justify-center items-center gap-2">
                         <FaFilter />

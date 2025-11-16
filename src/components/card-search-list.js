@@ -127,7 +127,7 @@ export default function CardSearchList({cardScrollRef}) {
     
         return (
             <div className="flex-1 w-full flex flex-col p-4 gap-2 justify-center items-center opacity-70">
-                <p className={`text-lg ${deckError.show && "text-red-400"}`}>
+                <p className={`text-lg ${deckError.show ? "text-red-400" : ""}`}>
                     {deckError.show
                         ? deckError.message
                         :

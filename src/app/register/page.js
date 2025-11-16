@@ -189,7 +189,7 @@ export default function Register() {
                                     onChange={(e) => setPwd(e.target.value)}
                                     required
                                 />
-                                <div ref={showPwdRef} className={`${!(pwd.length > 0) && "hidden"} absolute cursor-pointer right-0 w-8 text-gray-600 hover:text-gray-500 active:text-gray-900`}>
+                                <div ref={showPwdRef} className={`${!(pwd.length > 0) ? "hidden" : ""} absolute cursor-pointer right-0 w-8 text-gray-600 hover:text-gray-500 active:text-gray-900`}>
                                     <FaEye className="w-full " />
                                 </div>
                             </div>
@@ -215,7 +215,7 @@ export default function Register() {
                                     onChange={(e) => setMatch(e.target.value)}
                                     required
                                 />
-                                <div ref={showMatchRef} className={`${!(match.length > 0) && "hidden"} absolute cursor-pointer right-0 w-8 text-gray-600 hover:text-gray-500 active:text-gray-900`}>
+                                <div ref={showMatchRef} className={`${!(match.length > 0) ? "hidden" : ""} absolute cursor-pointer right-0 w-8 text-gray-600 hover:text-gray-500 active:text-gray-900`}>
                                     <FaEye className="w-full" />
                                 </div>
                             </div>
