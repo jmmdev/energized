@@ -4,7 +4,7 @@ import {FaEye, FaCheck, FaTimes, FaSpinner} from "react-icons/fa";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import Button from "@/components/button";
-import { getSession, signIn, useSession } from "next-auth/react";
+import { getSession, useSession } from "next-auth/react";
 import Link from "next/link";
 
 const USER_REGEX = /^[a-zA-Z][a-zA-Z0-9-_]{3,23}$/;
@@ -225,11 +225,6 @@ export default function Register() {
                             sign up
                         </Button>
                     </form>
-                    
-                    <Button color="red" className="w-fit rounded p-2" onClick={() => signIn("google")}>
-                        Sign in with Google
-                    </Button>
-                    
                     <p>
                         <span className="font-light">Already registered? </span>
                         <Link className="hover:decoration-highlight-hover active:decoration-highlight-active underline" href="/login">

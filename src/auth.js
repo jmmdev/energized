@@ -1,5 +1,4 @@
 import NextAuth from "next-auth";
-import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
 import axios from "axios";
 import { SignJWT } from "jose";
@@ -30,29 +29,9 @@ export const {
             strategy: "jwt",
         },
         providers: [
-            GoogleProvider({
-                clientId: process.env.GOOGLE_CLIENT_ID,
-                clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-
-                authorization: {
-                    params: {
-                        prompt: "consent",
-                        access_type: "offline",
-                        response_type: "code",
-                    }
-                }
-            }),
             CredentialsProvider({
                 async authorize(credentials) {
                     try {
-                        const existingUser = await axios.get(`${process.env.SERVER_URL}/users/find`, {
-                            params: { user: credentials?.user}
-                        });
-
-                        if (!(existingUser?.data?.hasPassword)) {
-                            throw new Error("Your email was used for a Google account login. Please, use that option instead");
-                        }
-
                         const response = await axios.post(`${process.env.SERVER_URL}/login`, {
                             user: credentials?.user,
                             password: credentials?.password

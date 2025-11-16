@@ -2,7 +2,6 @@
 import { useState, useEffect } from "react";
 import { doCredentialsLogin } from "@/controllers/loginController";
 import Button from "./button";
-import { signIn } from "next-auth/react";
 import Link from "next/link";
 
 export default function LoginForm({onLoginSuccess}) {
@@ -64,11 +63,6 @@ export default function LoginForm({onLoginSuccess}) {
                     Log in
                 </Button>
             </form>
-            
-            <Button color="red" className="w-fit rounded p-2" onClick={() => signIn("google")}>
-                Sign in with Google
-            </Button>
-
             <div>
                 <p>Need an account?</p>
                 <Link className="underline hover:text-highlight-hover" href="/register">Sign up</Link>
