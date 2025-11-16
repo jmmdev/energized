@@ -1,12 +1,5 @@
 [
     {
-        "img": "tutorial",
-        "title": "new to energized?",
-        "subtitle": "check out our new user guide",
-        "href": "/",
-        "background": "bg-gradient-to-r from-red-400 via-red-800 to-red-400"
-    },
-    {
         "img": "featured1",
         "title": "raging bolt ex",
         "subtitle": "release a furious shock at your opponents!",

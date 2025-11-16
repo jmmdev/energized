@@ -2,16 +2,21 @@ import { NextResponse } from "next/server";
 import { auth } from "@/auth";
 
 const API_BASE = process.env.SERVER_URL;
+const PUBLIC_PATHS = ["/register", "/search", "/cards", "/decks", "/users"];
 
 async function proxy(req, { params }) {
   const myParams = await params;
   const segs = myParams?.path || [];
+  const path = `/${segs.join("/")}`;
   const search = new URL(req.url).search;
-  const target = `${API_BASE}/${segs.join("/")}${search}`;
+  const target = `${API_BASE}${path}${search}`;
+
+  const isPublic = PUBLIC_PATHS.some(p => path.startsWith(p));
 
   const session = await auth();
+  const method = req.method;
 
-  if (!session) {
+  if (!session && !(isPublic && method === "GET")) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
@@ -23,7 +28,6 @@ async function proxy(req, { params }) {
     ...(session?.accessToken ? { Authorization: `Bearer ${session.accessToken}` } : {}),
   };
 
-  const method = req.method;
   const body =
     method === "GET" || method === "HEAD" ? undefined : await req.text();
 

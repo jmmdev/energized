@@ -1,8 +1,10 @@
+import Footer from "@/components/footer";
 import LegalTextDisplay from "@/components/legal-text-display";
 import Link from "next/link";
 
 export default function Copyright() {
     return (
+        <>
         <LegalTextDisplay>
             <header className="mb-8">
                 <h1 className="text-3xl font-bold tracking-tight">Copyright Disclaimer</h1>
@@ -39,5 +41,9 @@ export default function Copyright() {
                 <p>No copyright or trademark infringement is intended.</p>
             </div>
         </LegalTextDisplay>
+        <div className="mt-auto">
+            <Footer />
+        </div>
+        </>
     )
 }

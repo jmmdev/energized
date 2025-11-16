@@ -8,7 +8,7 @@ import { usePathname } from "next/navigation";
 export default function SessionWrapper({ children }) {
   
   const HIDE_HEADER = ["/admin", "/register", "/login"];
-  const HIDE_FOOTER = ["/build", "/deck"];
+  const HIDE_FOOTER = ["/admin", "/build", "/deck"];
   const pathname = usePathname();
 
   const getPathType = () => {
@@ -42,7 +42,7 @@ export default function SessionWrapper({ children }) {
       return null;
 
     return (
-      <div className="mt-auto">
+      <div>
         <Footer />
       </div>
     )
@@ -65,7 +65,6 @@ export default function SessionWrapper({ children }) {
         {!pathname.includes("/build") && <GetHeader />}
         <div className={`flex flex-col ${getContentMargin()}`}>
           {children}
-          <GetFooter />
         </div>
       </div>
     </SessionProvider>

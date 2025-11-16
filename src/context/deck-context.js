@@ -1,5 +1,4 @@
 import React, { createContext, useContext, useEffect, useRef, useState } from 'react';
-import TCGdex from '@tcgdex/sdk';
 import axios from 'axios';
 
 const DeckContext = createContext();
@@ -7,7 +6,6 @@ const DeckContext = createContext();
 export const useDeckContext = () => useContext(DeckContext);
 
 export const DeckProvider = ({ children }) => {
-    const tcgdex = new TCGdex('en');
 
     const deckCreatorId = useRef(null);
 
@@ -126,10 +124,10 @@ export const DeckProvider = ({ children }) => {
             else {
                 setWaiting(true);
 
-                const cardData = await tcgdex.card.get(card.id);
-                delete cardData.sdk;
+                const response = await axios.get(`/api/xapi/cards?cardId=${card.id}`);
+
                 newCards.push({
-                    card: cardData,
+                    card: response.data,
                     quantity: 1,
                 })
             }

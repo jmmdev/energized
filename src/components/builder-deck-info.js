@@ -72,7 +72,7 @@ export default function BuilderDeckInfo({updateDeck, setShowImgSelector}) {
     }
 
     return (
-        <section className="w-full flex justify-center overflow-y-auto builder-scrollbar mb-13 lg:mb-0">
+        <section className="w-full flex justify-center overflow-y-auto builder-scrollbar">
             <div className="w-full flex flex-col min-h-full px-4 md:px-8 gap-4 lg:max-w-[1500px]">
                 <div className="w-full flex flex-col sm:flex-row gap-4 justify-between pt-16 lg:pt-8">
                     <div className="flex flex-col gap-4">

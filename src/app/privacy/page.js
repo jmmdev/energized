@@ -1,7 +1,9 @@
+import Footer from "@/components/footer";
 import LegalTextDisplay from "@/components/legal-text-display";
 
 export default function Privacy() {
     return (
+        <>
         <LegalTextDisplay>
             <header className="mb-8">
                 <h1 className="text-3xl font-bold tracking-tight">Privacy Policy</h1>
@@ -67,5 +69,9 @@ export default function Privacy() {
                 </section>
             </div>
         </LegalTextDisplay>
+        <div className="mt-auto">
+            <Footer />
+        </div>
+        </>
     )
 }

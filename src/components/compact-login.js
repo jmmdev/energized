@@ -25,16 +25,13 @@ export default function CompactLogin({onLoginSuccess, vertical}) {
         
         try {
             const formData = new FormData(event.currentTarget);
-            const response = await doCredentialsLogin(formData);
-
-            if (!!response.error) {
-                setErrMsg("Login failed. Please check your credentials and try again.");
-            } else {
-                await onLoginSuccess();
-            }
+            
+            await doCredentialsLogin(formData);
+            
+            await onLoginSuccess();
         }
         catch (err) {
-            setErrMsg("Login failed. Please check your credentials and try again.");
+            setErrMsg(err.message.replace("Error: ", ""));
         }
     }
 
@@ -61,7 +58,7 @@ export default function CompactLogin({onLoginSuccess, vertical}) {
                     onChange={(e) => setPwd(e.target.value)} />
             </div>
             <div className={`flex ${vertical && "flex-col w-full"} items-center gap-2`}>
-                <Button color="blue"
+                <Button color="blue"type="submit"
                 className={`rounded-xs px-2 text-my-white ${!(user.length > 0 && pwd.length > 0) ? "opacity-50" : "opacity-100"} ${vertical && "w-full"}`}
                 disabled={!(user.length > 0 && pwd.length > 0)} onClick={() => {}}>
                     Log in

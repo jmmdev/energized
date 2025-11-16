@@ -1,10 +1,12 @@
-import { useRouter } from "next/navigation";
 import Pagination from "./pagination";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import { FaUser } from "react-icons/fa";
+import { FaExpand, FaEye, FaUser } from "react-icons/fa";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
+import Button from "./button";
+import CardZoomIn from "./card-zoom-in";
+import axios from "axios";
 
 export default function ListDisplay({type, list, name, isOwn, isFav, isHome, perPage}) {
     const {data: session, status} = useSession();
@@ -38,14 +40,71 @@ export default function ListDisplay({type, list, name, isOwn, isFav, isHome, per
             subList = listToShow.slice(startIndex, endIndex);
         }
 
+        const CardElement = ({elem, index}) => {
+            const [showMini, setShowMini] = useState(false);
+            const [zoomIn, setZoomIn] = useState(false);
+            const [fullInfo, setFullInfo] = useState();
+            const [fetching, setFetching] = useState(false);
+
+            useEffect(() => {
+                const fetchCard = async () => {
+                    zoomRef.current = elem.id;
+                    const response = await axios.get(`/api/xapi/cards?cardId=${elem.id}`);
+
+                    setFullInfo(response.data);
+                }
+
+                if (fetching)
+                    fetchCard();
+                else {
+                    if (fullInfo)
+                        setZoomIn(true);
+                }
+            }, [fetching])
+
+            useEffect(() => {
+                if (fullInfo) 
+                    setFetching(false);
+            }, [fullInfo])
+
+            const zoomRef = useRef();
+
+            return (
+                <div className={`${index % 2 === 0 ? "bg-background-1" : "bg-background-2"} ` +
+                    "relative w-full group flex justify-between items-center rounded-sm font-medium px-4 py-2 text-lg"
+                    }>
+                        <div className="flex justify-between items-center gap-4 sm:gap-8">
+                            <div className="relative">
+                                <FaEye className="text-xl opacity-80" onMouseEnter={() => setShowMini(true)} onMouseLeave={() => setShowMini(false)} />
+                                {showMini &&
+                                <div className={`w-48 h-auto absolute ${index <= perPage / 2 - 1 ? "top-full" : "bottom-full"} left-0 z-30`}>
+                                    <img src={elem.image + "/low.webp"} alt={`${elem.name}#${elem.id}`} />
+                                </div>
+                                }
+                            </div>
+                            <div className="flex flex-col">
+                                <p>{elem.name}</p>
+                                <p className="text-base opacity-60">{elem.id}</p>
+                            </div>
+                        </div>
+                        <Button className="text-base px-2 py-1 sm:py-0 rounded-sm capitalize border-2 border-foreground/60 gap-2" color="gray"
+                        onClick={() => setFetching(true)} disabled={fetching}>
+                            <FaExpand />
+                            <span className="hidden sm:inline">details</span>
+                        </Button>
+                        <CardZoomIn zoomIn={zoomIn} setZoomIn={setZoomIn} elem={fullInfo} zoomRef={zoomRef} />
+                </div>
+            )
+        }
+
         return (
-            <div className="flex flex-col h-full gap-2">
+            <div className="relative flex flex-col h-full gap-2">
                 {!isOwn && !isFav && !isHome &&
-                    <h1 className="text-4xl font-bold"><span className="capitalize">{type.slice(0, -1)}</span>{` search results for "${name}"`}</h1>
+                    <h1 className="text-4xl font-bold mb-4"><span className="capitalize">{type.slice(0, -1)}</span>{` search results for "${name}"`}</h1>
                 }
                 {!isHome && <p className="font-light italic">{listToShow.length} result{listToShow.length > 1 ? "s" : ""}</p>}
                 {isHome && <h1 className="text-4xl font-bold">{name}</h1>}
-                <div className={`w-full flex-1 ${type === "users" ? "flex flex-wrap gap-4" : "flex flex-col gap-2"}`}>
+                <div className={`w-full ${type === "users" ? "flex flex-wrap gap-4" : "flex flex-col gap-2"}`}>
                     {
                         subList.map((elem, index) => {
                             if (type === "decks" || isHome)
@@ -53,12 +112,12 @@ export default function ListDisplay({type, list, name, isOwn, isFav, isHome, per
                                     <div key={elem._id}>
                                         <div className={`flex w-full items-center group relative rounded-full
                                             ${index % 2 === 0 ? "bg-background-1" : "bg-background-2"}`}>
-                                            <Link className="flex-1 text-lg sm:text-xl flex items-center font-medium hover:text-highlight px-4 sm:px-2 py-2 gap-4"
+                                            <Link className="min-w-0 text-lg flex-1 sm:text-xl flex items-center font-medium hover:text-highlight px-4 sm:px-2 py-2 gap-4"
                                             href={`/deck/${elem._id}`}>
                                                 <div className="hidden sm:block h-10 aspect-square relative">
                                                     <Image width={200} height={200} className="rounded-full" src={elem.image} alt="Deck's image" />
                                                 </div>
-                                                <p>{elem.name}</p>
+                                                <h2 className="truncate">{elem.name}</h2>
                                             </Link>
                                             {!isOwn && 
                                                 <div className="flex items-center self-stretch">
@@ -85,12 +144,14 @@ export default function ListDisplay({type, list, name, isOwn, isFav, isHome, per
                                         </Link>
                                     </div>
                                 )
+                            if (type === "cards")
+                               return <CardElement key={elem.id} elem={elem} index={index} />
                         })
                     }
                 </div>
                  {!isHome &&
                     <>
-                        {listToShow.length > perPage && <Pagination list={listToShow} pageNumber={pageNumber} setPageNumber={setPageNumber} perPage={perPage} />}
+                        {listToShow.length > perPage && <Pagination quantity={listToShow.length} pageNumber={pageNumber} setPageNumber={setPageNumber} perPage={perPage} />}
                     </>
                 }
             </div>
@@ -110,8 +171,8 @@ export default function ListDisplay({type, list, name, isOwn, isFav, isHome, per
     
     if (isOwn) {
         return (
-            <div className="bg-background-1 rounded-lg p-4 md:p-12 py-8">
-                <p className="text-center text-lg opacity-60">
+            <div className="flex-1 flex justify-center items-center bg-background-1 rounded-lg p-12 py-8">
+                <p className="text-center text-xl opacity-60">
                     {`${session && session?.user?.name === name ? "You" : "This user"} did not create any decks yet`}
                 </p>
             </div>
@@ -120,8 +181,8 @@ export default function ListDisplay({type, list, name, isOwn, isFav, isHome, per
 
     if (isFav) {
         return (
-            <div className="bg-background-1 rounded-lg p-4 md:p-12 py-8">
-                <p className="text-center text-lg opacity-60">
+            <div className="flex-1 flex justify-center items-center bg-background-1 rounded-lg p-12 py-8">
+                <p className="text-center text-xl opacity-60">
                     {`${session && session?.user?.name === name ? "You have" : "This user has"} no favorite decks yet`}
                 </p>
             </div>

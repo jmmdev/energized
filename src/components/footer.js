@@ -39,16 +39,14 @@ export default function Footer(){
         return null;
 
     return (
-        <footer className="relative w-full z-80">
-            <div className="relative w-full flex flex-col justify-center items-center gap-2 border-t-1 border-background-2 py-8">
-                <div className="h-10">
-                    <Logo />
-                </div>
-                <div className="flex gap-4">
-                    {
-                        FOOTER_SECTIONS.map(elem => <Link className="capitalize" key={elem.text} href={elem.route} target="_blank">{elem.text}</Link>)
-                    }
-                </div>
+        <footer className="w-full flex flex-col justify-center items-center gap-2 border-t-1 border-background-2 py-8">
+            <div className="h-10">
+                <Logo />
+            </div>
+            <div className="flex gap-4">
+                {
+                    FOOTER_SECTIONS.map(elem => <Link className="capitalize" key={elem.text} href={elem.route} target="_blank">{elem.text}</Link>)
+                }
             </div>
         </footer>
     )

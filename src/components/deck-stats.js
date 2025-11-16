@@ -27,7 +27,7 @@ export default function DeckStats({stats}) {
         return (
             <div className="flex flex-col w-full">
                 <p className="font-semibold text-lg">By category</p>
-                <PieChart width={250} height={250}>
+                <PieChart width={200} height={200}>
                     <Legend  />
                     <Pie
                         data={stats.catComp}
@@ -83,7 +83,7 @@ export default function DeckStats({stats}) {
         return (
             <div className="flex flex-col w-full gap-4">
                 <p className="font-semibold text-lg">By subcategory</p>
-                <BarChart width={250} height={250} data={stats.subcatComp} barGap={4}>
+                <BarChart width={200} height={200} data={stats.subcatComp} barGap={4}>
                     <XAxis dataKey="category" tick={tickStyle} 
                     axisLine={lineStyle} tickLine={lineStyle} />
                     <YAxis allowDecimals={false} width={30} tick={tickStyle} padding={{bottom: 1}}
@@ -118,11 +118,9 @@ export default function DeckStats({stats}) {
         return (
             <div className="flex flex-col w-full gap-4">
                 <p className="font-semibold text-lg">{dataKey === "total" ? "Total attack spread" : "Unique attack spread"}</p>
-                <BarChart width={250} height={250} data={stats.energyDist}>
-                    <XAxis dataKey="name" tick={tickStyle} 
-                    axisLine={lineStyle} tickLine={lineStyle} />
-                    <YAxis allowDecimals={false} width={30} tick={tickStyle} padding={{bottom: 1}}
-                    axisLine={lineStyle} tickLine={lineStyle} />
+                <BarChart width={200} height={200} data={stats.energyDist}>
+                    <XAxis dataKey="name" tick={tickStyle} padding={{left: 4, right: 4}} axisLine={lineStyle} tickLine={lineStyle} />
+                    <YAxis allowDecimals={false} width={30} tick={tickStyle} padding={{bottom: 1}} axisLine={lineStyle} tickLine={lineStyle} />
                     <Bar dataKey={dataKey} fill={dataKey === "total" ? "#f7c950" : "#c4c4d4"} isAnimationActive={false}
                     label={({ payload, x, y, width, height, value }) => {
                         const fill = height < 50 
@@ -130,7 +128,7 @@ export default function DeckStats({stats}) {
                         : "#000"
                         if (value > 0)
                             return (
-                                <text className="font-medium text-lg" fill={fill} textAnchor="middle"
+                                <text className="font-bold text-lg" fill={fill} textAnchor="middle"
                                 x={x + width / 2} y={height < 50 ? (y - 5) : y + height / 2}>
                                     {value}
                                 </text>
@@ -149,8 +147,8 @@ export default function DeckStats({stats}) {
         return (
             <div className="flex flex-col w-full">
                 <p className="font-semibold text-lg">{first ? "Chance of Basic PKMN" : "Chance of Energy"}</p>
-                <div className="relative self-center w-[250px] aspect-square">
-                    <PieChart width={250} height={250}>
+                <div className="relative self-center w-[200px] aspect-square">
+                    <PieChart width={200} height={200}>
                         <Pie
                             data={data}
                             cx="50%"
@@ -158,7 +156,7 @@ export default function DeckStats({stats}) {
                             dataKey="value"
                             isAnimationActive={false}
                             labelLine={false}
-                            innerRadius={65}
+                            innerRadius={55}
                             stroke="none">
                             {data.map((entry, index) => (
                                 <Cell key={`cell-${entry.name}`} fill={COLORS[index % COLORS.length]} />
@@ -196,7 +194,7 @@ export default function DeckStats({stats}) {
 
                     <div className="flex flex-col w-full">
                         <DataDisplay display={
-                            <div className="flex flex-col w-full items-center justify-center sm:flex-row lg:flex-col xl:flex-row gap-4 p-6">
+                            <div className="w-full flex flex-col sm:flex-row lg:flex-col xl:flex-row gap-4">
                                 <DrawGauge data={stats.drawOdds.basic} textValue={Math.round(stats.drawOdds.basic[0].value * 10) / 10} first />
                                 <DrawGauge data={stats.drawOdds.energy} textValue={Math.round(stats.drawOdds.energy[0].value * 10) / 10} />
                             </div>

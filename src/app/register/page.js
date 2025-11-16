@@ -90,30 +90,36 @@ export default function Register() {
 
     useEffect(() => {
         const submit = async () => {
-            if (submitting) {
-                try {
-                    const formData = formDataRef.current;
+            try {
+                const formData = formDataRef.current;
 
-                    const username = formData.get("username");
-                    const email = formData.get("email");
-                    const password = formData.get("password");
+                const username = formData.get("username");
+                const email = formData.get("email");
+                const password = formData.get("password");
 
-                    await axios.post(`/api/xapi/register`,{
-                        username: username,
-                        email: email,
-                        password: password
-                    });
+                await axios.post(`/api/xapi/register`,{
+                    username: username,
+                    email: email,
+                    password: password
+                });
 
-                    router.replace("/login");
-                }
-                catch (err) {
-                    setErrMsg(err.response.data.message);
-                    setSubmitting(false);
-                }
+                router.replace("/login");
+            }
+            catch (err) {
+                setErrMsg(err.response.data.error);
             }
         }
-        submit();
+        
+        if (submitting) {
+            setErrMsg("");
+            submit();
+        }
     }, [submitting])
+
+    useEffect(() => {
+        if (submitting)
+            setSubmitting(false);
+    }, [errMsg])
 
     if (status === "unauthenticated")
         return (
@@ -215,7 +221,7 @@ export default function Register() {
                             </div>
                         </div>
                         {errMsg.length > 0 && <p className="text-red-400">{errMsg}</p>}
-                        <Button color="blue" disabled={!validName || !validPwd || !validMatch} className="w-fit rounded px-4 py-2 self-center">
+                        <Button type="submit" color="blue" disabled={!validName || !validPwd || !validMatch} className="w-fit rounded px-4 py-2 self-center">
                             sign up
                         </Button>
                     </form>

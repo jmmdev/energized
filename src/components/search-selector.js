@@ -1,14 +1,29 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export default function SearchSelector({options, target, setTarget}) {
 
     const [showOptions, setShowOptions] = useState(false);
 
+    const selectorRef = useRef();
+
+    useEffect(() => {
+        const onMouseUp = () => {
+            if (selectorRef.current !== document.activeElement)
+                setShowOptions(false);
+        }
+
+        window.addEventListener("mouseup", onMouseUp);
+
+        return () => {
+            window.removeEventListener("mouseup", onMouseUp);
+        }
+    }, [])
+
     return (
         <div className="relative">
-            <button id="selection"
-            className={`w-32 hidden sm:flex justify-between items-center h-full px-2 cursor-pointer text-my-white bg-highlight hover:bg-highlight-hover rounded-tl-sm ` + 
+            <button ref={selectorRef} id="selection"
+            className={`flex gap-4 sm:gap-8 justify-between items-center h-full px-2 cursor-pointer text-my-white bg-highlight hover:bg-highlight-hover rounded-tl-sm ` + 
                 `${showOptions ? "" : "rounded-bl-sm"}`}
             onClick={() => setShowOptions(!showOptions)}>
                 <p id="selection-text" className="capitalize">{target}</p>

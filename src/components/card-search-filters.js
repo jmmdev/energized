@@ -132,7 +132,7 @@ export default function CardSearchFilters() {
         if (appliedFilters.length > 0) {
             for (const ap of appliedFilters) {
                 output.push(
-                    <button key={ap.field + ap.value} className={`group bg-background-1 px-2 py-1 text-sm rounded-full ${isSearching ? "cursor-default" : "cursor-pointer"}`}
+                    <button key={ap.field + ap.value} className={`group bg-background-2 px-2 py-1 text-sm rounded-full ${isSearching ? "cursor-default" : "cursor-pointer"}`}
                     onClick={isSearching ? () => {} : () => removeFilter(ap.field, ap.value)}>
                         <div className={`flex items-center gap-1 opacity-70 ${!isSearching && "group-hover:opacity-100"}`}>
                             <p>{ap.field}: {ap.value}</p>

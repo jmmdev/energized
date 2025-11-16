@@ -20,16 +20,13 @@ export default function LoginForm({onLoginSuccess}) {
         
         try {
             const formData = new FormData(event.currentTarget);
-            const response = await doCredentialsLogin(formData);
+            
+            await doCredentialsLogin(formData);
 
-            if (!!response.error) {
-                setErrMsg("Login failed. Please check your credentials and try again.");
-            } else {
-                await onLoginSuccess();
-            }
+            await onLoginSuccess();
         }
         catch (err) {
-            setErrMsg("Login failed. Please check your credentials and try again.");
+            setErrMsg(err.message.replace("Error: ", ""));
         }
     }
 
@@ -63,7 +60,7 @@ export default function LoginForm({onLoginSuccess}) {
                         onChange={(e) => setPwd(e.target.value)}
                     />
                 </div>
-                <Button color="blue" disabled={!(user.length > 0 && pwd.length > 0)} className="w-fit rounded px-4 py-2 self-center">
+                <Button type="submit" color="blue" disabled={!(user.length > 0 && pwd.length > 0)} className="w-fit rounded px-4 py-2 self-center">
                     Log in
                 </Button>
             </form>

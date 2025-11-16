@@ -1,6 +1,16 @@
+"use client";
+
+import { useEffect } from "react";
 import { FaPlus } from "react-icons/fa";
 
 export default function CardZoomIn({zoomIn, setZoomIn, elem, zoomRef}) {
+
+    useEffect(() => {
+        if (zoomIn)
+            document.body.style.overflow = "hidden"
+        else
+            document.body.style.overflow = ""
+    }, [zoomIn])
 
     const getAttackCost = (attack) => {
         let costMap = {};
@@ -70,34 +80,37 @@ export default function CardZoomIn({zoomIn, setZoomIn, elem, zoomRef}) {
         return output;
     }
 
-    if (zoomIn && zoomRef.current && (zoomRef.current === elem.card.id))
-        return (
-            <div className="fixed flex flex-col w-screen h-screen bg-[#000d] text-my-white z-100 p-4 top-0 left-0 overflow-y-auto" onClick={() => setZoomIn(false)}>
-                <div className="w-full flex-1 flex flex-col items-center gap-12">
-                    <p className="text-my-white/80 font-light text-sm">
-                        Click anywhere to close
-                    </p>
-                    <div className="flex flex-1 justify-center">
-                        <div className="flex flex-col lg:flex-row lg:items-center gap-8">
-                            <div className="w-full flex flex-col items-center gap-2 max-w-sm">
-                                <img className="block max-w-full" src={elem.card.image + "/high.webp"} alt={`${elem.card.name}#${elem.card.id}`} />
+    if (zoomIn && zoomRef.current) {
+        const card = elem.card || elem;
+
+        if (zoomRef.current === card.id)
+            return (
+                <div className="fixed flex flex-col w-screen h-screen bg-[#000d] text-my-white z-100 top-0 left-0 overflow-y-auto builder-scrollbar">
+                    <div className="relative w-full flex-1 flex flex-col justify-center items-center gap-12">
+                        <div className="flex flex-col">
+                            <div className="fixed top-0 right-0 z-110 text-my-white opacity-60 hover:opacity-100 cursor-pointer p-4 self-end text-3xl"
+                            onClick={() => setZoomIn(false)}>
+                                <FaPlus className="rotate-45" />
                             </div>
-                            <div className="flex flex-col gap-8 max-w-sm text-left">
-                                <div>
-                                    <p className="font-bold uppercase text-2xl">{elem.card.name}</p>
-                                    <p className="text-xl">{elem.card.stage || elem.card.trainerType || elem.card.energyType} {elem.card.types && elem.card.types[0]} {elem.card.category}</p>
-                                    {elem.card.hp && <p className="text-xl">HP: <b>{elem.card.hp}</b></p>}
+                            <div className="flex flex-col sm:flex-row sm:items-center p-8 gap-8">
+                                <div className="w-full flex flex-col self-center gap-2 max-w-[300px] sm:max-w-sm">
+                                    <img className="block max-w-full" src={card.image + "/high.webp"} 
+                                    alt={`${card.name}#${card.id}`} />
                                 </div>
-                                <GetInfo card={elem.card} />
-                                {elem.card.effect && <p className="text-xl"> {elem.card.effect}</p>}
-                                {elem.card.retreat > 0 && <p className="text-xl">Retreat cost: <b>{elem.card.retreat}</b></p>}
+                                <div className="flex flex-col gap-8 w-full sm:max-w-sm self-center text-left">
+                                    <div>
+                                        <p className="font-bold uppercase text-2xl">{card.name}</p>
+                                        <p className="text-xl">{card.stage || card.trainerType || card.energyType} {card.types && card.types[0]} {card.category}</p>
+                                        {card.hp && <p className="text-xl">HP: <b>{card.hp}</b></p>}
+                                    </div>
+                                    <GetInfo card={card} />
+                                    {card.effect && <p className="text-xl"> {card.effect}</p>}
+                                    {card.retreat > 0 && <p className="text-xl">Retreat cost: <b>{card.retreat}</b></p>}
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <p className="lg:hidden text-my-white/80 font-light text-sm">
-                        Click anywhere to close
-                    </p>
                 </div>
-            </div>
-        )
+            )
+    }
 }

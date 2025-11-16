@@ -10,7 +10,7 @@ export default function Admin() {
     const {data: session, status} = useSession();
 
     useEffect(() => {
-        if (session && session.user?.role !== "admin")
+        if (session && (session.user?.role !== "admin" && session.user?.role !== "owner"))
             router.push("/");
     }, [session])
     
@@ -20,9 +20,9 @@ export default function Admin() {
     if (!session)
         return <LoginForm onLoginSuccess={refreshSession} />
     
-    if (session?.user.role === "admin")
+    if (session?.user.role === "admin" || session?.user.role === "owner")
         return (
-            <AdminPanel />
+            <AdminPanel user={session.user.name} />
         )
 }
     

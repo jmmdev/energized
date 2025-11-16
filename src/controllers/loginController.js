@@ -16,7 +16,8 @@ export async function doCredentialsLogin(formData) {
         return response;
     }
     catch (err) {
-        if (err.type === "CallbackRouteError")
-            throw new Error("Email or password are invalid, or your email was used for a Google account login");
+        if (err.type === "CallbackRouteError") {
+            throw new Error(err.cause.err);
+        }
     }
 }

@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react"
 import { useSearch } from "@/context/search-context";
-import TCGdex, { Query } from "@tcgdex/sdk";
 import { FaSpinner } from "react-icons/fa";
 import CardSearchListElement from "./card-search-list-element";
 import Pagination from "./pagination"
 import { useDeckContext } from "@/context/deck-context";
+import axios from "axios";
 
 export default function CardSearchList({cardScrollRef}) {
      const {
@@ -12,8 +12,6 @@ export default function CardSearchList({cardScrollRef}) {
     } = useDeckContext();
 
     const PER_PAGE = 24;
-
-    const tcgdex = new TCGdex("en");
 
     const { search, setFilters, appliedFilters, isSearching, setIsSearching, trigger } = useSearch();
 
@@ -51,57 +49,19 @@ export default function CardSearchList({cardScrollRef}) {
     useEffect(() => {
         const doSearch = async () => {
             setIsSearching(true);
-
-            let catString = "";
-            let stageString = "";
-            let typeString = "";
-            let legalTokens = [];
-
-            for (const af of appliedFilters) {
-                switch (af.field.toLowerCase()) {
-                    case "category":
-                        catString += (catString.length > 0 ? `,${af.value}` : af.value)
-                        break;
-                    case "stage":
-                        stageString += (stageString.length > 0 ? `,${af.value}` : af.value)
-                        break;
-                    case "type":
-                        typeString += (typeString.length > 0 ? `,${af.value}` : af.value)
-                        break;
-                    case "legal":
-                        legalTokens.push(af.value)
-                        break;
-                    default:
-                        break;
-                    }
-            }
-
-            const query = Query.create().like("name", search);
-
-            if (catString.length > 0)
-                query.like("category", catString);
-
-            if (stageString.length > 0)
-                query.like("stage", stageString.replace(" ", ""));
-
-            if (typeString.length > 0)
-                query.like("types", typeString);
-
-            for (const t of legalTokens)
-                query.like(`legal.${t.toLowerCase()}`, "true");
-
-    
-            const cards = await tcgdex.card.list(
-                query
-                .not.isNull("image")
-                .not.contains("image", "tcgp")
-                .sort("name", "ASC")
-            );
             
-            setCardList(cards);
+            const curatedSearch = search.trim().toLowerCase();
+            const filters = JSON.stringify(appliedFilters);
+
+            const response = await axios.get(`/api/xapi/search?text=${curatedSearch}&filters=${filters}`);
+            
+            if (response)
+                setCardList(response.data);
         }
+
         if (search.length > 0)
             doSearch();
+            
     }, [search, trigger])
 
     useEffect(() => {
@@ -160,7 +120,7 @@ export default function CardSearchList({cardScrollRef}) {
                         })
                     }
                 </div>
-                {cardList.length > PER_PAGE && <Pagination list={cardList} pageNumber={pageNumber} setPageNumber={setPageNumber} perPage={PER_PAGE} />}
+                {cardList.length > PER_PAGE && <Pagination quantity={cardList.length} pageNumber={pageNumber} setPageNumber={setPageNumber} perPage={PER_PAGE} />}
             </div>
         )
     }

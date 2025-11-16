@@ -1,13 +1,15 @@
+import Footer from "@/components/footer"
 import LegalTextDisplay from "@/components/legal-text-display"
 
 export default function TermsOfUse() {
     return (
+        <>
         <LegalTextDisplay>
             <header className="mb-8">
-            <h1 className="text-3xl font-bold tracking-tight">Terms of Use</h1>
-            <p className="mt-2">
-                <span className="font-medium">Effective Date:</span> 16/11/2025
-            </p>
+                <h1 className="text-3xl font-bold tracking-tight">Terms of Use</h1>
+                <p className="mt-2">
+                    <span className="font-medium">Effective Date:</span> 16/11/2025
+                </p>
             </header>
 
             <p className="leading-7">
@@ -79,5 +81,9 @@ export default function TermsOfUse() {
                 </section>
             </div>
         </LegalTextDisplay>
+        <div className="mt-auto">
+            <Footer />
+        </div>
+        </>
     )
 }

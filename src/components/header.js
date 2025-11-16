@@ -66,7 +66,7 @@ export default function Header() {
         }
         if (showCreateDeck)
             return (
-                <div className="absolute z-100 w-screen h-screen overflow-hidden flex justify-center items-center p-4 bg-[#000c]">
+                <div className="fixed z-100 top-0 w-screen h-screen overflow-hidden flex justify-center items-center p-4 bg-[#000c]">
                     <div className="flex flex-col w-full max-w-[640px] p-8 bg-background-1 rounded-lg gap-4">
                         <h1 className="text-3xl font-bold">Create a new deck</h1>
                         <input className="bg-background-2 text-xl text-foreground rounded" value={deckName} onChange={(e) => setDeckName(e.target.value)} />
@@ -122,14 +122,14 @@ export default function Header() {
             <header className="w-full fixed top-0 z-99">
                 <div className="flex bg-background justify-between items-center h-12 px-4 gap-4">
                     <Logo isInHeader />
-                    {session?.user?.role === "admin" && 
-                        <Link className="flex flex-col md:flex-row gap-1 md:gap-2 justify-center items-center text-2xl hover:text-highlight cursor-pointer"
+                    {(session?.user?.role === "admin" || session?.user?.role === "owner") && 
+                        <Link className="flex flex-col md:flex-row gap-1 md:gap-2 justify-center items-center text-3xl hover:text-highlight cursor-pointer"
                         href="/admin">
                             <FaUserCog />
                             <p className="hidden uppercase md:block text-sm">admin</p>
                         </Link>
                     }
-                    <div className="w-full h-full flex items-center justify-between gap-4">
+                    <div className="flex-1 h-full flex items-center justify-between gap-4">
                         <GetHeaderElements />
                     </div>
                     <button className="text-foreground text-3xl font-bold cursor-pointer hover:text-highlight transition-all" onClick={() => setShowMenu(!showMenu)}>
