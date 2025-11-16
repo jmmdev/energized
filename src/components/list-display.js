@@ -19,7 +19,7 @@ export default function ListDisplay({type, list, name, isOwn, isFav, isHome, per
     let listToShow;
 
     if (!isOwn || type !== "decks")
-        listToShow = [...list];
+        listToShow = list;
     else {
         if (session)
             listToShow = list.filter((deck) => deck.creator.id === session.user?.id || (deck.visible && deck.cardCount === 60));
@@ -70,7 +70,7 @@ export default function ListDisplay({type, list, name, isOwn, isFav, isHome, per
             const zoomRef = useRef();
 
             return (
-                <div className={`${index % 2 === 0 ? "bg-background-1" : "bg-background-2"} ` +
+                <li className={`${index % 2 === 0 ? "bg-background-1" : "bg-background-2"} ` +
                     "relative w-full group flex justify-between items-center rounded-sm font-medium px-4 py-2 text-lg"
                     }>
                         <div className="flex justify-between items-center gap-4 sm:gap-8">
@@ -93,7 +93,7 @@ export default function ListDisplay({type, list, name, isOwn, isFav, isHome, per
                             <span className="hidden sm:inline">details</span>
                         </Button>
                         <CardZoomIn zoomIn={zoomIn} setZoomIn={setZoomIn} elem={fullInfo} zoomRef={zoomRef} />
-                </div>
+                </li>
             )
         }
 
@@ -104,12 +104,12 @@ export default function ListDisplay({type, list, name, isOwn, isFav, isHome, per
                 }
                 {!isHome && <p className="font-light italic">{listToShow.length} result{listToShow.length > 1 ? "s" : ""}</p>}
                 {isHome && <h1 className="text-4xl font-bold">{name}</h1>}
-                <div className={`w-full ${type === "users" ? "flex flex-wrap gap-4" : "flex flex-col gap-2"}`}>
+                <ul className={`w-full ${type === "users" ? "flex flex-wrap gap-4" : "flex flex-col gap-2"}`}>
                     {
                         subList.map((elem, index) => {
                             if (type === "decks" || isHome)
                                 return (
-                                    <div key={elem._id}>
+                                    <li key={elem._id}>
                                         <div className={`flex w-full items-center group relative rounded-full
                                             ${index % 2 === 0 ? "bg-background-1" : "bg-background-2"}`}>
                                             <Link className="min-w-0 text-lg flex-1 sm:text-xl flex items-center font-medium hover:text-highlight px-4 sm:px-2 py-2 gap-4"
@@ -129,11 +129,11 @@ export default function ListDisplay({type, list, name, isOwn, isFav, isHome, per
                                                 </div>
                                             }
                                         </div>
-                                    </div>
+                                    </li>
                                 )
                             if (type === "users")
                                 return (
-                                    <div className="w-full sm:w-fit h-fit" key={elem._id}>
+                                    <li className="w-full sm:w-fit h-fit" key={elem._id}>
                                         <Link className={`flex w-full items-center cursor-pointer group hover:text-highlight relative p-2 rounded-full
                                         ${index % 2 === 0 ? "bg-background-1" : "bg-background-2"}`}
                                         href={`/user/${elem.name}`}>
@@ -142,13 +142,13 @@ export default function ListDisplay({type, list, name, isOwn, isFav, isHome, per
                                             </div>
                                             <p className="text-xl font-medium px-2">{elem.name}</p>
                                         </Link>
-                                    </div>
+                                    </li>
                                 )
                             if (type === "cards")
                                return <CardElement key={elem.id} elem={elem} index={index} />
                         })
                     }
-                </div>
+                </ul>
                  {!isHome &&
                     <>
                         {listToShow.length > perPage && <Pagination quantity={listToShow.length} pageNumber={pageNumber} setPageNumber={setPageNumber} perPage={perPage} />}
