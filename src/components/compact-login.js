@@ -37,10 +37,10 @@ export default function CompactLogin({onLoginSuccess, vertical}) {
 
     return (
         <form onSubmit={handleFormSubmit} action="/api/auth/callback/credentials"
-        className={`flex ${vertical ? "w-full flex-col" : ""} gap-4 items-center text-container`}>
+        className={`flex ${vertical ? "w-full flex-col" : ""} gap-4 items-center text-background-2`}>
             <div className={`${vertical ? "w-full" : ""} flex gap-2 items-center`}>
                 <FaUser className="text-xl text-neutral-400" />
-                <input className={`${vertical ? "w-full" : ""} bg-my-white text-my-black rounded-xs border border-container`}
+                <input className={`${vertical ? "w-full" : ""} bg-my-white text-my-black rounded-xs border border-background-2`}
                     placeholder="Username or email"
                     type="text"
                     name="identifier"
@@ -49,7 +49,7 @@ export default function CompactLogin({onLoginSuccess, vertical}) {
             </div>
             <div className={`${vertical ? "w-full" : ""} flex gap-2 items-center`}>
                 <FaKey className="text-xl text-neutral-400" />
-                <input className={`${vertical ? "w-full" : ""} bg-my-white text-my-black rounded-xs border border-container`}
+                <input className={`${vertical ? "w-full" : ""} bg-my-white text-my-black rounded-xs border border-background-2`}
                     placeholder="Password"
                     type="password"
                     name="password"
