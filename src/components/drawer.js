@@ -5,7 +5,7 @@ import { FaCaretDown, FaCaretLeft, FaCaretRight, FaCaretUp } from "react-icons/f
 
 export default function Drawer({children, drawerIcon, iconList}) {
     const [showChild, setShowChild] = useState(0);
-    const [showDrawer, setShowDrawer] = useState(false);
+    const [showDrawer, setShowDrawer] = useState(true);
 
     const childToShow = useRef();
 

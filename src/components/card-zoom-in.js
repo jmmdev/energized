@@ -90,7 +90,7 @@ export default function CardZoomIn({zoomIn, setZoomIn, elem, zoomRef}) {
                         <div className="flex flex-col">
                             <div className="fixed top-0 right-0 z-110 text-my-white opacity-60 hover:opacity-100 cursor-pointer p-4 self-end text-3xl"
                             onClick={() => setZoomIn(false)}>
-                                <FaPlus className="rotate-45" />
+                                <FaPlus />
                             </div>
                             <div className="flex flex-col sm:flex-row sm:items-center p-8 gap-8">
                                 <div className="w-full flex flex-col self-center gap-2 max-w-[300px] sm:max-w-sm">

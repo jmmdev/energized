@@ -139,7 +139,7 @@ export default function Header() {
                     <button className="text-foreground text-3xl font-bold cursor-pointer hover:text-highlight transition-all" 
                     onClick={(e) => {
                         e.stopPropagation();
-                        setShowMenu(false);
+                        setShowMenu(!showMenu);
                     }}>
                         {showMenu ? <FaTimes /> : <FaBars />}
                     </button>

@@ -1,7 +1,7 @@
 import { useDeckContext } from "@/context/deck-context";
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import { FaPlus } from "react-icons/fa";
+import { FaTimes } from "react-icons/fa";
 
 export default function BuilderImageSelector({setShowImgSelector}) {
     const {
@@ -48,7 +48,7 @@ export default function BuilderImageSelector({setShowImgSelector}) {
                 <div className="flex items-center justify-between">
                     <p className="text-xl">Pick a deck profile pic</p>
                     <button className="cursor-pointer opacity-60 hover:opacity-100" onClick={() => setShowImgSelector(false)}>
-                        <FaPlus className="text-2xl text-foreground rotate-45" />
+                        <FaTimes className="text-2xl text-foreground" />
                     </button>
                 </div>
                 <div className="w-full flex flex-wrap justify-center">

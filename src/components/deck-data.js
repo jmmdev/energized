@@ -1,9 +1,9 @@
 "use client";
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { FaUser, FaGripHorizontal, FaList, FaStar, FaRegStar, FaEdit, FaTrashAlt, FaChartBar } from "react-icons/fa";
+import { FaUser, FaGripHorizontal, FaList, FaStar, FaRegStar, FaEdit, FaTrashAlt, FaChartBar, FaCopy } from "react-icons/fa";
 import CardDisplay from "./card-display";
 import BuilderDeckTopButton from "@/components/builder-deck-top-button";
 import Footer from "@/components/footer";
@@ -14,6 +14,7 @@ import Link from "next/link";
 import { getSimpleStats } from "@/utils/simple-stats";
 
 export default function DeckData({data}) {
+    const pathname = usePathname();
     const {data: session, status} = useSession();
     const router = useRouter();
 
@@ -82,9 +83,19 @@ export default function DeckData({data}) {
                                 <div className="flex flex-col w-full lg:flex-row lg:justify-between lg:items-center gap-4 lg:gap-0">
                                     <div className="w-full">
                                         <div className="w-full flex justify-between items-center gap-8">
-                                            <h1 className="flex-1 truncate text-3xl sm:text-4xl lg:text-5xl font-bold py-2">
-                                                {data.name}
-                                            </h1>
+                                            <div className="flex gap-2 items-center">
+                                                <h1 className="flex-1 truncate text-3xl sm:text-4xl lg:text-5xl font-bold py-2">
+                                                    {data.name}
+                                                </h1>
+                                                <Button color="blue" className="rounded-full text-xs p-1.5"
+                                                onClick={() => {
+                                                    const url = window.location;
+                                                    navigator.clipboard.writeText(url);
+                                                    alert("Deck link copied successfully!");
+                                                }}>
+                                                    <FaCopy />
+                                                </Button>
+                                            </div>
                                             {session && session?.user.id === data.creator.id &&
                                                 <div className="hidden md:flex gap-4 ">
                                                     <Link className="flex items-center gap-1 uppercase px-4 py-1 rounded bg-blue-500 hover:bg-blue-400 active:bg-blue-600 text-my-white"

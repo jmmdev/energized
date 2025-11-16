@@ -1,6 +1,6 @@
 import { useSearch } from "@/context/search-context";
 import { useEffect, useRef, useState } from "react";
-import { FaCaretDown, FaCaretRight, FaFilter, FaPlus } from "react-icons/fa";
+import { FaCaretDown, FaCaretRight, FaFilter, FaTimes } from "react-icons/fa";
 import Button from "./button";
 
 export default function CardSearchFilters() {
@@ -136,7 +136,7 @@ export default function CardSearchFilters() {
                     onClick={isSearching ? () => {} : () => removeFilter(ap.field, ap.value)}>
                         <div className={`flex items-center gap-1 opacity-70 ${!isSearching ? "group-hover:opacity-100" : ""}`}>
                             <p>{ap.field}: {ap.value}</p>
-                            <FaPlus className="rotate-45" />
+                            <FaTimes />
                         </div>
                     </button>
                 )
@@ -166,7 +166,7 @@ export default function CardSearchFilters() {
                         Search filters
                         <button className={`opacity-60 ${!isSearching ? "cursor-default" : "cursor-pointer hover:opacity-100"}`}
                         onClick={isSearching ? () => {} : () => setShowFilters(false)}>
-                            <FaPlus className="text-xl rotate-45" />
+                            <FaTimes className="text-xl" />
                         </button>
                     </div>
                     <GetAppliedFilterPills />

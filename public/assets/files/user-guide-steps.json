@@ -1,0 +1,41 @@
+[
+    {
+        "title": "Build your first deck",
+        "paragraphs": [
+            "First and foremost: make sure you're logged in using your account",
+            "Once you're in, you will be able to click on the 'Build' button in the header (the hammer one)",
+            "This will prompt a window where you can establish your new deck name. Save it and boom!, congrats on making your first deck ",
+            "After saving it, you will be redirected to the actual builder where you can use the Card Search tool to add Pokémon, Trainers, and Energy",
+            "See live deck stats (type distribution, average energy cost, etc.) as more cards are added",
+            "You can also change its name and make it public or private to other users",
+            "Save it and...done. Your new deck appears in your profile"
+        ]
+    },
+    {
+        "title": "View and share your deck",
+        "paragraphs": [
+            "Open your deck from your profile to check decklist and stats",
+            "Copy the deck link to share with friends or post online"
+        ]
+    },
+    {
+        "title": "Search decks, cards and users",
+        "paragraphs": [
+            "Use the search bar to toggle between cards, decks and users",
+            "Try searching 'Charizard' or 'Energy Accelerator'"
+        ]
+    },
+    {
+        "title": "Explore profiles and favorites",
+        "paragraphs": [
+            "Check any user profile to see their decks and what they've favorited. Add decks to your own favorites to revisit later"
+        ]
+    },
+    {
+        "title": "Customize your experience and get to know more",
+        "paragraphs": [
+            "Click the ☰ side menu → toggle Light/Dark theme",
+            "Access Privacy Policy, Terms and Copyright info using the side menu or the footer at any time"
+        ]
+    }
+]

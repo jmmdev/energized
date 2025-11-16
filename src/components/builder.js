@@ -4,7 +4,7 @@ import { useSession, getSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import { FaChartBar, FaPlus, FaSearch, FaSpinner, FaTools } from "react-icons/fa";
+import { FaChartBar, FaSearch, FaSpinner, FaTimes, FaTools } from "react-icons/fa";
 import BuilderCardSearch from "./builder-card-search";
 import BuilderImageSelector from "./builder-image-selector";
 import { useDeckContext } from "@/context/deck-context";
@@ -122,7 +122,7 @@ export default function Builder({deckId}) {
                         <div className="flex justify-between items-center">
                             <strong>Error:</strong>
                             <button className="cursor-pointer opacity-60 hover:opacity-100" onClick={closeDeckError}>
-                                <FaPlus className="rotate-45" />
+                                <FaTimes className="rotate-45" />
                             </button>
                         </div>
                         <br /><br />
