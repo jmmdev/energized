@@ -118,7 +118,7 @@ export default function AdminPanel({user}) {
             <div className="flex flex-col gap-2 mb-8 2xl:gap-4">
                 <h2 className="uppercase opacity-60">create a new {tab.slice(0, -1)}</h2>
                 <div className="flex flex-col gap-2 2xl:gap-4">
-                    <div className="flex items-center gap-4">
+                    <div className="flex flex-wrap items-center gap-4">
                         <div className="flex items-center gap-1">
                             <span className="opacity-60">{tab === "users" ? "Username" : "Name"}:</span>
                             <input className="bg-background-1" value={name} onChange={(e) => setName(e.target.value)} />
