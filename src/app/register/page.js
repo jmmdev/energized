@@ -106,6 +106,7 @@ export default function Register() {
                 router.replace("/login");
             }
             catch (err) {
+                console.log(err);
                 setErrMsg(err.response.data.error);
             }
         }

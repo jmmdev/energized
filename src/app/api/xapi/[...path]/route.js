@@ -16,8 +16,9 @@ async function proxy(req, { params }) {
   const session = await auth();
   const method = req.method;
 
-  if (!session && !(isPublic && method === "GET")) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  if (!isPublic || (path.startsWith("/decks") && method === "POST")) {
+    if (!session) 
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
   const headers = {
