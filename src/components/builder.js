@@ -122,7 +122,7 @@ export default function Builder({deckId}) {
                         <div className="flex justify-between items-center">
                             <strong>Error:</strong>
                             <button className="cursor-pointer opacity-60 hover:opacity-100" onClick={closeDeckError}>
-                                <FaTimes className="rotate-45" />
+                                <FaTimes />
                             </button>
                         </div>
                         <br /><br />
