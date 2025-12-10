@@ -87,13 +87,13 @@ export default function DeckData({data}) {
 
     if (status !== "loading")
         return (
-            <div className="relative w-full flex flex-col lg:flex-row justify-center flex-1 overflow-y-hidden self-center">
+            <div className="relative w-full flex flex-col lg:flex-row lg:justify-center flex-1 overflow-y-hidden self-center">
                 {data.cardCount === 60 && 
                 <Drawer drawerIcon={<FaChartBar />} >
                     <DeckStats stats={getSimpleStats(data.cards)} />
                 </Drawer> 
                 }
-                <div className="w-full flex justify-center overflow-y-auto builder-scrollbar">
+                <div className="w-full flex flex-1 justify-center overflow-y-auto builder-scrollbar">
                     <div className="flex flex-col w-full lg:max-w-[1500px] h-full">
                         <div className="flex flex-col flex-1 gap-4 lg:gap-2 p-8">
                             <div className="flex flex-col justify-between gap-4">
@@ -230,7 +230,7 @@ export default function DeckData({data}) {
                         ?
                             <CardDisplay cards={data.cards} display={display} />
                         : 
-                            <div className="flex-1 p-8">
+                            <div className="flex-1">
                                 <div className="flex items-center justify-center h-full text-2xl md:text-3xl opacity-60 text-center bg-background-1 rounded-xl p-8">
                                     <p>This deck has no cards yet</p>
                                 </div>
