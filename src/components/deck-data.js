@@ -1,9 +1,9 @@
 "use client";
 import { useSession } from "next-auth/react";
-import { usePathname, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { FaUser, FaGripHorizontal, FaList, FaStar, FaRegStar, FaEdit, FaTrashAlt, FaChartBar, FaCopy } from "react-icons/fa";
+import { FaUser, FaGripHorizontal, FaList, FaStar, FaRegStar, FaEdit, FaTrashAlt, FaChartBar, FaCopy, FaCaretLeft } from "react-icons/fa";
 import CardDisplay from "./card-display";
 import BuilderDeckTopButton from "@/components/builder-deck-top-button";
 import Footer from "@/components/footer";
@@ -12,11 +12,12 @@ import Button from "@/components/button";
 import Drawer from "./drawer";
 import Link from "next/link";
 import { getSimpleStats } from "@/utils/simple-stats";
+import { useNavigation } from "@/context/navigation-context";
 
 export default function DeckData({data}) {
-    const pathname = usePathname();
     const {data: session, status} = useSession();
     const router = useRouter();
+    const { lastPage } = useNavigation();
 
     const [display, setDisplay] = useState("grid");
     const [isFavorite, setIsFavorite] = useState(null);
@@ -39,6 +40,10 @@ export default function DeckData({data}) {
             initialize();
         }
     }, [status])
+
+    const handleBack = () => {
+        router.push(lastPage || "/");
+    };
 
     const modifyFavorite = async () => {
         await axios.post("/api/xapi/favorites", {
@@ -68,6 +73,18 @@ export default function DeckData({data}) {
         return date.toLocaleDateString("en-GB");
     }
 
+    const parseFrom = () => {
+        if (lastPage.startsWith("/search"))
+            return "search";
+
+        const steps = lastPage.split("/").filter(i => i);
+
+        if (steps.length > 0)
+            return steps.join(" → ");
+
+        return "home";
+    }
+
     if (status !== "loading")
         return (
             <div className="relative w-full flex flex-col lg:flex-row justify-center flex-1 overflow-y-hidden self-center">
@@ -82,6 +99,9 @@ export default function DeckData({data}) {
                             <div className="flex flex-col justify-between gap-4">
                                 <div className="flex flex-col w-full lg:flex-row lg:justify-between lg:items-center gap-4 lg:gap-0">
                                     <div className="w-full">
+                                        <button className="flex gap-1 font-medium items-center cursor-pointer underline hover:text-highlight" onClick={handleBack}>
+                                            <FaCaretLeft /> Go back to {parseFrom()}
+                                        </button>
                                         <div className="w-full flex justify-between items-center gap-8">
                                             <div className="flex gap-2 items-center">
                                                 <h1 className="flex-1 truncate text-3xl sm:text-4xl lg:text-5xl font-bold py-2">

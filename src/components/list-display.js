@@ -7,9 +7,11 @@ import Link from "next/link";
 import Button from "./button";
 import CardZoomIn from "./card-zoom-in";
 import axios from "axios";
+import { useNavigation } from "@/context/navigation-context";
 
-export default function ListDisplay({type, list, name, isOwn, isFav, isHome, perPage}) {
+export default function ListDisplay({type, list, name, isOwn, isFav, isHome, perPage, from}) {
     const {data: session, status} = useSession();
+    const { setLastPage } = useNavigation();
 
     const [pageNumber, setPageNumber] = useState(0);
 
@@ -113,7 +115,7 @@ export default function ListDisplay({type, list, name, isOwn, isFav, isHome, per
                                         <div className={`flex w-full items-center group relative rounded-full
                                             ${index % 2 === 0 ? "bg-background-1" : "bg-background-2"}`}>
                                             <Link className="min-w-0 text-lg flex-1 sm:text-xl flex items-center font-medium hover:text-highlight px-4 sm:px-2 py-2 gap-4"
-                                            href={`/deck/${elem._id}`}>
+                                            onClick={() => setLastPage(from)} href={`/deck/${elem._id}`}>
                                                 <div className="hidden sm:block h-10 aspect-square relative">
                                                     <Image width={200} height={200} className="rounded-full" src={elem.image} alt="Deck's image" />
                                                 </div>

@@ -1,9 +1,16 @@
 "use client";
 
-import { useEffect } from "react";
-import { FaTimes } from "react-icons/fa";
+import Image from "next/image";
+import { useEffect, useState } from "react";
+import { FaSpinner, FaTimes } from "react-icons/fa";
 
 export default function CardZoomIn({zoomIn, setZoomIn, elem, zoomRef}) {
+
+    const [loaded, setLoaded] = useState(false);
+
+    useEffect(() => {
+        console.log(loaded);
+    }, [loaded])
 
     useEffect(() => {
         if (zoomIn)
@@ -92,21 +99,24 @@ export default function CardZoomIn({zoomIn, setZoomIn, elem, zoomRef}) {
                             onClick={() => setZoomIn(false)}>
                                 <FaTimes />
                             </div>
+                            {!loaded && <FaSpinner className="text-3xl animate-spin" />}
                             <div className="flex flex-col sm:flex-row sm:items-center p-8 gap-8">
                                 <div className="w-full flex flex-col self-center gap-2 max-w-[300px] sm:max-w-sm">
                                     <img className="block max-w-full" src={card.image + "/high.webp"} 
-                                    alt={`${card.name}#${card.id}`} />
+                                    alt={`${card.name}#${card.id}`} onLoad={(event) => setLoaded(true)} />    
                                 </div>
-                                <div className="flex flex-col gap-8 w-full sm:max-w-sm self-center text-left">
-                                    <div>
-                                        <p className="font-bold uppercase text-2xl">{card.name}</p>
-                                        <p className="text-xl">{card.stage || card.trainerType || card.energyType} {card.types && card.types[0]} {card.category}</p>
-                                        {card.hp && <p className="text-xl">HP: <b>{card.hp}</b></p>}
+                                {loaded &&
+                                    <div className="flex flex-col gap-8 w-full sm:max-w-sm self-center text-left">
+                                        <div>
+                                            <p className="font-bold uppercase text-2xl">{card.name}</p>
+                                            <p className="text-xl">{card.stage || card.trainerType || card.energyType} {card.types && card.types[0]} {card.category}</p>
+                                            {card.hp && <p className="text-xl">HP: <b>{card.hp}</b></p>}
+                                        </div>
+                                        <GetInfo card={card} />
+                                        {card.effect && <p className="text-xl"> {card.effect}</p>}
+                                        {card.retreat > 0 && <p className="text-xl">Retreat cost: <b>{card.retreat}</b></p>}
                                     </div>
-                                    <GetInfo card={card} />
-                                    {card.effect && <p className="text-xl"> {card.effect}</p>}
-                                    {card.retreat > 0 && <p className="text-xl">Retreat cost: <b>{card.retreat}</b></p>}
-                                </div>
+                                }
                             </div>
                         </div>
                     </div>

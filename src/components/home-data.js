@@ -21,10 +21,10 @@ export default function HomeData({deckData}) {
           <div className="w-full flex-1 flex flex-col items-center">
             <div className="w-full max-w-[1920px] flex flex-col lg:flex-row flex-1 gap-6 sm:gap-12 p-6 xl:p-12">
               <div className="w-full flex-1 lg:w-1/2">
-                <ListDisplay list={deckData.recent} isHome name="Most recent" />
+                <ListDisplay list={deckData.recent} isHome name="Most recent" from="/" />
               </div>
               <div className="w-full flex-1 lg:w-1/2">
-                <ListDisplay list={deckData.popular} isHome name="Most popular"/>
+                <ListDisplay list={deckData.popular} isHome name="Most popular" from="/" />
               </div>
             </div>
           </div>

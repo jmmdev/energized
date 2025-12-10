@@ -247,7 +247,7 @@ export default function AdminPanel({user}) {
                         <div className="flex flex-col flex-1 gap-16 p-4 sm:p-8">
                             <div className="flex flex-col flex-1 gap-4 lg:gap-8 max-w-[1500px]">
                                 <h1 className="font-bold text-3xl lg:text-4xl uppercase">{tab}</h1>
-                                {tab !== "overview" && 
+                                {(tab === "users" || tab === "decks") && 
                                     <div className="flex flex-col gap-4 ">
                                         <AdminCreate tab={tab} />
                                         <h2 className="font-light italic 2xl:mt-4">{content.length} result{content.length === 1 ? "" : "s"}</h2>
